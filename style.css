@@ -1,0 +1,58 @@
+body {
+  background: linear-gradient(135deg, #575757 0%, #000000 100%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 25px;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.section {
+  font-weight: 700;
+  font-size: 36px;
+  text-align: center;
+  width: 100%;
+  color: rgb(221, 221, 221);
+  margin-bottom: -15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subsection {
+  text-align: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: rgb(221, 221, 221);
+  border-bottom: 3px solid #667eea;
+}
+
+.card {
+  background-color: rgb(82, 82, 82);
+  color: #333;
+  padding: 5px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.notes {
+  padding: 0;
+  color: rgb(221, 221, 221);
+  list-style: none;
+  margin: 0;
+}
+
+.notes li {
+  padding: 1px;
+}
+
+hr {
+  margin: 5px;
+}
