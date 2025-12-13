@@ -1,61 +1,69 @@
 body {
-  background: linear-gradient(135deg, #161616 0%, #000000 100%);
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-content: flex-start;
   align-items: flex-start;
-  gap: 10px;
+  gap: 16px;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
 .section {
   font-weight: 600;
-  font-size: 28px;
+  font-size: 32px;
   text-align: center;
   width: 100%;
-  color: rgb(221, 221, 221);
-  margin-bottom: -px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #e8e8e8;
+  margin: 20px 0 10px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
 }
 
 .subsection {
   text-align: center;
   font-weight: 700;
-  font-size: 22px;
-  color: rgb(221, 221, 221);
+  font-size: 20px;
+  color: #667eea;
+  margin-bottom: 10px;
 }
 
 .card {
-  min-width: 300px;
-  background-color: rgb(82, 82, 82);
-  color: #333;
-  padding: 0px 5px 5px 5px;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 320px;
+  max-width: 480px;
+  background-color: #2d2d2d;
+  color: #e8e8e8;
+  padding: 16px;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
 }
 
 .notes {
-  padding: 0;
-  color: rgb(221, 221, 221);
-  list-style: none;
-  margin: 0;
+  padding: 0 0 0 20px;
+  color: #d8d8d8;
+  list-style: disc;
+  margin: 8px 0;
+  line-height: 1.6;
 }
 
 .notes li {
-  padding: 1px;
+  padding: 4px 0;
 }
 
 hr {
-  margin: 5px;
+  margin: 8px 0;
+  border: none;
+  border-top: 1px solid #3a3a3a;
 }
 
 #back-button {

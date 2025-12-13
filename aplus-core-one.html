@@ -13,28 +13,11 @@
       <div class="subsection">Wireless Frequencies</div>
       <ul class="notes">
         <hr />
-        <li>Direct Sequence Spread Spectrum (DSSS)</li>
-        <li>Suboptimal</li>
-        <li>Susceptible to electrical interference</li>
-        <li>Inefficent use of spectrum</li>
+        <li>OFDM (Orthogonal Frequency Division Multiplexing) - most common standard</li>
         <hr />
-        <li>Orthogonal Frequency Division Multiplexing (OFDM)</li>
-        <li>Most common</li>
-        <li>Minimizes interference and has higher rates of data</li>
-        <hr />
-        <li>2.4GHz band</li>
-        <li>Prone to interference from microwaves, bluetooth</li>
-        <li>To avoid overlap, use channels 1, 6, and 11</li>
-        <hr />
-        <li>5GHz band</li>
-        <li>Less interference, higher speeds, shorter range</li>
-        <li>24 non-overlapping channels at 20MHz width</li>
-        <li>Channel bonding enables creation of wider channels</li>
-        <li>Combine adjacent channels for stronger signal</li>
-        <hr />
-        <li>6GHz band</li>
-        <li>Newer standard (WiFi 6e + 7)</li>
-        <li>Even less interference, higher speeds, shorter range</li>
+        <li>2.4GHz band - channels 1, 6, 11 (non-overlapping)</li>
+        <li>5GHz band - Less interference, higher speeds, shorter range</li>
+        <li>6GHz band - WiFi 6e and 7, newer standard with even less interference</li>
       </ul>
     </div>
 
@@ -42,58 +25,58 @@
       <div class="subsection">Wireless Standards</div>
       <ul class="notes">
         <hr />
-        <li>802.11a - 5GHz, 54Mbps, OFDM</li>
-        <li>802.11b - 2.4GHz, 11Mbps, DSSS</li>
-        <li>802.11g - 2.4GHz, 54Mbps, OFDM</li>
-        <li>802.11n - 2.4/5GHz, 600Mbps, MIMO, OFDM</li>
-        <li>802.11ac (WiFi 5) - 5GHz, 1Gbps+, MU-MIMO, OFDM</li>
-        <li>802.11ax (WiFi 6) - 2.4/5, 10Gbps+, OFDMA, MU-MIMO</li>
+        <li>802.11a - 5GHz, 54Mbps | 802.11b - 2.4GHz, 11Mbps | 802.11g - 2.4GHz, 54Mbps</li>
+        <li>802.11n (WiFi 4) - 2.4/5GHz, 600Mbps, MIMO</li>
+        <li>802.11ac (WiFi 5) - 5GHz, 1Gbps+, MU-MIMO</li>
+        <li>802.11ax (WiFi 6) - 2.4/5/6GHz, 10Gbps+, OFDMA</li>
         <li>802.11be (WiFi 7) - 2.4/5/6GHz, 30Gbps+</li>
         <hr />
-        <li>MIMO (Multiple Input Multiple Output)</li>
-        <li>Multiple antennas for sending and receiving</li>
-        <li>Increases throughput and reliability</li>
-        <hr />
-        <li>MU-MIMO (Multi-User MIMO)</li>
-        <li>Supports multiple devices simultaneously</li>
+        <li>MIMO - Multiple antennas for increased throughput</li>
+        <li>MU-MIMO - Multiple users simultaneously</li>
       </ul>
     </div>
 
     <div class="section">Section 14: Network Configuration</div>
+
     <div class="card">
       <div class="subsection">DHCP</div>
       <ul class="notes">
         <hr />
-        <li>Automates process of assigning IP addresses</li>
-        <li>Scope is list of available IPs within a subnet</li>
-        <li>Leases are temporary IP assignments</li>
-        <li>Discover Offer Request Acknowledge (DORA)</li>
-        <li>Static assignments made for specific devices</li>
+        <li>Dynamic Host Configuration Protocol</li>
+        <li>Automates process of assigning IP addresses to network devices</li>
+        <li>Uses UDP ports 67 (server) and 68 (client)</li>
+        <li>Scope is list of available IP addresses within a subnet</li>
+        <li>Leases are temporary IP assignments with expiration times</li>
+        <li>DORA process: Discover, Offer, Request, Acknowledge</li>
+        <ul>
+          <li>Discover: Client broadcasts request for IP address</li>
+          <li>Offer: DHCP server offers an available IP address</li>
+          <li>Request: Client formally requests the offered IP</li>
+          <li>Acknowledge: Server confirms and assigns the IP</li>
+        </ul>
+        <li>Static/Reserved assignments made for specific devices (servers, printers)</li>
+        <li>Uses MAC address to ensure device always gets same IP</li>
+        <li>IP Helper/DHCP Relay forwards DHCP requests across subnets</li>
+        <li>Lease renewal occurs at 50% of lease time</li>
       </ul>
     </div>
 
-      <div class="card">
+    <div class="card">
       <div class="subsection">DNS</div>
       <ul class="notes">
         <hr />
-        <li>Translates names to IP addresses</li>
-        <li>Think phone contact list</li>
-        <li>Mostly handled by ISPs and public DNS servers</li>
-        <li>Hierarchical structure with root, TLD, second-level domains</li>
-        <li>Subdomains are subdivisions of domains</li>
-        <li>Recursive lookup</li>
-        <ul>
-          <li>Offloads all work to DNS resolver</li>
-          <li>Client requests IP from DNS resolver</li>
-          <li>Checks cache, root server, tld server, authoritative server</li>
-      </ul>
-      <li>Interative lookup</li>
-      <ul>
-        <li>More responsibility on client side resolver</li>
-        <li>Provides partial answers on how to find it</li>
-        <li>Refers to other DNS servers</li>
-        <li>Spreads the load</li>
-      </ul>
+        <li>Translates human-readable domain names to IP addresses</li>
+        <li>Uses UDP port 53 (TCP port 53 for zone transfers)</li>
+        <li>Hierarchical structure: Root servers → TLD (.com, .org, .net) → second-level (example.com)</li>
+        <li>Subdomains are subdivisions (mail.example.com)</li>
+        <li>DNS caching and TTL (Time to Live) improve performance</li>
+        <li>Recursive lookup - Client asks resolver; resolver does all work</li>
+        <li>Iterative lookup - Client resolver does more work, getting referrals</li>
+          <li>Provides partial answers or referrals on how to find it</li>
+          <li>Refers to other DNS servers for next step</li>
+          <li>Spreads the load across multiple servers</li>
+          <li>Client does more of the work</li>
+        </ul>
       </ul>
     </div>
 
@@ -101,47 +84,23 @@
       <div class="subsection">DNS Records</div>
       <ul class="notes">
         <hr />
-        <li>Address record (@ sign)</li>
-        <ul>
-          <li>Link a domain name to an IPv4 address</li>
-        </ul>
-        <li>AAAA record</li>
-        <ul>
-          <li>Links to IPv6 address</li>
-        </ul>
-        <li>CNAME record</li>
-        <ul>
-          <li>Canonical name record</li>
-          <li>Aliases one domain name to another</li>
-          <li>Can only map to other domain names or subdomains</li>
-        </ul>
-        <li>MX record</li>
-        <ul>
-          <li>Mail exchange record</li>
-          <li>Specifies mail server for a domain</li>
-          <li>Can set priority</li>
-        </ul>
-        <li>TXT record</li>
-        <ul>
-          <li>Holds arbitrary text data for notes and comments</li>
-          <li>Can hold verification information</li>
-        </ul>
+        <li>A record - IPv4 address mapping (most common)</li>
+        <li>AAAA record - IPv6 address mapping</li>
+        <li>CNAME record - Domain alias (www.example.com → example.com)</li>
+        <li>MX record - Mail server with priority (lower = higher priority)</li>
+        <li>TXT record - Text data for SPF, DKIM, DMARC, verification</li>
+        <li>NS record - Authoritative name servers for domain</li>
+        <li>PTR record - Reverse DNS (IP to domain)</li>
       </ul>
     </div>
- 
+
     <div class="card">
-      <div class="subsection">Spam Management with DNS</div>
+      <div class="subsection">Email Authentication</div>
       <ul class="notes">
         <hr />
-        <li>SPF (Sender Policy Framework)</li>
-        <li>Identities mail servers that are allowed to send emails for a domain</li>
-        <li>DKIM (DomainKeys Identified Mail)</li>
-        <li>Adds cryptographic signatures to verify email authenticity</li>
-        <li>Ensures emails have not been altered</li>
-        <li>DMARC (Domain-based Message Authentication, Reporting, Conformance)</li>
-        <li>Provide instructions for handling failed emails</li>
-        <li>User sends email with SPF and DKIM headers</li>
-        <li>Recipient server checks SPF, DKIM, and DMARC records</li>
+        <li>SPF - Identifies authorized mail servers via DNS TXT record</li>
+        <li>DKIM - Cryptographic signatures on emails; public key in DNS</li>
+        <li>DMARC - Policy for failed SPF/DKIM checks (none/quarantine/reject)</li>
       </ul>
     </div>
 
@@ -149,10 +108,13 @@
       <div class="subsection">VLAN</div>
       <ul class="notes">
         <hr />
-        <li>Creates a logical separation of devices on a network</li>
-        <li>Improves security and reduces broadcast traffic </li>
-        <li>VLAN trunking allows multiple VLANs to share a single physical link</li>
-        <li>Native VLAN is the default VLAN for untagged traffic</li>
+        <li>Virtual Local Area Network - Logical segmentation of physical network</li>
+        <li>Segments at Layer 2 (Data Link layer)</li>
+        <li>Improves security and reduces broadcast traffic</li>
+        <li>VLAN IDs: 1-4094 (VLAN 1 is default)</li>
+        <li>VLAN trunking - Multiple VLANs on single physical link (802.1Q)</li>
+        <li>Trunk ports - Carry multiple VLANs | Access ports - Single VLAN</li>
+        <li>Inter-VLAN routing requires Layer 3 device (router or L3 switch)</li>
       </ul>
     </div>
 
@@ -160,79 +122,270 @@
       <div class="subsection">VPN</div>
       <ul class="notes">
         <hr />
-        <li>Extends a private network over a public network</li>
-        <li>Site to site vpn</li>
-        <li>Connects entire networks together</li>
-        <li>Client to site vpn</li>
-        <li>Connects individual clients to a network</li>
-        <li>Clientless vpn</li>
-        <li>No hardware required, uses web browser</li>
-        <li>Full tunnel</li>
-        <li>All traffic goes through the vpn</li>
-        <li>Split tunnel</li>
-        <li>Only some traffic goes through the vpn</li>
+        <li>Virtual Private Network</li>
+        <li>Extends a private network over a public network (like the Internet)</li>
+        <li>Encrypts traffic to ensure confidentiality and security</li>
+        <li>Creates secure tunnel for data transmission</li>
+        <li>Site-to-site VPN</li>
+        <ul>
+          <li>Connects entire networks together over the Internet</li>
+          <li>Router-to-router connection</li>
+          <li>Always-on connection between offices</li>
+          <li>No client software needed on individual computers</li>
+        </ul>
+        <li>Client-to-site VPN (Remote Access VPN)</li>
+        <ul>
+          <li>Connects individual clients/users to a corporate network</li>
+          <li>Requires VPN client software on user's device</li>
+          <li>Used by remote workers to access company resources</li>
+          <li>Connection initiated by user when needed</li>
+        </ul>
+        <li>Clientless VPN (SSL VPN)</li>
+        <ul>
+          <li>No dedicated client software or hardware required</li>
+          <li>Uses standard web browser for access</li>
+          <li>Portal-based access to specific applications</li>
+          <li>Limited functionality compared to full VPN client</li>
+        </ul>
+        <li>Full tunnel VPN</li>
+        <ul>
+          <li>All network traffic is routed through the VPN</li>
+          <li>Maximum security - all data is encrypted</li>
+          <li>Can slow down internet browsing</li>
+          <li>Company has visibility of all traffic</li>
+        </ul>
+        <li>Split tunnel VPN</li>
+        <ul>
+          <li>Only some traffic (corporate resources) goes through the VPN</li>
+          <li>Other traffic (personal browsing) goes directly to Internet</li>
+          <li>Better performance for general internet use</li>
+          <li>Less secure - some traffic not protected by VPN</li>
+        </ul>
+        <li>Common VPN protocols: IPSec, SSL/TLS, OpenVPN, L2TP, PPTP</li>
+        <li>VPN concentrator handles multiple VPN connections</li>
       </ul>
     </div>
 
     <div class="section">Section 15: Network Servers and Services</div>
+      <div class="card">
+      <div class="subsection">Network Servers and Services Overview</div>
+      <ul class="notes">
+      <hr />
+      <li>Server roles: Dedicated vs. multi-purpose servers</li>
+      <li>Client-server model: Clients request, servers respond</li>
+      <li>Common ports to memorize: HTTP (80), HTTPS (443), FTP (21), SSH (22), RDP (3389)</li>
+      <li>Network services: DHCP (assigns IP addresses), DNS (resolves domain names)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">File and Print Servers</div>
+      <ul class="notes">
+      <hr />
+      <li>File servers provide centralized storage for network users</li>
+      <li>SMB/CIFS protocol used for Windows file sharing</li>
+      <li>NFS (Network File System) used for Linux/Unix file sharing</li>
+      <li>Print servers centralize print management and reduce client-side processing</li>
+      <li>Permissions: Share-level vs. NTFS permissions (most restrictive wins)</li>
+      <li>UNC paths for mapping drives: \\server\share</li>
+      </ul>
+    </div>
+
     <div class="card">
       <div class="subsection">Web Servers</div>
       <ul class="notes">
-        <hr />
-        <li>Provides access to websites via HTTP or HTTPS</li>
-        <li>POrt 80 and port 443</li>
-        <li>Hosting via Apache and NGINX</li>
-        <li>Uses HTML, CSS, and JS</li>
+      <hr />
+      <li>Provides access to websites via HTTP or HTTPS</li>
+      <li>Port 80 (HTTP) and port 443 (HTTPS)</li>
+      <li>Common platforms: Apache, IIS (Internet Information Services), and NGINX</li>
+      <li>Uses HTML, CSS, and JS</li>
+      <li>HTTPS uses SSL/TLS for encryption and security</li>
+      <li>Web services: REST APIs and SOAP</li>
+      <li>Certificate management is critical for HTTPS</li>
       </ul>
     </div>
+
     <div class="card">
       <div class="subsection">Email Servers</div>
       <ul class="notes">
-        <hr />
-        <li>SMTP server</li>
-        <li>Responsible for sending mail</li>
-        <li>Port 25</li>
-        <li>POP3 (Post Office Protocol)</li>
-        <li>Port 110</li>
-        <li>Emails are deleted from server as they're recieved</li>
-        <li>IMAP (Internet Message Access Protocol)</li>
-        <li>Keeps your mail on the server</li>
-        <li>Able to manage your mail from any device</li>
-        <li>Port 143</li>
-        <li>Microsoft Exchange</li>
-        <li>Handles all 3 types and ports</li>
+      <hr />
+      <li>SMTP (Simple Mail Transfer Protocol) server</li>
+      <li>Responsible for sending mail</li>
+      <li>Port 25 (standard SMTP), Port 587 (SMTP with TLS)</li>
+      <li>POP3 (Post Office Protocol)</li>
+      <li>Port 110 (POP3), Port 995 (POP3S secure)</li>
+      <li>Emails are deleted from server as they're received</li>
+      <li>Downloads mail to local device</li>
+      <li>IMAP (Internet Message Access Protocol)</li>
+      <li>Keeps your mail on the server</li>
+      <li>Able to manage your mail from any device</li>
+      <li>Port 143 (IMAP), Port 993 (IMAPS secure)</li>
+      <li>Synchronizes mail across multiple devices</li>
+      <li>Microsoft Exchange</li>
+      <li>Handles all 3 types and ports</li>
+      <li>Spam filtering: SPF, DKIM, and DMARC help prevent spam and spoofing</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="subsection">AAA Servers</div>
       <ul class="notes">
-        <hr />
-        <li>Authentication Authorization Accounting Servers</li>
-        <li>Centralized way of managing network security and access</li>
-        <li>Authentication focuses on verifying indentities of users</li>
-        <li>Increase security using MFA and digital certificates</li>
-        <li>Authorization defines permissions for an authenticated user</li>
-        <li>Tracks and logs all user's activity</li>
-        <li>Remote Auth Dial-in User Service (RADIUS)</li>
-        <li>Combines authen + author into single process over UDP</li>
-        <li>Terminal Access Controller Access-Control System (TACACS+)</li>
-        <li>Seperates all three steps for more flexibilty over TCP</li>
+      <hr />
+      <li>Authentication Authorization Accounting Servers</li>
+      <li>Centralized way of managing network security and access</li>
+      <li>Authentication focuses on verifying identities of users</li>
+      <li>Increase security using MFA and digital certificates</li>
+      <li>Authorization defines permissions for an authenticated user</li>
+      <li>Accounting tracks and logs all user's activity</li>
+      <li>Remote Auth Dial-in User Service (RADIUS)</li>
+      <li>Combines authen + author into single process over UDP</li>
+      <li>Uses ports 1812 (authentication) and 1813 (accounting)</li>
+      <li>Terminal Access Controller Access-Control System (TACACS+)</li>
+      <li>Separates all three steps for more flexibility over TCP</li>
+      <li>Port 49, Cisco proprietary</li>
+      <li>Encrypts entire payload (more secure than RADIUS)</li>
+      <li>Use cases: Network access control, VPN authentication, wireless security</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="subsection">Database Servers</div>
       <ul class="notes">
-        <hr />
-        <li>System designed to store, organize, and retrieve data</li>
-        <li>Relational - SQL</li>
-        <li>Ideal for inventory management and customer records</li>
-        <li>NoSQL - Mango</li>
-        <li>Unstructured or semi-structured data</li>
-        <li>Best for real-time analytics and social media platforms</li>
-        <li>In-memory - Memcache</li>
-        <li>Store data in RAM for best performance</li>
+      <hr />
+      <li>System designed to store, organize, and retrieve data</li>
+      <li>Relational databases use SQL (Structured Query Language)</li>
+      <li>Examples: SQL Server, MySQL, Oracle, PostgreSQL</li>
+      <li>Ideal for inventory management and customer records</li>
+      <li>NoSQL - MongoDB, Cassandra</li>
+      <li>Unstructured or semi-structured data</li>
+      <li>Best for real-time analytics and social media platforms</li>
+      <li>In-memory databases - Memcache, Redis</li>
+      <li>Store data in RAM for best performance</li>
+      <li>Databases Store, Process, and Secure data</li>
+      <li>Common ports: MySQL (3306), SQL Server (1433), PostgreSQL (5432)</li>
+      <li>Backup importance: Transaction logs, full vs. incremental backups</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">NTP Servers</div>
+      <ul class="notes">
+      <hr />
+      <li>Network Time Protocol</li>
+      <li>Ensures synchronized time across devices</li>
+      <li>Port 123 (UDP)</li>
+      <li>Increases security by ensuring logs are properly timed</li>
+      <li>Stratum levels indicate time source accuracy (Stratum 0 = atomic clock, lower is better)</li>
+      <li>Critical for: Authentication protocols, certificate validation, accurate logging</li>
+      <li>Prevents time-based security vulnerabilities</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Syslog Servers</div>
+      <ul class="notes">
+      <hr />
+      <li>Centralized logging from multiple network devices</li>
+      <li>Protocol: Syslog uses UDP port 514</li>
+      <li>Severity levels: 0 (Emergency) to 7 (Debug)</li>
+      <li>Level 0 = most critical, Level 7 = least critical</li>
+      <li>Collects logs from routers, switches, firewalls, servers</li>
+      <li>Use cases: Security monitoring, troubleshooting, compliance auditing</li>
+      <li>Makes it easier to correlate events across multiple systems</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Proxy Servers</div>
+      <ul class="notes">
+      <hr />
+      <li>Acts as intermediary between clients and servers</li>
+      <li>Forward proxy: Client requests go through proxy to internet</li>
+      <li>Protects client identity and provides content filtering</li>
+      <li>Reverse proxy: External requests go through proxy to internal servers</li>
+      <li>Protects internal servers and provides load balancing</li>
+      <li>Benefits: Content filtering, caching, anonymity, bandwidth control</li>
+      <li>Common port: 8080 (though can vary)</li>
+      <li>Can improve performance by caching frequently accessed content</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Load Balancers</div>
+      <ul class="notes">
+      <hr />
+      <li>Distributes network traffic across multiple servers</li>
+      <li>Load balancing methods: Round-robin, least connections, weighted distribution</li>
+      <li>Round-robin: Cycles through servers in order</li>
+      <li>Least connections: Sends to server with fewest active connections</li>
+      <li>Benefits: High availability, scalability, eliminates single point of failure</li>
+      <li>Types: Layer 4 (transport layer) vs. Layer 7 (application layer)</li>
+      <li>Layer 4 is faster but less intelligent</li>
+      <li>Layer 7 can make decisions based on content</li>
+      <li>Increases uptime and performance</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Unified Threat Management (UTM)</div>
+      <ul class="notes">
+      <hr />
+      <li>All-in-one security appliance combining multiple security features</li>
+      <li>Includes: Firewall, antivirus, IPS/IDS (Intrusion Prevention/Detection)</li>
+      <li>Also includes: Content filtering, spam filtering, VPN capabilities</li>
+      <li>Pros: Simplified management, single vendor, easier updates</li>
+      <li>Cons: Single point of failure, can be expensive, may have performance bottlenecks</li>
+      <li>Good for small to medium businesses wanting comprehensive security</li>
+      <li>Reduces complexity of managing multiple separate security devices</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">ICS/SCADA</div>
+      <ul class="notes">
+      <hr />
+      <li>ICS = Industrial Control Systems</li>
+      <li>SCADA = Supervisory Control and Data Acquisition</li>
+      <li>Used to monitor and control industrial processes</li>
+      <li>Use cases: Power grids, manufacturing plants, water treatment facilities</li>
+      <li>Often controls critical infrastructure</li>
+      <li>Security concerns: Air-gapping recommended, legacy protocols are vulnerable</li>
+      <li>Many systems run outdated software that can't be easily patched</li>
+      <li>Uses specialized/proprietary protocols (Modbus, DNP3)</li>
+      <li>High-value targets for cyberattacks due to critical nature</li>
+      <li>Safety is paramount - security measures must not interfere with operations</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Embedded Systems</div>
+      <ul class="notes">
+      <hr />
+      <li>Computer systems with dedicated functions within larger systems</li>
+      <li>Purpose-built for specific tasks rather than general computing</li>
+      <li>Examples: Smart TVs, IoT devices, automotive systems, medical devices, printers</li>
+      <li>Characteristics: Limited resources, specific purpose, often real-time operation</li>
+      <li>Typically run specialized firmware rather than full operating systems</li>
+      <li>Security issues: Difficult to update/patch, often forgotten in security planning</li>
+      <li>May lack traditional security features due to resource constraints</li>
+      <li>Can be entry points for attackers if not properly secured</li>
+      <li>Important to change default credentials and keep firmware updated</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Legacy Systems</div>
+      <ul class="notes">
+      <hr />
+      <li>Older systems still in use despite newer alternatives being available</li>
+      <li>Risks: Unsupported OS, no security patches, compatibility issues with modern systems</li>
+      <li>May use outdated protocols or encryption methods</li>
+      <li>Why they persist: High replacement cost, "if it ain't broke" mentality, specialized software dependencies</li>
+      <li>Business-critical applications may only run on old systems</li>
+      <li>Mitigation strategies: Network segmentation, virtual machines, air-gapping</li>
+      <li>Isolate from internet and modern network when possible</li>
+      <li>Document legacy systems and create transition plans</li>
+      <li>Consider virtualization to preserve functionality while improving security</li>
       </ul>
     </div>
 
