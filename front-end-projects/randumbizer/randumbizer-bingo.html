@@ -1046,7 +1046,7 @@
                         const count = sharedItemCounts[item] || 0;
                         return `
                             <div class="bingo-cell ${count > 0 ? 'shared' : ''}">
-                                ${item}${count > 0 ? ` (${count})` : ''}
+                                ${item}${count > 0 ? ` (+${count})` : ''}
                             </div>
                         `;
                     }).join('')}
