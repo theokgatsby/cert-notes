@@ -1,396 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>A+ Core 1 Notes</title>
-    <link rel="stylesheet" href="./style.css" />
-    Started Study on Dec 10, 2025
-  </head>
-  <body>
-    <a href="index.html" id="back-button">←</a>
-    <div class="section">Section 9: Cloud Computing</div>
 
-    <div class="card">
-      <div class="subsection">Cloud Computing Basics</div>
-      <ul class="notes">
-        <hr />
-        <li>On-demand computing resources delivered over the internet</li>
-        <li>Pay-as-you-go model - Only pay for what you use</li>
-        <li>Eliminates need for physical servers and infrastructure management</li>
-        <li>Accessed via web browser or cloud provider API</li>
-        <li>Examples: AWS, Microsoft Azure, Google Cloud, Salesforce</li>
+<head>
+  <meta charset="UTF-8" />
+  <title>A+ Core 1 Notes</title>
+  <link rel="stylesheet" href="./style.css" />
+  Started Study on Dec 10, 2025
+</head>
+
+<body>
+  <a href="index.html" id="back-button">←</a>
+  <div class="section">Section 9: Cloud Computing</div>
+
+  <div class="card">
+    <div class="subsection">Cloud Computing Basics</div>
+    <ul class="notes">
+      <hr />
+      <li>On-demand computing resources delivered over the internet</li>
+      <li>Pay-as-you-go model - Only pay for what you use</li>
+      <li>Eliminates need for physical servers and infrastructure management</li>
+      <li>Accessed via web browser or cloud provider API</li>
+      <li>Examples: AWS, Microsoft Azure, Google Cloud, Salesforce</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Cloud Characteristics</div>
+    <ul class="notes">
+      <hr />
+      <li>On-demand self-service - Access resources anytime without human interaction</li>
+      <li>Broad network access - Available over internet from any device</li>
+      <li>Resource pooling - Provider shares resources among multiple customers (multi-tenancy)</li>
+      <li>Rapid elasticity - Quickly scale up or down based on demand</li>
+      <li>Measured service - Pay only for resources consumed; usage is metered and monitored</li>
+      <li>Redundancy - Built-in backup and disaster recovery capabilities</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Cloud Deployment Models</div>
+    <ul class="notes">
+      <hr />
+      <li>Public Cloud - Open to public; resources managed by provider (AWS, Azure, Google Cloud)</li>
+      <li>Private Cloud - Dedicated to single organization; more control, more expensive</li>
+      <li>Hybrid Cloud - Mix of public and private; flexibility for sensitive + non-sensitive workloads</li>
+      <li>Community Cloud - Shared by specific organizations with common interests</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Cloud Service Models</div>
+    <ul class="notes">
+      <hr />
+      <li>IaaS (Infrastructure as a Service) - Virtualized computing over internet (VM, storage, networking)</li>
+      <li>Examples: AWS EC2, Azure VMs, Google Compute Engine</li>
+      <li>User manages: Applications, data, runtime, OS | Provider manages: Hardware, networking</li>
+      <hr />
+      <li>PaaS (Platform as a Service) - Development platform in the cloud</li>
+      <li>Examples: AWS Elastic Beanstalk, Azure App Service, Heroku</li>
+      <li>User manages: Applications, data | Provider manages: Everything else</li>
+      <hr />
+      <li>SaaS (Software as a Service) - Applications delivered via web (ready to use)</li>
+      <li>Examples: Microsoft 365, Google Workspace, Salesforce, Slack</li>
+      <li>Provider manages: Everything | User manages: Nothing (just uses it)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Virtual Desktop Infrastructure (VDI)</div>
+    <ul class="notes">
+      <hr />
+      <li>Desktop operating system and applications hosted centrally on servers</li>
+      <li>Users access desktop via thin client device or web browser</li>
+      <li>Benefits: Centralized management, security, reduced client complexity, BYOD support</li>
+      <li>Thin clients - Minimal hardware; most processing done on server</li>
+      <li>Fat clients - More processing power; some work done locally</li>
+      <li>Scalability - Easily add/remove users without deploying new hardware</li>
+      <li>Security advantage - All data stays on server; nothing stored on client device</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Cloud Storage Services</div>
+    <ul class="notes">
+      <hr />
+      <li>Cloud backup - Automated data backup to cloud storage; disaster recovery</li>
+      <li>Examples: AWS Backup, Azure Backup, Carbonite</li>
+      <li>Cloud sync services - Synchronize files across devices (OneDrive, Google Drive, Dropbox)</li>
+      <li>Cloud file sharing - Share files securely with others; versioning and access control</li>
+      <li>Accessibility - Access files from anywhere with internet connection</li>
+      <li>Cost-effective - No need to buy/maintain physical storage infrastructure</li>
+      <li>Scalability - Easily increase storage capacity as needed</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Using the Cloud</div>
+    <ul class="notes">
+      <hr />
+      <li>SaaS examples: Email (Microsoft 365), productivity (Google Workspace), CRM (Salesforce)</li>
+      <li>IaaS examples: Web applications, APIs, database services, development environments</li>
+      <li>PaaS examples: Web/mobile app development, data analytics platforms</li>
+      <li>Subscription management - Monitor usage and costs; manage licenses and users</li>
+      <li>Security considerations: Data encryption, identity management, compliance requirements</li>
+      <li>Bandwidth requirements - Reliable internet connection needed; latency affects performance</li>
+      <li>Vendor lock-in - Difficult to switch providers; plan data migration strategy</li>
+    </ul>
+  </div>
+
+  <div class="section">Section 10: Networking Basics</div>
+
+  <div class="card">
+    <div class="subsection">Networking Hardware</div>
+    <ul class="notes">
+      <hr />
+      <li>Switch - Forwards frames based on MAC addresses (Layer 2); connects devices on LAN</li>
+      <li>Router - Forwards packets based on IP addresses (Layer 3); connects networks</li>
+      <li>Hub - Legacy device; broadcasts to all ports (no intelligence)</li>
+      <li>Bridge - Connects and filters traffic between network segments (Layer 2)</li>
+      <li>Modem - Modulates/demodulates signal; converts ISP signal to usable data</li>
+      <li>Repeater - Amplifies signal to extend range (Layer 1)</li>
+      <li>Access Point (AP) - Wireless transmitter; extends network wirelessly</li>
+      <li>Network Interface Card (NIC) - Hardware that connects device to network</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Network Types</div>
+    <ul class="notes">
+      <hr />
+      <li>LAN (Local Area Network) - Small area, high speed, single organization</li>
+      <li>WAN (Wide Area Network) - Large geographic area, lower speeds, connects LANs</li>
+      <li>PAN (Personal Area Network) - Very small area (Bluetooth, personal devices)</li>
+      <li>MAN (Metropolitan Area Network) - City-sized, larger than LAN, smaller than WAN</li>
+      <li>WLAN (Wireless LAN) - Wireless version of LAN, uses WiFi/802.11</li>
+      <li>CAN (Campus Area Network) - Networks across buildings/campus</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Internet of Things (IoT)</div>
+    <ul class="notes">
+      <hr />
+      <li>Network of physical devices connected to internet, collecting/sharing data</li>
+      <li>Examples: Smart home devices, wearables, industrial sensors, smart thermostats</li>
+      <li>Low bandwidth requirements, often battery-powered</li>
+      <li>Security concerns: Default credentials, lack of updates, vulnerable protocols</li>
+      <li>Common protocols: WiFi, Bluetooth, Zigbee, Z-Wave, LoRaWAN</li>
+      <li>Often requires dedicated networks/subnets for security isolation</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Twisted Pair Cables</div>
+    <ul class="notes">
+      <hr />
+      <li>Two insulated wires twisted together; twisting reduces electromagnetic interference (EMI)</li>
+      <li>UTP (Unshielded Twisted Pair) - No shield, cheaper, susceptible to interference</li>
+      <li>STP (Shielded Twisted Pair) - Metal foil/braid shield around pairs, more expensive</li>
+      <li>UTP most common for LANs (Ethernet); STP used in industrial/high-interference areas</li>
+      <li>Contains 4 pairs (8 wires total); each pair has specific twist rate</li>
+      <li>Copper wire conducts electrical signals; plastic insulation prevents signal loss</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">T568A and T568B Standards</div>
+    <ul class="notes">
+      <hr />
+      <li>Wiring standards for RJ45 connectors on Ethernet cables</li>
+      <li>T568A: White-Green, Green, White-Orange, Blue, White-Blue, Orange, White-Brown, Brown</li>
+      <li>T568B: White-Orange, Orange, White-Green, Blue, White-Blue, Green, White-Brown, Brown</li>
+      <li>Straight-through cable - Both ends same standard (most common); host to switch</li>
+      <li>Crossover cable - One end T568A, other T568B (rare); switch to switch, host to host</li>
+      <li>Consistency matters more than which standard chosen (follow one throughout)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Optical Cabling</div>
+    <ul class="notes">
+      <hr />
+      <li>Uses light pulses transmitted through glass/plastic fiber; immune to EMI</li>
+      <li>Single-Mode Fiber (SMF) - Single light path, long distance, expensive; used for WAN</li>
+      <li>Multi-Mode Fiber (MMF) - Multiple light paths, shorter distance, cheaper; used for LAN</li>
+      <li>Advantages: High bandwidth, long distance, no EMI, no crosstalk, secure (light stays inside)</li>
+      <li>Disadvantages: Expensive, fragile, requires specialized equipment for installation/repair</li>
+      <li>LC and SC connectors most common; connectors must match fiber type</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Coaxial Cabling</div>
+    <ul class="notes">
+      <hr />
+      <li>Center conductor, insulation, braided shield, outer jacket; resists EMI better than UTP</li>
+      <li>RG-6 - Modern standard, used for cable TV, internet (75 ohms)</li>
+      <li>RG-59 - Older standard, legacy systems (75 ohms)</li>
+      <li>RG-58 - Thin coaxial, legacy networking (50 ohms)</li>
+      <li>Connectors: BNC (legacy), F-type (cable TV), RCA</li>
+      <li>Limited bandwidth compared to twisted pair; mostly replaced by modern cables</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Networking Tools</div>
+    <ul class="notes">
+      <hr />
+      <li>Cable Stripper - Removes outer jacket from cables</li>
+      <li>Crimper - Attaches RJ45 connectors to cable ends</li>
+      <li>Punch-down Tool - Connects wires to punchdown blocks in wall jacks/patch panels</li>
+      <li>Cable Tester - Verifies cable continuity and pin order</li>
+      <li>Multimeter - Tests voltage, continuity, resistance</li>
+      <li>Tone Generator/Probe - Traces cables through walls (tone generator and probe pair)</li>
+      <li>Network Analyzer/Certifier - Advanced testing (length, attenuation, crosstalk)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Building & Testing Networks</div>
+    <ul class="notes">
+      <hr />
+      <li>Building cable: Strip jacket → separate pairs → arrange per 568A/B → insert in RJ45 → crimp</li>
+      <li>Proper technique prevents signal degradation: Don't untwist more than 0.5 inches</li>
+      <li>Testing cable: Use cable tester to verify all 8 pins connected correctly</li>
+      <li>Common cable issues: Crossed pairs, reversed polarity, open circuit, short circuit</li>
+      <li>Network wiring: Run cables through conduit/raceway; avoid near power lines (EMI)</li>
+      <li>Max distance for Twisted Pair: 100 meters (328 feet); SMF: 40+ km</li>
+      <li>Proper documentation: Label all cables and ports; maintain cable maps</li>
+    </ul>
+  </div>
+
+  <div class="section">Section 11: Wireless Networks</div>
+  <div class="card">
+    <div class="subsection">Wireless Frequencies</div>
+    <ul class="notes">
+      <hr />
+      <li>OFDM (Orthogonal Frequency Division Multiplexing) - most common standard</li>
+      <hr />
+      <li>2.4GHz band - channels 1, 6, 11 (non-overlapping)</li>
+      <li>5GHz band - Less interference, higher speeds, shorter range</li>
+      <li>6GHz band - WiFi 6e and 7, newer standard with even less interference</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Wireless Standards</div>
+    <ul class="notes">
+      <hr />
+      <li>802.11a - 5GHz, 54Mbps | 802.11b - 2.4GHz, 11Mbps | 802.11g - 2.4GHz, 54Mbps</li>
+      <li>802.11n (WiFi 4) - 2.4/5GHz, 600Mbps, MIMO</li>
+      <li>802.11ac (WiFi 5) - 5GHz, 1Gbps+, MU-MIMO</li>
+      <li>802.11ax (WiFi 6) - 2.4/5/6GHz, 10Gbps+, OFDMA</li>
+      <li>802.11be (WiFi 7) - 2.4/5/6GHz, 30Gbps+</li>
+      <hr />
+      <li>MIMO - Multiple antennas for increased throughput</li>
+      <li>MU-MIMO - Multiple users simultaneously</li>
+    </ul>
+  </div>
+
+  <div class="section">Section 14: Network Configuration</div>
+
+  <div class="card">
+    <div class="subsection">DHCP</div>
+    <ul class="notes">
+      <hr />
+      <li>Dynamic Host Configuration Protocol</li>
+      <li>Automates process of assigning IP addresses to network devices</li>
+      <li>Uses UDP ports 67 (server) and 68 (client)</li>
+      <li>Scope is list of available IP addresses within a subnet</li>
+      <li>Leases are temporary IP assignments with expiration times</li>
+      <li>DORA process: Discover, Offer, Request, Acknowledge</li>
+      <ul>
+        <li>Discover: Client broadcasts request for IP address</li>
+        <li>Offer: DHCP server offers an available IP address</li>
+        <li>Request: Client formally requests the offered IP</li>
+        <li>Acknowledge: Server confirms and assigns the IP</li>
       </ul>
-    </div>
+      <li>Static/Reserved assignments made for specific devices (servers, printers)</li>
+      <li>Uses MAC address to ensure device always gets same IP</li>
+      <li>IP Helper/DHCP Relay forwards DHCP requests across subnets</li>
+      <li>Lease renewal occurs at 50% of lease time</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Cloud Characteristics</div>
-      <ul class="notes">
-        <hr />
-        <li>On-demand self-service - Access resources anytime without human interaction</li>
-        <li>Broad network access - Available over internet from any device</li>
-        <li>Resource pooling - Provider shares resources among multiple customers (multi-tenancy)</li>
-        <li>Rapid elasticity - Quickly scale up or down based on demand</li>
-        <li>Measured service - Pay only for resources consumed; usage is metered and monitored</li>
-        <li>Redundancy - Built-in backup and disaster recovery capabilities</li>
+  <div class="card">
+    <div class="subsection">DNS</div>
+    <ul class="notes">
+      <hr />
+      <li>Translates human-readable domain names to IP addresses</li>
+      <li>Uses UDP port 53 (TCP port 53 for zone transfers)</li>
+      <li>Hierarchical structure: Root servers → TLD (.com, .org, .net) → second-level (example.com)</li>
+      <li>Subdomains are subdivisions (mail.example.com)</li>
+      <li>DNS caching and TTL (Time to Live) improve performance</li>
+      <li>Recursive lookup - Client asks resolver; resolver does all work</li>
+      <li>Iterative lookup - Client resolver does more work, getting referrals</li>
+      <li>Provides partial answers or referrals on how to find it</li>
+      <li>Refers to other DNS servers for next step</li>
+      <li>Spreads the load across multiple servers</li>
+      <li>Client does more of the work</li>
+    </ul>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">DNS Records</div>
+    <ul class="notes">
+      <hr />
+      <li>A record - IPv4 address mapping (most common)</li>
+      <li>AAAA record - IPv6 address mapping</li>
+      <li>CNAME record - Domain alias (www.example.com → example.com)</li>
+      <li>MX record - Mail server with priority (lower = higher priority)</li>
+      <li>TXT record - Text data for SPF, DKIM, DMARC, verification</li>
+      <li>NS record - Authoritative name servers for domain</li>
+      <li>PTR record - Reverse DNS (IP to domain)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Email Authentication</div>
+    <ul class="notes">
+      <hr />
+      <li>SPF - Identifies authorized mail servers via DNS TXT record</li>
+      <li>DKIM - Cryptographic signatures on emails; public key in DNS</li>
+      <li>DMARC - Policy for failed SPF/DKIM checks (none/quarantine/reject)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">VLAN</div>
+    <ul class="notes">
+      <hr />
+      <li>Virtual Local Area Network - Logical segmentation of physical network</li>
+      <li>Segments at Layer 2 (Data Link layer)</li>
+      <li>Improves security and reduces broadcast traffic</li>
+      <li>VLAN IDs: 1-4094 (VLAN 1 is default)</li>
+      <li>VLAN trunking - Multiple VLANs on single physical link (802.1Q)</li>
+      <li>Trunk ports - Carry multiple VLANs | Access ports - Single VLAN</li>
+      <li>Inter-VLAN routing requires Layer 3 device (router or L3 switch)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">VPN</div>
+    <ul class="notes">
+      <hr />
+      <li>Virtual Private Network</li>
+      <li>Extends a private network over a public network (like the Internet)</li>
+      <li>Encrypts traffic to ensure confidentiality and security</li>
+      <li>Creates secure tunnel for data transmission</li>
+      <li>Site-to-site VPN</li>
+      <ul>
+        <li>Connects entire networks together over the Internet</li>
+        <li>Router-to-router connection</li>
+        <li>Always-on connection between offices</li>
+        <li>No client software needed on individual computers</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Cloud Deployment Models</div>
-      <ul class="notes">
-        <hr />
-        <li>Public Cloud - Open to public; resources managed by provider (AWS, Azure, Google Cloud)</li>
-        <li>Private Cloud - Dedicated to single organization; more control, more expensive</li>
-        <li>Hybrid Cloud - Mix of public and private; flexibility for sensitive + non-sensitive workloads</li>
-        <li>Community Cloud - Shared by specific organizations with common interests</li>
+      <li>Client-to-site VPN (Remote Access VPN)</li>
+      <ul>
+        <li>Connects individual clients/users to a corporate network</li>
+        <li>Requires VPN client software on user's device</li>
+        <li>Used by remote workers to access company resources</li>
+        <li>Connection initiated by user when needed</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Cloud Service Models</div>
-      <ul class="notes">
-        <hr />
-        <li>IaaS (Infrastructure as a Service) - Virtualized computing over internet (VM, storage, networking)</li>
-        <li>Examples: AWS EC2, Azure VMs, Google Compute Engine</li>
-        <li>User manages: Applications, data, runtime, OS | Provider manages: Hardware, networking</li>
-        <hr />
-        <li>PaaS (Platform as a Service) - Development platform in the cloud</li>
-        <li>Examples: AWS Elastic Beanstalk, Azure App Service, Heroku</li>
-        <li>User manages: Applications, data | Provider manages: Everything else</li>
-        <hr />
-        <li>SaaS (Software as a Service) - Applications delivered via web (ready to use)</li>
-        <li>Examples: Microsoft 365, Google Workspace, Salesforce, Slack</li>
-        <li>Provider manages: Everything | User manages: Nothing (just uses it)</li>
+      <li>Clientless VPN (SSL VPN)</li>
+      <ul>
+        <li>No dedicated client software or hardware required</li>
+        <li>Uses standard web browser for access</li>
+        <li>Portal-based access to specific applications</li>
+        <li>Limited functionality compared to full VPN client</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Virtual Desktop Infrastructure (VDI)</div>
-      <ul class="notes">
-        <hr />
-        <li>Desktop operating system and applications hosted centrally on servers</li>
-        <li>Users access desktop via thin client device or web browser</li>
-        <li>Benefits: Centralized management, security, reduced client complexity, BYOD support</li>
-        <li>Thin clients - Minimal hardware; most processing done on server</li>
-        <li>Fat clients - More processing power; some work done locally</li>
-        <li>Scalability - Easily add/remove users without deploying new hardware</li>
-        <li>Security advantage - All data stays on server; nothing stored on client device</li>
+      <li>Full tunnel VPN</li>
+      <ul>
+        <li>All network traffic is routed through the VPN</li>
+        <li>Maximum security - all data is encrypted</li>
+        <li>Can slow down internet browsing</li>
+        <li>Company has visibility of all traffic</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Cloud Storage Services</div>
-      <ul class="notes">
-        <hr />
-        <li>Cloud backup - Automated data backup to cloud storage; disaster recovery</li>
-        <li>Examples: AWS Backup, Azure Backup, Carbonite</li>
-        <li>Cloud sync services - Synchronize files across devices (OneDrive, Google Drive, Dropbox)</li>
-        <li>Cloud file sharing - Share files securely with others; versioning and access control</li>
-        <li>Accessibility - Access files from anywhere with internet connection</li>
-        <li>Cost-effective - No need to buy/maintain physical storage infrastructure</li>
-        <li>Scalability - Easily increase storage capacity as needed</li>
+      <li>Split tunnel VPN</li>
+      <ul>
+        <li>Only some traffic (corporate resources) goes through the VPN</li>
+        <li>Other traffic (personal browsing) goes directly to Internet</li>
+        <li>Better performance for general internet use</li>
+        <li>Less secure - some traffic not protected by VPN</li>
       </ul>
-    </div>
+      <li>Common VPN protocols: IPSec, SSL/TLS, OpenVPN, L2TP, PPTP</li>
+      <li>VPN concentrator handles multiple VPN connections</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Using the Cloud</div>
-      <ul class="notes">
-        <hr />
-        <li>SaaS examples: Email (Microsoft 365), productivity (Google Workspace), CRM (Salesforce)</li>
-        <li>IaaS examples: Web applications, APIs, database services, development environments</li>
-        <li>PaaS examples: Web/mobile app development, data analytics platforms</li>
-        <li>Subscription management - Monitor usage and costs; manage licenses and users</li>
-        <li>Security considerations: Data encryption, identity management, compliance requirements</li>
-        <li>Bandwidth requirements - Reliable internet connection needed; latency affects performance</li>
-        <li>Vendor lock-in - Difficult to switch providers; plan data migration strategy</li>
-      </ul>
-    </div>
-
-    <div class="section">Section 10: Networking Basics</div>
-
-    <div class="card">
-      <div class="subsection">Networking Hardware</div>
-      <ul class="notes">
-        <hr />
-        <li>Switch - Forwards frames based on MAC addresses (Layer 2); connects devices on LAN</li>
-        <li>Router - Forwards packets based on IP addresses (Layer 3); connects networks</li>
-        <li>Hub - Legacy device; broadcasts to all ports (no intelligence)</li>
-        <li>Bridge - Connects and filters traffic between network segments (Layer 2)</li>
-        <li>Modem - Modulates/demodulates signal; converts ISP signal to usable data</li>
-        <li>Repeater - Amplifies signal to extend range (Layer 1)</li>
-        <li>Access Point (AP) - Wireless transmitter; extends network wirelessly</li>
-        <li>Network Interface Card (NIC) - Hardware that connects device to network</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Network Types</div>
-      <ul class="notes">
-        <hr />
-        <li>LAN (Local Area Network) - Small area, high speed, single organization</li>
-        <li>WAN (Wide Area Network) - Large geographic area, lower speeds, connects LANs</li>
-        <li>PAN (Personal Area Network) - Very small area (Bluetooth, personal devices)</li>
-        <li>MAN (Metropolitan Area Network) - City-sized, larger than LAN, smaller than WAN</li>
-        <li>WLAN (Wireless LAN) - Wireless version of LAN, uses WiFi/802.11</li>
-        <li>CAN (Campus Area Network) - Networks across buildings/campus</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Internet of Things (IoT)</div>
-      <ul class="notes">
-        <hr />
-        <li>Network of physical devices connected to internet, collecting/sharing data</li>
-        <li>Examples: Smart home devices, wearables, industrial sensors, smart thermostats</li>
-        <li>Low bandwidth requirements, often battery-powered</li>
-        <li>Security concerns: Default credentials, lack of updates, vulnerable protocols</li>
-        <li>Common protocols: WiFi, Bluetooth, Zigbee, Z-Wave, LoRaWAN</li>
-        <li>Often requires dedicated networks/subnets for security isolation</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Twisted Pair Cables</div>
-      <ul class="notes">
-        <hr />
-        <li>Two insulated wires twisted together; twisting reduces electromagnetic interference (EMI)</li>
-        <li>UTP (Unshielded Twisted Pair) - No shield, cheaper, susceptible to interference</li>
-        <li>STP (Shielded Twisted Pair) - Metal foil/braid shield around pairs, more expensive</li>
-        <li>UTP most common for LANs (Ethernet); STP used in industrial/high-interference areas</li>
-        <li>Contains 4 pairs (8 wires total); each pair has specific twist rate</li>
-        <li>Copper wire conducts electrical signals; plastic insulation prevents signal loss</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">T568A and T568B Standards</div>
-      <ul class="notes">
-        <hr />
-        <li>Wiring standards for RJ45 connectors on Ethernet cables</li>
-        <li>T568A: White-Green, Green, White-Orange, Blue, White-Blue, Orange, White-Brown, Brown</li>
-        <li>T568B: White-Orange, Orange, White-Green, Blue, White-Blue, Green, White-Brown, Brown</li>
-        <li>Straight-through cable - Both ends same standard (most common); host to switch</li>
-        <li>Crossover cable - One end T568A, other T568B (rare); switch to switch, host to host</li>
-        <li>Consistency matters more than which standard chosen (follow one throughout)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Optical Cabling</div>
-      <ul class="notes">
-        <hr />
-        <li>Uses light pulses transmitted through glass/plastic fiber; immune to EMI</li>
-        <li>Single-Mode Fiber (SMF) - Single light path, long distance, expensive; used for WAN</li>
-        <li>Multi-Mode Fiber (MMF) - Multiple light paths, shorter distance, cheaper; used for LAN</li>
-        <li>Advantages: High bandwidth, long distance, no EMI, no crosstalk, secure (light stays inside)</li>
-        <li>Disadvantages: Expensive, fragile, requires specialized equipment for installation/repair</li>
-        <li>LC and SC connectors most common; connectors must match fiber type</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Coaxial Cabling</div>
-      <ul class="notes">
-        <hr />
-        <li>Center conductor, insulation, braided shield, outer jacket; resists EMI better than UTP</li>
-        <li>RG-6 - Modern standard, used for cable TV, internet (75 ohms)</li>
-        <li>RG-59 - Older standard, legacy systems (75 ohms)</li>
-        <li>RG-58 - Thin coaxial, legacy networking (50 ohms)</li>
-        <li>Connectors: BNC (legacy), F-type (cable TV), RCA</li>
-        <li>Limited bandwidth compared to twisted pair; mostly replaced by modern cables</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Networking Tools</div>
-      <ul class="notes">
-        <hr />
-        <li>Cable Stripper - Removes outer jacket from cables</li>
-        <li>Crimper - Attaches RJ45 connectors to cable ends</li>
-        <li>Punch-down Tool - Connects wires to punchdown blocks in wall jacks/patch panels</li>
-        <li>Cable Tester - Verifies cable continuity and pin order</li>
-        <li>Multimeter - Tests voltage, continuity, resistance</li>
-        <li>Tone Generator/Probe - Traces cables through walls (tone generator and probe pair)</li>
-        <li>Network Analyzer/Certifier - Advanced testing (length, attenuation, crosstalk)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Building & Testing Networks</div>
-      <ul class="notes">
-        <hr />
-        <li>Building cable: Strip jacket → separate pairs → arrange per 568A/B → insert in RJ45 → crimp</li>
-        <li>Proper technique prevents signal degradation: Don't untwist more than 0.5 inches</li>
-        <li>Testing cable: Use cable tester to verify all 8 pins connected correctly</li>
-        <li>Common cable issues: Crossed pairs, reversed polarity, open circuit, short circuit</li>
-        <li>Network wiring: Run cables through conduit/raceway; avoid near power lines (EMI)</li>
-        <li>Max distance for Twisted Pair: 100 meters (328 feet); SMF: 40+ km</li>
-        <li>Proper documentation: Label all cables and ports; maintain cable maps</li>
-      </ul>
-    </div>
-
-    <div class="section">Section 11: Wireless Networks</div>
-    <div class="card">
-      <div class="subsection">Wireless Frequencies</div>
-      <ul class="notes">
-        <hr />
-        <li>OFDM (Orthogonal Frequency Division Multiplexing) - most common standard</li>
-        <hr />
-        <li>2.4GHz band - channels 1, 6, 11 (non-overlapping)</li>
-        <li>5GHz band - Less interference, higher speeds, shorter range</li>
-        <li>6GHz band - WiFi 6e and 7, newer standard with even less interference</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Wireless Standards</div>
-      <ul class="notes">
-        <hr />
-        <li>802.11a - 5GHz, 54Mbps | 802.11b - 2.4GHz, 11Mbps | 802.11g - 2.4GHz, 54Mbps</li>
-        <li>802.11n (WiFi 4) - 2.4/5GHz, 600Mbps, MIMO</li>
-        <li>802.11ac (WiFi 5) - 5GHz, 1Gbps+, MU-MIMO</li>
-        <li>802.11ax (WiFi 6) - 2.4/5/6GHz, 10Gbps+, OFDMA</li>
-        <li>802.11be (WiFi 7) - 2.4/5/6GHz, 30Gbps+</li>
-        <hr />
-        <li>MIMO - Multiple antennas for increased throughput</li>
-        <li>MU-MIMO - Multiple users simultaneously</li>
-      </ul>
-    </div>
-
-    <div class="section">Section 14: Network Configuration</div>
-
-    <div class="card">
-      <div class="subsection">DHCP</div>
-      <ul class="notes">
-        <hr />
-        <li>Dynamic Host Configuration Protocol</li>
-        <li>Automates process of assigning IP addresses to network devices</li>
-        <li>Uses UDP ports 67 (server) and 68 (client)</li>
-        <li>Scope is list of available IP addresses within a subnet</li>
-        <li>Leases are temporary IP assignments with expiration times</li>
-        <li>DORA process: Discover, Offer, Request, Acknowledge</li>
-        <ul>
-          <li>Discover: Client broadcasts request for IP address</li>
-          <li>Offer: DHCP server offers an available IP address</li>
-          <li>Request: Client formally requests the offered IP</li>
-          <li>Acknowledge: Server confirms and assigns the IP</li>
-        </ul>
-        <li>Static/Reserved assignments made for specific devices (servers, printers)</li>
-        <li>Uses MAC address to ensure device always gets same IP</li>
-        <li>IP Helper/DHCP Relay forwards DHCP requests across subnets</li>
-        <li>Lease renewal occurs at 50% of lease time</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">DNS</div>
-      <ul class="notes">
-        <hr />
-        <li>Translates human-readable domain names to IP addresses</li>
-        <li>Uses UDP port 53 (TCP port 53 for zone transfers)</li>
-        <li>Hierarchical structure: Root servers → TLD (.com, .org, .net) → second-level (example.com)</li>
-        <li>Subdomains are subdivisions (mail.example.com)</li>
-        <li>DNS caching and TTL (Time to Live) improve performance</li>
-        <li>Recursive lookup - Client asks resolver; resolver does all work</li>
-        <li>Iterative lookup - Client resolver does more work, getting referrals</li>
-          <li>Provides partial answers or referrals on how to find it</li>
-          <li>Refers to other DNS servers for next step</li>
-          <li>Spreads the load across multiple servers</li>
-          <li>Client does more of the work</li>
-        </ul>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">DNS Records</div>
-      <ul class="notes">
-        <hr />
-        <li>A record - IPv4 address mapping (most common)</li>
-        <li>AAAA record - IPv6 address mapping</li>
-        <li>CNAME record - Domain alias (www.example.com → example.com)</li>
-        <li>MX record - Mail server with priority (lower = higher priority)</li>
-        <li>TXT record - Text data for SPF, DKIM, DMARC, verification</li>
-        <li>NS record - Authoritative name servers for domain</li>
-        <li>PTR record - Reverse DNS (IP to domain)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Email Authentication</div>
-      <ul class="notes">
-        <hr />
-        <li>SPF - Identifies authorized mail servers via DNS TXT record</li>
-        <li>DKIM - Cryptographic signatures on emails; public key in DNS</li>
-        <li>DMARC - Policy for failed SPF/DKIM checks (none/quarantine/reject)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">VLAN</div>
-      <ul class="notes">
-        <hr />
-        <li>Virtual Local Area Network - Logical segmentation of physical network</li>
-        <li>Segments at Layer 2 (Data Link layer)</li>
-        <li>Improves security and reduces broadcast traffic</li>
-        <li>VLAN IDs: 1-4094 (VLAN 1 is default)</li>
-        <li>VLAN trunking - Multiple VLANs on single physical link (802.1Q)</li>
-        <li>Trunk ports - Carry multiple VLANs | Access ports - Single VLAN</li>
-        <li>Inter-VLAN routing requires Layer 3 device (router or L3 switch)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">VPN</div>
-      <ul class="notes">
-        <hr />
-        <li>Virtual Private Network</li>
-        <li>Extends a private network over a public network (like the Internet)</li>
-        <li>Encrypts traffic to ensure confidentiality and security</li>
-        <li>Creates secure tunnel for data transmission</li>
-        <li>Site-to-site VPN</li>
-        <ul>
-          <li>Connects entire networks together over the Internet</li>
-          <li>Router-to-router connection</li>
-          <li>Always-on connection between offices</li>
-          <li>No client software needed on individual computers</li>
-        </ul>
-        <li>Client-to-site VPN (Remote Access VPN)</li>
-        <ul>
-          <li>Connects individual clients/users to a corporate network</li>
-          <li>Requires VPN client software on user's device</li>
-          <li>Used by remote workers to access company resources</li>
-          <li>Connection initiated by user when needed</li>
-        </ul>
-        <li>Clientless VPN (SSL VPN)</li>
-        <ul>
-          <li>No dedicated client software or hardware required</li>
-          <li>Uses standard web browser for access</li>
-          <li>Portal-based access to specific applications</li>
-          <li>Limited functionality compared to full VPN client</li>
-        </ul>
-        <li>Full tunnel VPN</li>
-        <ul>
-          <li>All network traffic is routed through the VPN</li>
-          <li>Maximum security - all data is encrypted</li>
-          <li>Can slow down internet browsing</li>
-          <li>Company has visibility of all traffic</li>
-        </ul>
-        <li>Split tunnel VPN</li>
-        <ul>
-          <li>Only some traffic (corporate resources) goes through the VPN</li>
-          <li>Other traffic (personal browsing) goes directly to Internet</li>
-          <li>Better performance for general internet use</li>
-          <li>Less secure - some traffic not protected by VPN</li>
-        </ul>
-        <li>Common VPN protocols: IPSec, SSL/TLS, OpenVPN, L2TP, PPTP</li>
-        <li>VPN concentrator handles multiple VPN connections</li>
-      </ul>
-    </div>
-
-    <div class="section">Section 15: Network Servers and Services</div>
-    <div class="card">
-      <div class="subsection">File and Print Servers</div>
-      <ul class="notes">
+  <div class="section">Section 15: Network Servers and Services</div>
+  <div class="card">
+    <div class="subsection">File and Print Servers</div>
+    <ul class="notes">
       <hr />
       <li>File servers provide centralized storage for network users</li>
       <li>SMB/CIFS protocol used for Windows file sharing</li>
@@ -399,12 +401,12 @@
       <li>Print servers centralize print management and reduce client-side processing</li>
       <li>Permissions: Share-level vs. NTFS permissions (most restrictive wins)</li>
       <li>UNC paths for mapping drives: \\server\share</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Web Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Web Servers</div>
+    <ul class="notes">
       <hr />
       <li>Provides access to websites via HTTP or HTTPS</li>
       <li>Port 80 (HTTP) and port 443 (HTTPS)</li>
@@ -413,12 +415,12 @@
       <li>HTTPS uses SSL/TLS for encryption and security</li>
       <li>Web services: REST APIs and SOAP</li>
       <li>Certificate management is critical for HTTPS</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Email Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Email Servers</div>
+    <ul class="notes">
       <hr />
       <li>SMTP (Simple Mail Transfer Protocol) server</li>
       <li>Responsible for sending mail</li>
@@ -435,12 +437,12 @@
       <li>Microsoft Exchange</li>
       <li>Handles all 3 types and ports</li>
       <li>Spam filtering: SPF, DKIM, and DMARC help prevent spam and spoofing</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">AAA Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">AAA Servers</div>
+    <ul class="notes">
       <hr />
       <li>Authentication Authorization Accounting Servers</li>
       <li>Centralized way of managing network security and access</li>
@@ -456,12 +458,12 @@
       <li>Port 49, Cisco proprietary</li>
       <li>Encrypts entire payload (more secure than RADIUS)</li>
       <li>Use cases: Network access control, VPN authentication, wireless security</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Database Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Database Servers</div>
+    <ul class="notes">
       <hr />
       <li>System designed to store, organize, and retrieve data</li>
       <li>Relational databases use SQL (Structured Query Language)</li>
@@ -475,12 +477,12 @@
       <li>Databases Store, Process, and Secure data</li>
       <li>Common ports: MySQL (3306), SQL Server (1433), PostgreSQL (5432)</li>
       <li>Backup importance: Transaction logs, full vs. incremental backups</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">NTP Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">NTP Servers</div>
+    <ul class="notes">
       <hr />
       <li>Network Time Protocol</li>
       <li>Ensures synchronized time across devices</li>
@@ -489,12 +491,12 @@
       <li>Stratum levels indicate time source accuracy (Stratum 0 = atomic clock, lower is better)</li>
       <li>Critical for: Authentication protocols, certificate validation, accurate logging</li>
       <li>Prevents time-based security vulnerabilities</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Syslog Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Syslog Servers</div>
+    <ul class="notes">
       <hr />
       <li>Centralized logging from multiple network devices</li>
       <li>Protocol: Syslog uses UDP port 514</li>
@@ -503,12 +505,12 @@
       <li>Collects logs from routers, switches, firewalls, servers</li>
       <li>Use cases: Security monitoring, troubleshooting, compliance auditing</li>
       <li>Makes it easier to correlate events across multiple systems</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Proxy Servers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Proxy Servers</div>
+    <ul class="notes">
       <hr />
       <li>Acts as intermediary between clients and servers</li>
       <li>Forward proxy: Client requests go through proxy to internet</li>
@@ -518,12 +520,12 @@
       <li>Benefits: Content filtering, caching, anonymity, bandwidth control</li>
       <li>Common port: 8080 (though can vary)</li>
       <li>Can improve performance by caching frequently accessed content</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Load Balancers</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Load Balancers</div>
+    <ul class="notes">
       <hr />
       <li>Distributes network traffic across multiple servers</li>
       <li>Load balancing methods: Round-robin, least connections, weighted distribution</li>
@@ -534,12 +536,12 @@
       <li>Layer 4 is faster but less intelligent</li>
       <li>Layer 7 can make decisions based on content</li>
       <li>Increases uptime and performance</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Unified Threat Management (UTM)</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Unified Threat Management (UTM)</div>
+    <ul class="notes">
       <hr />
       <li>All-in-one security appliance combining multiple security features</li>
       <li>Includes: Firewall, antivirus, IPS/IDS (Intrusion Prevention/Detection)</li>
@@ -548,12 +550,12 @@
       <li>Cons: Single point of failure, can be expensive, may have performance bottlenecks</li>
       <li>Good for small to medium businesses wanting comprehensive security</li>
       <li>Reduces complexity of managing multiple separate security devices</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">ICS/SCADA</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">ICS/SCADA</div>
+    <ul class="notes">
       <hr />
       <li>ICS = Industrial Control Systems</li>
       <li>SCADA = Supervisory Control and Data Acquisition</li>
@@ -565,12 +567,12 @@
       <li>Uses specialized/proprietary protocols (Modbus, DNP3)</li>
       <li>High-value targets for cyberattacks due to critical nature</li>
       <li>Safety is paramount - security measures must not interfere with operations</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Embedded Systems</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Embedded Systems</div>
+    <ul class="notes">
       <hr />
       <li>Computer systems with dedicated functions within larger systems</li>
       <li>Purpose-built for specific tasks rather than general computing</li>
@@ -581,12 +583,12 @@
       <li>May lack traditional security features due to resource constraints</li>
       <li>Can be entry points for attackers if not properly secured</li>
       <li>Important to change default credentials and keep firmware updated</li>
-      </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Legacy Systems</div>
-      <ul class="notes">
+  <div class="card">
+    <div class="subsection">Legacy Systems</div>
+    <ul class="notes">
       <hr />
       <li>Older systems still in use despite newer alternatives being available</li>
       <li>Risks: Unsupported OS, no security patches, compatibility issues with modern systems</li>
@@ -597,192 +599,452 @@
       <li>Isolate from internet and modern network when possible</li>
       <li>Document legacy systems and create transition plans</li>
       <li>Consider virtualization to preserve functionality while improving security</li>
+    </ul>
+  </div>
+
+  <div class="section">Section 16: Laptops and Mobile Devices</div>
+
+  <div class="card">
+    <div class="subsection">Display Types</div>
+    <ul class="notes">
+      <hr />
+      <li>LCD (Liquid Crystal Display) - Most common, uses backlight, lower power than older tech</li>
+      <li>LED (Light Emitting Diode) - Type of LCD with LED backlight; brighter and more efficient</li>
+      <li>OLED (Organic LED) - Self-emitting pixels, better contrast, thinner, more expensive</li>
+      <li>IPS (In-Plane Switching) - Better viewing angles than TN, more accurate colors</li>
+      <li>TN (Twisted Nematic) - Cheaper, faster response time, poor viewing angles</li>
+      <li>VA (Vertical Alignment) - Good contrast, response time between IPS and TN</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Display Attributes</div>
+    <ul class="notes">
+      <hr />
+      <li>Resolution - Pixels per inch (PPI); higher = sharper image</li>
+      <li>Brightness - Measured in nits; higher brightness for outdoor visibility</li>
+      <li>Contrast ratio - Difference between black and white; higher = better image quality</li>
+      <li>Color depth - Number of colors displayable (8-bit, 10-bit,...)</li>
+      <li>Refresh rate - Hz frequency (60Hz, 144Hz); higher for gaming/smooth motion</li>
+      <li>Panel size - Diagonal measurement (13", 15", 17" common for laptops)</li>
+      <li>Aspect ratio - Width to height (16:9, 16:10, 4:3)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Mobile Device Components</div>
+    <ul class="notes">
+      <hr />
+      <li>Digitizer - Converts tactile input into digital signals</li>
+      <li>Accelerometer - Detects device orientation and movement</li>
+      <li>Gyroscope - Measures angular velocity and rotation</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Mobile Device Wireless Connectivity</div>
+    <ul class="notes">
+      <hr />
+      <li>WiFi - 802.11a/b/g/n/ac/ax; connects to local networks and internet</li>
+      <li>Bluetooth - 2.4GHz; short-range wireless for peripherals (headphones, keyboards)</li>
+      <li>NFC (Near Field Communication) - Very short range (a few cm); contactless payments</li>
+      <li>Cellular (3G/4G/5G) - Mobile network connectivity; varies by provider</li>
+      <li>GPS - Global Positioning System for location services and navigation</li>
+      <li>Airplane mode - Disables all wireless transmission for flight compliance</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Mobile Device Wired Connectivity</div>
+    <ul class="notes">
+      <hr />
+      <li>USB-C - Modern standard; supports charging, data transfer, video output</li>
+      <li>Lightning - Apple proprietary connector; used on iPhones and iPads</li>
+      <li>Micro-USB - Older standard; still common on some Android devices</li>
+      <li>3.5mm headphone jack - Legacy audio input; declining in modern devices</li>
+      <li>USB On-the-Go (OTG) - Allows mobile devices to act as host for USB peripherals</li>
+      <li>HDMI - Video output; usually via adapter for mobile devices</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Port Replicators & Docking Stations</div>
+    <ul class="notes">
+      <hr />
+      <li>Port replicator - Extends ports without additional power; portable</li>
+      <li>Docking station - More comprehensive; includes power, video, audio, USB hubs</li>
+      <li>Benefits: Single connection to peripherals; keyboard, mouse, monitor, etc.</li>
+      <li>Types: USB-C docks, proprietary docks, universal docks</li>
+      <li>Video output - HDMI, DisplayPort, or VGA via dock to external monitors</li>
+      <li>Power delivery - Charges laptop while docked</li>
+      <li>Common for office setups - Transform portable device into desktop workstation</li>
+    </ul>
+  </div>
+
+  <div class="section">Section 17: Laptops and Mobile Devices</div>
+  <div class="section">Section 16: Mobile Device Management and Synchronization</div>
+
+  <div class="card">
+    <div class="subsection">Mobile Device Synchronization</div>
+    <ul class="notes">
+      <hr />
+      <li>Process of keeping data consistent across multiple devices</li>
+      <li>Ensures same information available on phone, tablet, computer</li>
+      <li>Can be automatic (real-time) or manual (on-demand)</li>
+      <li>Requires account setup (Apple ID, Google Account, Microsoft Account)</li>
+      <li>Cloud-based synchronization most common method today</li>
+      <li>Sync conflicts occur when same data modified on multiple devices</li>
+      <li>Most systems use "last write wins" or manual conflict resolution</li>
+      <li>Benefits: Data backup, accessibility, consistency across devices</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Data for Synchronization</div>
+    <ul class="notes">
+      <hr />
+      <li>Contacts</li>
+      <ul>
+        <li>Name, phone numbers, email addresses, physical addresses</li>
+        <li>Synced via iCloud, Google Contacts, Microsoft 365</li>
       </ul>
-    </div>
-
-    <div class="section">Section 16: Laptops and Mobile Devices</div>
-
-    <div class="card">
-      <div class="subsection">Display Types</div>
-      <ul class="notes">
-        <hr />
-        <li>LCD (Liquid Crystal Display) - Most common, uses backlight, lower power than older tech</li>
-        <li>LED (Light Emitting Diode) - Type of LCD with LED backlight; brighter and more efficient</li>
-        <li>OLED (Organic LED) - Self-emitting pixels, better contrast, thinner, more expensive</li>
-        <li>IPS (In-Plane Switching) - Better viewing angles than TN, more accurate colors</li>
-        <li>TN (Twisted Nematic) - Cheaper, faster response time, poor viewing angles</li>
-        <li>VA (Vertical Alignment) - Good contrast, response time between IPS and TN</li>
+      <li>Calendar</li>
+      <ul>
+        <li>Events, appointments, reminders, recurring meetings</li>
+        <li>Can sync personal and work calendars separately</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Display Attributes</div>
-      <ul class="notes">
-        <hr />
-        <li>Resolution - Pixels per inch (PPI); higher = sharper image</li>
-        <li>Brightness - Measured in nits; higher brightness for outdoor visibility</li>
-        <li>Contrast ratio - Difference between black and white; higher = better image quality</li>
-        <li>Color depth - Number of colors displayable (8-bit, 10-bit,...)</li>
-        <li>Refresh rate - Hz frequency (60Hz, 144Hz); higher for gaming/smooth motion</li>
-        <li>Panel size - Diagonal measurement (13", 15", 17" common for laptops)</li>
-        <li>Aspect ratio - Width to height (16:9, 16:10, 4:3)</li>
+      <li>Email</li>
+      <ul>
+        <li>Messages, folders, drafts, sent items</li>
+        <li>IMAP keeps email synced across all devices</li>
+        <li>POP3 downloads and removes from server (no sync)</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Mobile Device Components</div>
-      <ul class="notes">
-        <hr />
-        <li>Digitizer - Converts tactile input into digital signals</li>
-        <li>Accelerometer - Detects device orientation and movement</li>
-        <li>Gyroscope - Measures angular velocity and rotation</li>
+      <li>Photos and Videos</li>
+      <ul>
+        <li>Camera roll, albums, edited images</li>
+        <li>iCloud Photos, Google Photos, OneDrive</li>
+        <li>Can consume significant storage and bandwidth</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Mobile Device Wireless Connectivity</div>
-      <ul class="notes">
-        <hr />
-        <li>WiFi - 802.11a/b/g/n/ac/ax; connects to local networks and internet</li>
-        <li>Bluetooth - 2.4GHz; short-range wireless for peripherals (headphones, keyboards)</li>
-        <li>NFC (Near Field Communication) - Very short range (a few cm); contactless payments</li>
-        <li>Cellular (3G/4G/5G) - Mobile network connectivity; varies by provider</li>
-        <li>GPS - Global Positioning System for location services and navigation</li>
-        <li>Airplane mode - Disables all wireless transmission for flight compliance</li>
+      <li>Applications</li>
+      <ul>
+        <li>App installations, settings, and preferences</li>
+        <li>Purchased apps available on all devices</li>
+        <li>App data may or may not sync depending on app</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Mobile Device Wired Connectivity</div>
-      <ul class="notes">
-        <hr />
-        <li>USB-C - Modern standard; supports charging, data transfer, video output</li>
-        <li>Lightning - Apple proprietary connector; used on iPhones and iPads</li>
-        <li>Micro-USB - Older standard; still common on some Android devices</li>
-        <li>3.5mm headphone jack - Legacy audio input; declining in modern devices</li>
-        <li>USB On-the-Go (OTG) - Allows mobile devices to act as host for USB peripherals</li>
-        <li>HDMI - Video output; usually via adapter for mobile devices</li>
+      <li>Documents</li>
+      <ul>
+        <li>Files, PDFs, office documents, notes</li>
+        <li>iCloud Drive, Google Drive, OneDrive, Dropbox</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Port Replicators & Docking Stations</div>
-      <ul class="notes">
-        <hr />
-        <li>Port replicator - Extends ports without additional power; portable</li>
-        <li>Docking station - More comprehensive; includes power, video, audio, USB hubs</li>
-        <li>Benefits: Single connection to peripherals; keyboard, mouse, monitor, etc.</li>
-        <li>Types: USB-C docks, proprietary docks, universal docks</li>
-        <li>Video output - HDMI, DisplayPort, or VGA via dock to external monitors</li>
-        <li>Power delivery - Charges laptop while docked</li>
-        <li>Common for office setups - Transform portable device into desktop workstation</li>
+      <li>Bookmarks and Browsing Data</li>
+      <ul>
+        <li>Browser favorites, history, saved passwords</li>
+        <li>Syncs via browser accounts (Chrome, Safari, Edge)</li>
       </ul>
-    </div>
-
-    <div class="section">Section 17: Laptops and Mobile Devices</div>
-    <div class="card">
-      <div class="subsection">Mobile Device Synchronization</div>
-      <ul class="notes">
-        <hr />
-        <li>Synchronization - Keeps data consistent across multiple devices</li>
-        <li>Common synced data - Contacts, calendars, emails, photos, files</li>
-        <li>Occurs between mobile devices and PCs, servers, or cloud services</li>
-        <li>Can be automatic (background) or manual (user-initiated)</li>
-        <li>Requires network connectivity (Wi-Fi or cellular)</li>
-        <li>Used for backup, data recovery, and productivity</li>
+      <li>Passwords and Credentials</li>
+      <ul>
+        <li>Saved login information, Wi-Fi passwords</li>
+        <li>Keychain (Apple), Password Manager (Google)</li>
+        <li>Should be encrypted for security</li>
       </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Data for Synchronization</div>
-      <ul class="notes">
-        <hr />
-        <li>Email - Messages, folders, and attachments</li>
-        <li>Contacts - Names, phone numbers, addresses</li>
-        <li>Calendars - Events, reminders, meeting invites</li>
-        <li>Files - Documents, photos, videos</li>
-        <li>Application data - App settings and preferences</li>
-        <li>Notes and tasks - To-do lists, reminders</li>
+  <div class="card">
+    <div class="subsection">Synchronization Methods</div>
+    <ul class="notes">
+      <hr />
+      <li>Cloud-based synchronization</li>
+      <ul>
+        <li>Most common modern method</li>
+        <li>Data stored on remote servers (iCloud, Google Drive, OneDrive)</li>
+        <li>Automatic sync when connected to internet</li>
+        <li>Requires account login and internet connectivity</li>
+        <li>Pro: Accessible anywhere, automatic backup</li>
+        <li>Con: Requires internet, privacy concerns, storage limits</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Synchronization Methods</div>
-      <ul class="notes">
-        <hr />
-        <li>USB synchronization - Direct cable connection to a computer</li>
-        <li>Wi-Fi synchronization - Sync over local wireless network</li>
-        <li>Cellular synchronization - Uses mobile data network</li>
-        <li>Cloud-based synchronization - Uses online services (iCloud, Google)</li>
-        <li>Two-way sync - Changes update on all devices</li>
-        <li>One-way sync - Data copied in a single direction</li>
+      <li>USB synchronization</li>
+      <ul>
+        <li>Physical connection between device and computer</li>
+        <li>Uses iTunes (Apple) or manufacturer software (Samsung Smart Switch)</li>
+        <li>Manual process - user initiates sync</li>
+        <li>Pro: No internet required, faster for large files, more control</li>
+        <li>Con: Must be physically connected, manual process</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">MDM and MAM</div>
-      <ul class="notes">
-        <hr />
-        <li>MDM (Mobile Device Management) - Controls entire device</li>
-        <li>MAM (Mobile Application Management) - Controls specific apps only</li>
-        <li>Used in corporate and BYOD environments</li>
-        <li>Enforces security policies (PINs, encryption)</li>
-        <li>Allows remote lock, wipe, and device tracking</li>
-        <li>Can push apps, updates, and configurations</li>
+      <li>Wireless synchronization</li>
+      <ul>
+        <li>Sync over Wi-Fi or Bluetooth without cables</li>
+        <li>iTunes Wi-Fi Sync, Android Wi-Fi sync</li>
+        <li>Devices must be on same local network</li>
+        <li>Pro: Convenient, no cables needed</li>
+        <li>Con: Slower than USB, must be on same network</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Multifactor Authentication (MFA)</div>
-      <ul class="notes">
-        <hr />
-        <li>Uses two or more authentication factors</li>
-        <li>Something you know - Password or PIN</li>
-        <li>Something you have - Phone, token, smart card</li>
-        <li>Something you are - Fingerprint, face recognition</li>
-        <li>Common on mobile devices and cloud services</li>
-        <li>Improves security by reducing account compromise</li>
+      <li>Desktop synchronization software</li>
+      <ul>
+        <li>Dedicated applications for managing sync</li>
+        <li>Examples: iTunes, Samsung Smart Switch, OneDrive desktop app</li>
+        <li>Provides more control over what syncs</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Location Services</div>
-      <ul class="notes">
-        <hr />
-        <li>Uses GPS, Wi-Fi, and cellular data to determine location</li>
-        <li>Enabled or disabled per device or app</li>
-        <li>Used for navigation, maps, and tracking</li>
-        <li>Supports geofencing and location-based alerts</li>
-        <li>Can assist with lost device recovery</li>
-        <li>May raise privacy and battery usage concerns</li>
+      <li>Exchange/ActiveSync</li>
+      <ul>
+        <li>Microsoft's protocol for enterprise sync</li>
+        <li>Syncs email, calendar, contacts for corporate accounts</li>
+        <li>Push notifications for real-time updates</li>
+        <li>Commonly used in business environments</li>
       </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Mobile Email Configuration</div>
-      <ul class="notes">
-        <hr />
-        <li>Email protocols - POP3, IMAP, Exchange/ActiveSync</li>
-        <li>IMAP - Syncs mail across multiple devices</li>
-        <li>POP3 - Downloads email to one device</li>
-        <li>Exchange - Push email, contacts, and calendar</li>
-        <li>Requires correct server settings and credentials</li>
-        <li>Often configured automatically via MDM</li>
+  <div class="card">
+    <div class="subsection">MDM and MAM</div>
+    <ul class="notes">
+      <hr />
+      <li>MDM (Mobile Device Management)</li>
+      <ul>
+        <li>Centralized management of mobile devices in organization</li>
+        <li>Controls entire device - settings, apps, security policies</li>
+        <li>Enforces security policies: encryption, password requirements, screen lock</li>
+        <li>Remote wipe capability if device lost or stolen</li>
+        <li>Application management: push, update, remove apps remotely</li>
+        <li>Can configure Wi-Fi, VPN, email settings automatically</li>
+        <li>Geolocation and tracking of corporate devices</li>
+        <li>Used for company-owned devices (COBO - Corporate Owned, Business Only)</li>
       </ul>
-    </div>
-
-    <div class="card">
-      <div class="subsection">Configuring Mobile Email</div>
-      <ul class="notes">
-        <hr />
-        <li>Requires email address and password</li>
-        <li>May need incoming and outgoing mail server info</li>
-        <li>Security options - SSL/TLS encryption</li>
-        <li>Push vs fetch - Push delivers email instantly</li>
-        <li>Account types - Personal, corporate, shared</li>
-        <li>Can be manually configured or auto-detected</li>
+      <li>MAM (Mobile Application Management)</li>
+      <ul>
+        <li>Manages and secures specific applications, not entire device</li>
+        <li>Controls only corporate apps and data, not personal apps</li>
+        <li>Used for BYOD (Bring Your Own Device) scenarios</li>
+        <li>Separates corporate data from personal data (containerization)</li>
+        <li>Can selectively wipe only corporate data</li>
+        <li>Less invasive than MDM for employee privacy</li>
+        <li>Applies policies to specific apps (disable copy/paste, screenshots)</li>
       </ul>
-    </div>
+      <li>Common MDM/MAM solutions</li>
+      <ul>
+        <li>Microsoft Intune, VMware Workspace ONE, MobileIron</li>
+        <li>Apple Business Manager, Google Workspace</li>
+      </ul>
+      <li>Key features to remember for exam:</li>
+      <ul>
+        <li>Remote wipe (factory reset device remotely)</li>
+        <li>Geofencing (restrict device use by location)</li>
+        <li>Screen lock and password enforcement</li>
+        <li>Application whitelisting/blacklisting</li>
+        <li>Content filtering and access restrictions</li>
+      </ul>
+    </ul>
+  </div>
 
-  </body>
+  <div class="card">
+    <div class="subsection">Multifactor Authentication (MFA)</div>
+    <ul class="notes">
+      <hr />
+      <li>Requires two or more verification factors to access account</li>
+      <li>Significantly more secure than password alone</li>
+      <li>Three categories of authentication factors:</li>
+      <ul>
+        <li>Something you know: Password, PIN, security question</li>
+        <li>Something you have: Phone, token, smart card, hardware key</li>
+        <li>Something you are: Fingerprint, face recognition, iris scan, voice</li>
+      </ul>
+      <li>Two-Factor Authentication (2FA)</li>
+      <ul>
+        <li>Subset of MFA using exactly two factors</li>
+        <li>Most common: Password + SMS code or app-generated code</li>
+      </ul>
+      <li>Common MFA methods on mobile devices:</li>
+      <ul>
+        <li>SMS/Text message codes (least secure MFA method)</li>
+        <li>Authenticator apps: Google Authenticator, Microsoft Authenticator, Authy</li>
+        <li>Push notifications to mobile device</li>
+        <li>Biometric authentication: Fingerprint (Touch ID), Face recognition (Face ID)</li>
+        <li>Hardware tokens: YubiKey, RSA SecurID</li>
+      </ul>
+      <li>Time-based One-Time Password (TOTP)</li>
+      <ul>
+        <li>Generates temporary codes that expire (usually 30-60 seconds)</li>
+        <li>Used by authenticator apps</li>
+        <li>Works offline - doesn't require cellular connection</li>
+      </ul>
+      <li>Biometric authentication on mobile</li>
+      <ul>
+        <li>Fingerprint scanners (capacitive or ultrasonic)</li>
+        <li>Facial recognition (2D or 3D mapping)</li>
+        <li>Faster and more convenient than typing passwords</li>
+        <li>Biometric data stored in secure enclave on device</li>
+      </ul>
+      <li>MFA best practices:</li>
+      <ul>
+        <li>Always enable MFA when available, especially for email and financial accounts</li>
+        <li>Authenticator apps more secure than SMS</li>
+        <li>Save backup codes in secure location</li>
+        <li>Register multiple devices for account recovery</li>
+      </ul>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Location Services</div>
+    <ul class="notes">
+      <hr />
+      <li>Determines device's geographic location using various methods</li>
+      <li>GPS (Global Positioning System)</li>
+      <ul>
+        <li>Most accurate method (within 5-10 meters)</li>
+        <li>Uses satellites to triangulate position</li>
+        <li>Requires clear view of sky, drains battery</li>
+        <li>Works without cellular or Wi-Fi connection</li>
+      </ul>
+      <li>Cellular tower triangulation</li>
+      <ul>
+        <li>Uses cell tower signals to estimate location</li>
+        <li>Less accurate than GPS (100-1000 meters)</li>
+        <li>Works indoors, uses less battery than GPS</li>
+        <li>Requires cellular connection</li>
+      </ul>
+      <li>Wi-Fi positioning</li>
+      <ul>
+        <li>Uses nearby Wi-Fi access points to determine location</li>
+        <li>Accurate in urban areas (20-50 meters)</li>
+        <li>Works indoors where GPS doesn't</li>
+        <li>Must have Wi-Fi enabled (doesn't need to be connected)</li>
+      </ul>
+      <li>Location services features:</li>
+      <ul>
+        <li>Find My Device/Find My iPhone - locate lost or stolen device</li>
+        <li>Geotagging - adds location data to photos and posts</li>
+        <li>Navigation and mapping applications</li>
+        <li>Location-based reminders and automation</li>
+        <li>Geofencing - triggers actions when entering/leaving area</li>
+      </ul>
+      <li>Privacy considerations:</li>
+      <ul>
+        <li>Apps request permission to access location</li>
+        <li>Options: Always, While Using App, Never, Ask Next Time</li>
+        <li>Can disable location services entirely in settings</li>
+        <li>Review which apps have location access regularly</li>
+      </ul>
+      <li>Remote wipe and device tracking</li>
+      <ul>
+        <li>Requires location services enabled beforehand</li>
+        <li>Can remotely lock, display message, or erase device</li>
+        <li>Apple: Find My iPhone/iPad</li>
+        <li>Android: Find My Device</li>
+        <li>Must be signed into iCloud or Google account</li>
+      </ul>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Mobile Email Configuration</div>
+    <ul class="notes">
+      <hr />
+      <li>Three main email protocols for mobile devices:</li>
+      <li>IMAP (Internet Message Access Protocol)</li>
+      <ul>
+        <li>Port 143 (standard), Port 993 (IMAPS with SSL/TLS)</li>
+        <li>Keeps email on server - syncs across all devices</li>
+        <li>Preferred for mobile devices</li>
+        <li>Can access same email from phone, tablet, and computer</li>
+        <li>Folder structure maintained across devices</li>
+      </ul>
+      <li>POP3 (Post Office Protocol version 3)</li>
+      <ul>
+        <li>Port 110 (standard), Port 995 (POP3S with SSL/TLS)</li>
+        <li>Downloads email to device and typically removes from server</li>
+        <li>Not ideal for multiple devices</li>
+        <li>Older protocol, less commonly used today</li>
+        <li>Can be configured to leave copy on server</li>
+      </ul>
+      <li>SMTP (Simple Mail Transfer Protocol)</li>
+      <ul>
+        <li>Port 25 (standard), Port 587 (with TLS), Port 465 (SSL)</li>
+        <li>Used only for sending email (outgoing mail server)</li>
+        <li>Must configure separate incoming server (IMAP or POP3)</li>
+      </ul>
+      <li>Exchange ActiveSync</li>
+      <ul>
+        <li>Microsoft's protocol for corporate email</li>
+        <li>Syncs email, calendar, contacts, tasks</li>
+        <li>Push email - instant delivery of new messages</li>
+        <li>Port 443 (HTTPS)</li>
+        <li>Commonly used in enterprise environments</li>
+        <li>Requires Exchange server or Microsoft 365/Office 365</li>
+      </ul>
+      <li>S/MIME (Secure/Multipurpose Internet Mail Extensions)</li>
+      <ul>
+        <li>Encrypts and digitally signs email messages</li>
+        <li>Requires digital certificate for encryption</li>
+        <li>Ensures confidentiality and authenticity</li>
+        <li>Used in corporate and high-security environments</li>
+      </ul>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Configuring Mobile Email</div>
+    <ul class="notes">
+      <hr />
+      <li>Basic configuration requirements:</li>
+      <ul>
+        <li>Email address and password</li>
+        <li>Incoming mail server address (IMAP or POP3)</li>
+        <li>Outgoing mail server address (SMTP)</li>
+        <li>Username (usually email address)</li>
+        <li>Port numbers for each protocol</li>
+        <li>SSL/TLS security settings</li>
+      </ul>
+      <li>Common email providers and settings:</li>
+      <ul>
+        <li>Gmail: imap.gmail.com (993), smtp.gmail.com (587)</li>
+        <li>Outlook/Office 365: outlook.office365.com (993/587)</li>
+        <li>Yahoo: imap.mail.yahoo.com (993), smtp.mail.yahoo.com (587)</li>
+        <li>iCloud: imap.mail.me.com (993), smtp.mail.me.com (587)</li>
+      </ul>
+      <li>Security settings:</li>
+      <ul>
+        <li>Always use SSL/TLS encryption when available</li>
+        <li>SSL (Secure Sockets Layer) - older encryption method</li>
+        <li>TLS (Transport Layer Security) - newer, more secure</li>
+        <li>Authentication type: Password, OAuth, certificate-based</li>
+      </ul>
+      <li>Corporate email configuration:</li>
+      <ul>
+        <li>Usually requires Exchange ActiveSync or similar protocol</li>
+        <li>May need to accept security policies (MDM enrollment)</li>
+        <li>Server address typically: mail.company.com or outlook.company.com</li>
+        <li>Domain\username format may be required</li>
+        <li>VPN may be required for external access</li>
+      </ul>
+      <li>Automatic configuration:</li>
+      <ul>
+        <li>Autodiscover service automatically finds server settings</li>
+        <li>Many email apps detect settings by email address</li>
+        <li>Manual configuration needed if autodiscover fails</li>
+      </ul>
+      <li>Troubleshooting email configuration:</li>
+      <ul>
+        <li>Verify username and password are correct</li>
+        <li>Check incoming and outgoing server addresses</li>
+        <li>Confirm port numbers and SSL/TLS settings</li>
+        <li>Disable firewall/antivirus temporarily to test connectivity</li>
+        <li>Verify account is enabled on mail server</li>
+        <li>Check for app-specific passwords (Gmail, Yahoo with 2FA)</li>
+        <li>Ensure device has internet connectivity</li>
+      </ul>
+      <li>Mobile email app features:</li>
+      <ul>
+        <li>Push vs. Fetch: Push delivers instantly, Fetch checks periodically</li>
+        <li>Sync settings: How far back to sync emails (days/weeks/all)</li>
+        <li>Signature configuration for sent messages</li>
+        <li>Multiple account support in single app</li>
+        <li>Notification settings per account</li>
+      </ul>
+    </ul>
+  </div>
+
+  <div class="section">Section 18: Laptop Hardware</div>
+</body>
+
 </html>
