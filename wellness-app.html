@@ -1,514 +1,556 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Wellness Calendar</title>
-<style>
-:root {
-  --good: #4caf50;
-  --neutral: #ffca28;
-  --bad: #f44336;
-  --empty: #ddd;
-  --bg: #f5f5f5;
-  --card: #ffffff;
-  --text: #222;
-  --border: #ccc;
-  --btn-bg: #f0f0f0;
-  --btn-hover: #e0e0e0;
-}
-body.dark-mode {
-  --bg: #1a1a1a;
-  --card: #2a2a2a;
-  --text: #ffffff;
-  --border: #444;
-  --btn-bg: #333;
-  --btn-hover: #404040;
-  --empty: #444;
-}
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-.app {
-  width: 100%;
-  max-width: 1400px;
-}
-.controls {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-}
-.controls-left {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.controls-right {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.mode-toggle {
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.mode-toggle:hover {
-  background: var(--btn-hover);
-}
-.mode-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 2px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.mode-btn:hover {
-  background: var(--btn-hover);
-}
-.mode-btn.active {
-  background: #222;
-  color: white;
-  border-color: #222;
-}
-body.dark-mode .mode-btn.active {
-  background: #fff;
-  color: #222;
-  border-color: #fff;
-}
-select {
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 1rem;
-}
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1px;
-}
-.weekday {
-  text-align: center;
-  font-size: 1em;
-  font-weight: 600;
-  color: #555;
-  padding: 0.5em 0;
-}
-.day {
-  background: var(--card);
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-body.dark-mode .day {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-.day:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-body.dark-mode .day:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-.day-number {
-  font-size: 3.5vw;
-  font-weight: bold;
-  margin-bottom: 0.1em;
-  z-index: 2;
-  position: relative;
-}
-.chart-square {
-  position: absolute;
-  inset: 8%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 4%;
-  border-radius: 8px;
-  z-index: 1;
-}
-.chart-square div {
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4vw;
-  position: relative;
-  line-height: 1;
-}
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-.popup {
-  background: var(--card);
-  width: 92%;
-  max-width: 400px;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-}
-.popup h2 {
-  text-align: center;
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
-}
-.category {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.75rem 0;
-}
-.category span {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.calorie-input {
-  width: 100%;
-  margin: 1rem 0;
-}
-.calorie-input label {
-  display: block;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-.calorie-input input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  font-size: 1rem;
-  box-sizing: border-box;
-  background: var(--card);
-  color: var(--text);
-}
-.calorie-input input:focus {
-  outline: none;
-  border-color: #666;
-}
-.options {
-  display: flex;
-  gap: 8px;
-}
-.options button {
-  font-size: 1.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  cursor: pointer;
-  background: var(--btn-bg);
-  transition: all 0.2s ease;
-}
-.options button:hover {
-  background: var(--btn-hover);
-}
-.options button.selected {
-  background: #ddd;
-  transform: scale(1.15);
-  border-color: #999;
-}
-.save-btn {
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: none;
-  background: #222;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.save-btn:hover {
-  background: #000;
-}
-.clear-btn {
-  margin-top: 0.5rem;
-  background: #bbb;
-  color: #000;
-}
-.clear-btn:hover {
-  background: #aaa;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wellness Calendar</title>
+  <style>
+    :root {
+      --good: #4caf50;
+      --neutral: #ffca28;
+      --bad: #f44336;
+      --empty: #ddd;
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --text: #222;
+      --border: #ccc;
+      --btn-bg: #f0f0f0;
+      --btn-hover: #e0e0e0;
+    }
+
+    body.dark-mode {
+      --bg: #1a1a1a;
+      --card: #2a2a2a;
+      --text: #ffffff;
+      --border: #444;
+      --btn-bg: #333;
+      --btn-hover: #404040;
+      --empty: #444;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .controls-left {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .controls-right {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .mode-toggle {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-toggle:hover {
+      background: var(--btn-hover);
+    }
+
+    .mode-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    .mode-btn.active {
+      background: #222;
+      color: white;
+      border-color: #222;
+    }
+
+    body.dark-mode .mode-btn.active {
+      background: #fff;
+      color: #222;
+      border-color: #fff;
+    }
+
+    select {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 1em;
+      font-weight: 600;
+      color: #555;
+      padding: 0.5em 0;
+    }
+
+    .day {
+      background: var(--card);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1 / 1;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    body.dark-mode .day {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .day:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode .day:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .day-number {
+      font-size: 3.5vw;
+      font-weight: bold;
+      margin-bottom: 0.1em;
+      z-index: 2;
+      position: relative;
+    }
+
+    .chart-square {
+      position: absolute;
+      inset: 8%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4%;
+      border-radius: 8px;
+      z-index: 1;
+    }
+
+    .chart-square div {
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4vw;
+      position: relative;
+      line-height: 1;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .popup {
+      background: var(--card);
+      width: 92%;
+      max-width: 400px;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup h2 {
+      text-align: center;
+      font-size: 1.25rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .category {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.75rem 0;
+    }
+
+    .category span {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .calorie-input {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .calorie-input label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .calorie-input input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .calorie-input input:focus {
+      outline: none;
+      border-color: #666;
+    }
+
+    .options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .options button {
+      font-size: 1.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: var(--btn-bg);
+      transition: all 0.2s ease;
+    }
+
+    .options button:hover {
+      background: var(--btn-hover);
+    }
+
+    .options button.selected {
+      background: #ddd;
+      transform: scale(1.15);
+      border-color: #999;
+    }
+
+    .save-btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: none;
+      background: #222;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .save-btn:hover {
+      background: #000;
+    }
+
+    .clear-btn {
+      margin-top: 0.5rem;
+      background: #bbb;
+      color: #000;
+    }
+
+    .clear-btn:hover {
+      background: #aaa;
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-  <div class="controls">
-    <div class="controls-left">
-      <button class="mode-btn active" data-mode="wellness">Wellness</button>
-      <button class="mode-btn" data-mode="diet">Diet</button>
-      <button class="mode-btn" data-mode="fitness">Fitness</button>
+  <div class="app">
+    <div class="controls">
+      <div class="controls-left">
+        <button class="mode-btn active" data-mode="wellness">Wellness</button>
+        <button class="mode-btn" data-mode="diet">Diet</button>
+        <button class="mode-btn" data-mode="fitness">Fitness</button>
+      </div>
+      <div class="controls-right">
+        <select id="monthSelect"></select>
+        <select id="yearSelect"></select>
+        <button class="mode-toggle" id="darkModeToggle">🌙</button>
+      </div>
     </div>
-    <div class="controls-right">
-      <select id="monthSelect"></select>
-      <select id="yearSelect"></select>
-      <button class="mode-toggle" id="darkModeToggle">🌙</button>
+    <div class="calendar" id="calendar"></div>
+  </div>
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <h2 id="popup-date"></h2>
+      <div id="categories"></div>
+      <button class="save-btn" id="saveBtn">Save</button>
+      <button class="save-btn clear-btn" id="clearBtn">Clear Day</button>
     </div>
   </div>
-  <div class="calendar" id="calendar"></div>
-</div>
-<div class="overlay" id="overlay">
-  <div class="popup">
-    <h2 id="popup-date"></h2>
-    <div id="categories"></div>
-    <button class="save-btn" id="saveBtn">Save</button>
-    <button class="save-btn clear-btn" id="clearBtn">Clear Day</button>
-  </div>
-</div>
-<script>
-const calendarEl = document.getElementById('calendar');
-const overlay = document.getElementById('overlay');
-const popupDateEl = document.getElementById('popup-date');
-const categoriesEl = document.getElementById('categories');
-const saveBtn = document.getElementById('saveBtn');
-const clearBtn = document.getElementById('clearBtn');
-const monthSelect = document.getElementById('monthSelect');
-const yearSelect = document.getElementById('yearSelect');
-const darkModeToggle = document.getElementById('darkModeToggle');
-const modeButtons = document.querySelectorAll('.mode-btn');
+  <script>
+    const calendarEl = document.getElementById('calendar');
+    const overlay = document.getElementById('overlay');
+    const popupDateEl = document.getElementById('popup-date');
+    const categoriesEl = document.getElementById('categories');
+    const saveBtn = document.getElementById('saveBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const modeButtons = document.querySelectorAll('.mode-btn');
 
-let currentMode = 'wellness';
+    let currentMode = 'wellness';
 
-const categories = ['Sleep', 'Food', 'Exercise', 'Study'];
-const categoryIcons = {'Sleep': '🛌', 'Food': '🍎', 'Exercise': '💪', 'Study': '📖'};
-const values = ['bad', 'neutral', 'good'];
-const colorMap = {
-  bad: '#f44336',
-  neutral: '#ffca28',
-  good: '#4caf50',
-  empty: '#00000020'
-};
+    const categories = ['Sleep', 'Food', 'Exercise', 'Study'];
+    const categoryIcons = { 'Sleep': '🛌', 'Food': '🍎', 'Exercise': '💪', 'Study': '📖' };
+    const values = ['bad', 'neutral', 'good'];
+    const colorMap = {
+      bad: '#f44336',
+      neutral: '#ffca28',
+      good: '#4caf50',
+      empty: '#00000020'
+    };
 
-const STORAGE_KEY = 'dailyWellnessData';
-let savedData = {};
+    const STORAGE_KEY = 'dailyWellnessData';
+    let savedData = {};
 
-// Try to load data, but handle errors gracefully
-try {
-  savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-} catch (e) {
-  savedData = {};
-}
+    // Try to load data, but handle errors gracefully
+    try {
+      savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch (e) {
+      savedData = {};
+    }
 
-const now = new Date();
-let selectedMonth = now.getMonth();
-let selectedYear = now.getFullYear();
+    const now = new Date();
+    let selectedMonth = now.getMonth();
+    let selectedYear = now.getFullYear();
 
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-// Populate month select
-monthNames.forEach((m, i) => {
-  const o = document.createElement('option');
-  o.value = i;
-  o.textContent = m;
-  if (i === selectedMonth) o.selected = true;
-  monthSelect.appendChild(o);
-});
-
-// Populate year select
-for (let y = selectedYear - 5; y <= selectedYear + 5; y++) {
-  const o = document.createElement('option');
-  o.value = y;
-  o.textContent = y;
-  if (y === selectedYear) o.selected = true;
-  yearSelect.appendChild(o);
-}
-
-monthSelect.onchange = () => {
-  selectedMonth = +monthSelect.value;
-  renderCalendar();
-};
-
-yearSelect.onchange = () => {
-  selectedYear = +yearSelect.value;
-  renderCalendar();
-};
-
-// Dark mode toggle
-const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-if (savedDarkMode) {
-  document.body.classList.add('dark-mode');
-  darkModeToggle.textContent = '☀️';
-}
-
-darkModeToggle.onclick = () => {
-  document.body.classList.toggle('dark-mode');
-  const isDark = document.body.classList.contains('dark-mode');
-  darkModeToggle.textContent = isDark ? '☀️' : '🌙';
-  localStorage.setItem('darkMode', isDark);
-};
-
-// Mode buttons
-modeButtons.forEach(btn => {
-  btn.onclick = () => {
-    modeButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentMode = btn.dataset.mode;
-    // You can add different behavior for each mode here
-  };
-});
-
-function getMonthDays(y, m) {
-  return new Date(y, m + 1, 0).getDate();
-}
-
-function drawSquareChart(dayEl, dayData) {
-  const chart = document.createElement('div');
-  chart.className = 'chart-square';
-  
-  categories.forEach(cat => {
-    const cell = document.createElement('div');
-    const val = dayData[cat] || 'empty';
-    cell.style.background = colorMap[val];
-    cell.textContent = categoryIcons[cat];
-    chart.appendChild(cell);
-  });
-  
-  dayEl.appendChild(chart);
-}
-
-function renderCalendar() {
-  calendarEl.innerHTML = '';
-  const days = getMonthDays(selectedYear, selectedMonth);
-  const weekdayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  
-  // Add weekday headers
-  weekdayNames.forEach(w => {
-    const d = document.createElement('div');
-    d.className = 'weekday';
-    d.textContent = w;
-    calendarEl.appendChild(d);
-  });
-
-  // Add empty cells for days before the 1st
-  const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
-  for (let i = 0; i < firstDay; i++) {
-    calendarEl.appendChild(document.createElement('div'));
-  }
-
-  // Add day cells
-  for (let d = 1; d <= days; d++) {
-    const key = `${selectedYear}-${selectedMonth + 1}-${d}`;
-    const dayEl = document.createElement('div');
-    dayEl.className = 'day';
-    dayEl.innerHTML = `<div class="day-number">${d}</div>`;
-    drawSquareChart(dayEl, savedData[key] || {});
-    dayEl.onclick = () => openPopup(key);
-    calendarEl.appendChild(dayEl);
-  }
-}
-
-function openPopup(key) {
-  popupDateEl.textContent = key;
-  categoriesEl.innerHTML = '';
-  const temp = {...(savedData[key] || {})};
-  
-  categories.forEach(cat => {
-    const row = document.createElement('div');
-    row.className = 'category';
-    row.innerHTML = `<span>${categoryIcons[cat]} ${cat}</span>`;
-    
-    const opts = document.createElement('div');
-    opts.className = 'options';
-    
-    values.forEach((val, i) => {
-      const b = document.createElement('button');
-      b.textContent = i === 0 ? '👎' : i === 1 ? '➖' : '👍';
-      if (temp[cat] === val) b.classList.add('selected');
-      b.onclick = () => {
-        temp[cat] = val;
-        [...opts.children].forEach(x => x.classList.remove('selected'));
-        b.classList.add('selected');
-      };
-      opts.appendChild(b);
+    // Populate month select
+    monthNames.forEach((m, i) => {
+      const o = document.createElement('option');
+      o.value = i;
+      o.textContent = m;
+      if (i === selectedMonth) o.selected = true;
+      monthSelect.appendChild(o);
     });
-    
-    row.appendChild(opts);
-    categoriesEl.appendChild(row);
-  });
-  
-  // Add calorie input
-  const calorieDiv = document.createElement('div');
-  calorieDiv.className = 'calorie-input';
-  calorieDiv.innerHTML = `
+
+    // Populate year select
+    for (let y = selectedYear - 5; y <= selectedYear + 5; y++) {
+      const o = document.createElement('option');
+      o.value = y;
+      o.textContent = y;
+      if (y === selectedYear) o.selected = true;
+      yearSelect.appendChild(o);
+    }
+
+    monthSelect.onchange = () => {
+      selectedMonth = +monthSelect.value;
+      renderCalendar();
+    };
+
+    yearSelect.onchange = () => {
+      selectedYear = +yearSelect.value;
+      renderCalendar();
+    };
+
+    // Dark mode toggle
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (savedDarkMode) {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.onclick = () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', isDark);
+    };
+
+    // Mode buttons
+    modeButtons.forEach(btn => {
+      btn.onclick = () => {
+        modeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMode = btn.dataset.mode;
+        // You can add different behavior for each mode here
+      };
+    });
+
+    function getMonthDays(y, m) {
+      return new Date(y, m + 1, 0).getDate();
+    }
+
+    function drawSquareChart(dayEl, dayData) {
+      const chart = document.createElement('div');
+      chart.className = 'chart-square';
+
+      categories.forEach(cat => {
+        const cell = document.createElement('div');
+        const val = dayData[cat] || 'empty';
+        cell.style.background = colorMap[val];
+        cell.textContent = categoryIcons[cat];
+        chart.appendChild(cell);
+      });
+
+      dayEl.appendChild(chart);
+    }
+
+    function renderCalendar() {
+      calendarEl.innerHTML = '';
+      const days = getMonthDays(selectedYear, selectedMonth);
+      const weekdayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      // Add weekday headers
+      weekdayNames.forEach(w => {
+        const d = document.createElement('div');
+        d.className = 'weekday';
+        d.textContent = w;
+        calendarEl.appendChild(d);
+      });
+
+      // Add empty cells for days before the 1st
+      const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+      for (let i = 0; i < firstDay; i++) {
+        calendarEl.appendChild(document.createElement('div'));
+      }
+
+      // Add day cells
+      for (let d = 1; d <= days; d++) {
+        const key = `${selectedYear}-${selectedMonth + 1}-${d}`;
+        const dayEl = document.createElement('div');
+        dayEl.className = 'day';
+        dayEl.innerHTML = `<div class="day-number">${d}</div>`;
+        drawSquareChart(dayEl, savedData[key] || {});
+        dayEl.onclick = () => openPopup(key);
+        calendarEl.appendChild(dayEl);
+      }
+    }
+
+    function openPopup(key) {
+      popupDateEl.textContent = key;
+      categoriesEl.innerHTML = '';
+      const temp = { ...(savedData[key] || {}) };
+
+      categories.forEach(cat => {
+        const row = document.createElement('div');
+        row.className = 'category';
+        row.innerHTML = `<span>${categoryIcons[cat]} ${cat}</span>`;
+
+        const opts = document.createElement('div');
+        opts.className = 'options';
+
+        values.forEach((val, i) => {
+          const b = document.createElement('button');
+          b.textContent = i === 0 ? '👎' : i === 1 ? '➖' : '👍';
+          if (temp[cat] === val) b.classList.add('selected');
+          b.onclick = () => {
+            temp[cat] = val;
+            [...opts.children].forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected');
+          };
+          opts.appendChild(b);
+        });
+
+        row.appendChild(opts);
+        categoriesEl.appendChild(row);
+      });
+
+      // Add calorie input
+      const calorieDiv = document.createElement('div');
+      calorieDiv.className = 'calorie-input';
+      calorieDiv.innerHTML = `
     <label for="calorieInput">Calories Consumed</label>
     <input type="number" id="calorieInput" placeholder="Enter calories..." value="${temp.calories || ''}">
   `;
-  categoriesEl.appendChild(calorieDiv);
-  
-  const calorieInput = document.getElementById('calorieInput');
-  
-  saveBtn.onclick = () => {
-    if (calorieInput.value) {
-      temp.calories = calorieInput.value;
-    } else {
-      delete temp.calories;
-    }
-    savedData[key] = temp;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
-    } catch (e) {
-      console.error('Failed to save data:', e);
-    }
-    overlay.style.display = 'none';
-    renderCalendar();
-  };
-  
-  clearBtn.onclick = () => {
-    delete savedData[key];
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
-    } catch (e) {
-      console.error('Failed to save data:', e);
-    }
-    overlay.style.display = 'none';
-    renderCalendar();
-  };
-  
-  overlay.style.display = 'flex';
-}
+      categoriesEl.appendChild(calorieDiv);
 
-overlay.onclick = e => {
-  if (e.target === overlay) overlay.style.display = 'none';
-};
+      const calorieInput = document.getElementById('calorieInput');
 
-window.addEventListener('resize', renderCalendar);
-renderCalendar();
-</script>
+      saveBtn.onclick = () => {
+        if (calorieInput.value) {
+          temp.calories = calorieInput.value;
+        } else {
+          delete temp.calories;
+        }
+        savedData[key] = temp;
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
+        } catch (e) {
+          console.error('Failed to save data:', e);
+        }
+        overlay.style.display = 'none';
+        renderCalendar();
+      };
+
+      clearBtn.onclick = () => {
+        delete savedData[key];
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
+        } catch (e) {
+          console.error('Failed to save data:', e);
+        }
+        overlay.style.display = 'none';
+        renderCalendar();
+      };
+
+      overlay.style.display = 'flex';
+    }
+
+    overlay.onclick = e => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    };
+
+    window.addEventListener('resize', renderCalendar);
+    renderCalendar();
+  </script>
 </body>
+
 </html>

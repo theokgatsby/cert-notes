@@ -1,134 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>A+ Core 1 Notes</title>
-    <link rel="stylesheet" href="./style.css" />
-    Started Study on Dec 11, 2025
-  </head>
-  <body>
-    <a href="index.html" id="back-button">←</a>
 
-    <div class="section">Module 2 - Compute in the Cloud</div>
+<head>
+  <meta charset="UTF-8" />
+  <title>A+ Core 1 Notes</title>
+  <link rel="stylesheet" href="./style.css" />
+  Started Study on Dec 11, 2025
+</head>
 
-    <div class="card">
-      <div class="subsection">Introduction to EC2</div>
-        <ul class="notes">
-        <hr />
-        <li>Flexible, cost-effective compute service with on-demand capacity</li>
-        <li>Pay only for active usage with multi-tenancy isolation</li>
-        <li>Choose instance type, OS, storage, and AMI (Amazon Machine Image)</li>
-      </ul>
-    </div>
-    
-    <div class="card">
-      <div class="subsection">EC2 Instance Types</div>
-        <ul class="notes">
-        <hr />
-        <li>General purpose - Diverse workloads (web services, code repos)</li>
-        <li>Compute optimized - Gaming, machine learning, scientific modeling</li>
-        <li>Memory optimized - Large datasets, data analytics, databases</li>
-        <li>Accelerated computing - GPUs for graphics, ML, floating point calculations</li>
-        <li>Storage optimized - High-performance local data, data warehousing, I/O intensive</li>
-      </ul>
-    </div>
+<body>
+  <a href="index.html" id="back-button">←</a>
 
-    <div class="card">
-      <div class="subsection">How to Provision EC2</div>
-      <ul class="notes">
-        <hr />
-        <li>Control via API requests through Management Console, CLI, or SDK</li>
-        <li>AWS handles cloud infrastructure security; customers handle data/apps security</li>
-        <li>Unmanaged service - customers configure firewall, OS, updates</li>
-      </ul>
-    </div>
+  <div class="section">Module 2 - Compute in the Cloud</div>
 
-    <div class="card">
-      <div class="subsection">EC2 Pricing</div>
-      <ul class="notes">
-        <hr />
-        <li>On Demand - No upfront cost, pay-as-you-go (most popular)</li>
-        <li>Savings Plan - Commit 1-3 years for 72% savings</li>
-        <li>Reserved Instances - 1-3 year term for 75% savings</li>
-        <li>Spot Instances - Bid on spare capacity for 90% savings</li>
-        <li>Dedicated Instances - Hardware dedicated to your account</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="subsection">Introduction to EC2</div>
+    <ul class="notes">
+      <hr />
+      <li>Flexible, cost-effective compute service with on-demand capacity</li>
+      <li>Pay only for active usage with multi-tenancy isolation</li>
+      <li>Choose instance type, OS, storage, and AMI (Amazon Machine Image)</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Scaling & Load Balancing</div>
-      <ul class="notes">
-        <hr />
-        <li>Scale up - Add power to existing machines | Scale out - Add more machines</li>
-        <li>Load balancer distributes traffic across multiple resources, prevents overload</li>
-        <li>Round robin - Cycles through servers | Least connections - Sends to least busy server</li>
-        <li>IP Hash - Maps client IP to specific server | Least Response Time - Routes to fastest server</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="subsection">EC2 Instance Types</div>
+    <ul class="notes">
+      <hr />
+      <li>General purpose - Diverse workloads (web services, code repos)</li>
+      <li>Compute optimized - Gaming, machine learning, scientific modeling</li>
+      <li>Memory optimized - Large datasets, data analytics, databases</li>
+      <li>Accelerated computing - GPUs for graphics, ML, floating point calculations</li>
+      <li>Storage optimized - High-performance local data, data warehousing, I/O intensive</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Messaging & Queuing</div>
-      <ul class="notes">
-        <hr />
-        <li>Monolithic = tightly coupled (one failure affects all)</li>
-        <li>Microservices = loosely coupled (isolated failures, flexible)</li>
-        <hr />
-        <li>EventBridge - Routes events between applications/services</li>
-        <li>SQS - Message queue service (decouple app components)</li>
-        <li>SNS - Publish-subscribe for notifications (email, SMS, etc.)</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="subsection">How to Provision EC2</div>
+    <ul class="notes">
+      <hr />
+      <li>Control via API requests through Management Console, CLI, or SDK</li>
+      <li>AWS handles cloud infrastructure security; customers handle data/apps security</li>
+      <li>Unmanaged service - customers configure firewall, OS, updates</li>
+    </ul>
+  </div>
 
-    <div class="section">Module 3 - Serverless & Containers</div>
+  <div class="card">
+    <div class="subsection">EC2 Pricing</div>
+    <ul class="notes">
+      <hr />
+      <li>On Demand - No upfront cost, pay-as-you-go (most popular)</li>
+      <li>Savings Plan - Commit 1-3 years for 72% savings</li>
+      <li>Reserved Instances - 1-3 year term for 75% savings</li>
+      <li>Spot Instances - Bid on spare capacity for 90% savings</li>
+      <li>Dedicated Instances - Hardware dedicated to your account</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Service Models</div>
-      <ul class="notes">
-        <hr />
-        <li>Unmanaged - AWS manages only physical infrastructure</li>
-        <li>Managed - AWS also manages OS, network, firewall, applications</li>
-        <li>Fully-managed - AWS handles everything including security/encryption</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="subsection">Scaling & Load Balancing</div>
+    <ul class="notes">
+      <hr />
+      <li>Scale up - Add power to existing machines | Scale out - Add more machines</li>
+      <li>Load balancer distributes traffic across multiple resources, prevents overload</li>
+      <li>Round robin - Cycles through servers | Least connections - Sends to least busy server</li>
+      <li>IP Hash - Maps client IP to specific server | Least Response Time - Routes to fastest server</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">AWS Lambda</div>
-      <ul class="notes">
-        <hr />
-        <li>Serverless compute service - No server management needed</li>
-        <li>Charged per millisecond of compute time</li>
-        <li>Auto-handles execution, scaling, resource allocation</li>
-        <li>Components: Lambda functions, triggers, runtimes</li>
-      </ul>
-    </div>
+  <div class="card">
+    <div class="subsection">Messaging & Queuing</div>
+    <ul class="notes">
+      <hr />
+      <li>Monolithic = tightly coupled (one failure affects all)</li>
+      <li>Microservices = loosely coupled (isolated failures, flexible)</li>
+      <hr />
+      <li>EventBridge - Routes events between applications/services</li>
+      <li>SQS - Message queue service (decouple app components)</li>
+      <li>SNS - Publish-subscribe for notifications (email, SMS, etc.)</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Container Services</div>
-      <ul class="notes">
-        <hr />
-        <li>Containers package code+dependencies for consistency (eliminates "works on my machine")</li>
-        <li>Components: Orchestration, Registry, Compute</li>
-        <hr />
-        <li>ECS - Streamlined container orchestration (AWS native)</li>
-        <li>EKS - Kubernetes service (more control/flexibility)</li>
-        <li>ECR - Elastic Container Registry (store/deploy images)</li>
-        <hr />
-        <li>EC2 - Full control (manage infrastructure) | Fargate - Serverless containers</li>
-        <li>Elastic Beanstalk - Simplified EC2 deployment (handles scaling/load balancing)</li>
-        <li>Batch - Heavy-duty tasks (data sets, simulations)</li>
-        <li>Lightsail - Simple web hosting | Outpost - Hybrid cloud (on-premise + AWS)</li>
-      </ul>
-    </div>
+  <div class="section">Module 3 - Serverless & Containers</div>
 
-    <div class="section">Module 4 - Global Infrastructure</div>
+  <div class="card">
+    <div class="subsection">Service Models</div>
+    <ul class="notes">
+      <hr />
+      <li>Unmanaged - AWS manages only physical infrastructure</li>
+      <li>Managed - AWS also manages OS, network, firewall, applications</li>
+      <li>Fully-managed - AWS handles everything including security/encryption</li>
+    </ul>
+  </div>
 
-    <div class="card">
-      <div class="subsection">Global Infrastructure</div>
-      <ul class="notes">
-        <hr />
-        <li>AWS operates across multiple regions worldwide</li>
-        <li>Choose regions based on latency, compliance, costs, and feature availability</li>
-      </ul>
-    </div>
-  </body>
+  <div class="card">
+    <div class="subsection">AWS Lambda</div>
+    <ul class="notes">
+      <hr />
+      <li>Serverless compute service - No server management needed</li>
+      <li>Charged per millisecond of compute time</li>
+      <li>Auto-handles execution, scaling, resource allocation</li>
+      <li>Components: Lambda functions, triggers, runtimes</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="subsection">Container Services</div>
+    <ul class="notes">
+      <hr />
+      <li>Containers package code+dependencies for consistency (eliminates "works on my machine")</li>
+      <li>Components: Orchestration, Registry, Compute</li>
+      <hr />
+      <li>ECS - Streamlined container orchestration (AWS native)</li>
+      <li>EKS - Kubernetes service (more control/flexibility)</li>
+      <li>ECR - Elastic Container Registry (store/deploy images)</li>
+      <hr />
+      <li>EC2 - Full control (manage infrastructure) | Fargate - Serverless containers</li>
+      <li>Elastic Beanstalk - Simplified EC2 deployment (handles scaling/load balancing)</li>
+      <li>Batch - Heavy-duty tasks (data sets, simulations)</li>
+      <li>Lightsail - Simple web hosting | Outpost - Hybrid cloud (on-premise + AWS)</li>
+    </ul>
+  </div>
+
+  <div class="section">Module 4 - Global Infrastructure</div>
+
+  <div class="card">
+    <div class="subsection">Global Infrastructure</div>
+    <ul class="notes">
+      <hr />
+      <li>AWS operates across multiple regions worldwide</li>
+      <li>Choose regions based on latency, compliance, costs, and feature availability</li>
+    </ul>
+  </div>
+</body>
+
 </html>
