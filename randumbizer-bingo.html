@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Overlap Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #020307 0%, #000000ee 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .player-btn {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .player-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-name {
+            font-size: 18px;
+        }
+
+        .player-score {
+            font-size: 24px;
+            color: #ffd700;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #c00;
+        }
+
+        .info {
+            background: #e7f3ff;
+            border: 2px solid #b3d9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #004085;
+        }
+
+        .player-detail {
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .score-card h2 {
+            font-size: 3em;
+            margin: 10px 0;
+        }
+
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            max-width: 600px;
+        }
+
+        .bingo-cell {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #dee2e6;
+        }
+
+        .bingo-cell.shared {
+            background: #d4edda;
+            border-color: #28a745;
+            font-weight: bold;
+        }
+
+        .overlap-list {
+            margin: 20px 0;
+        }
+
+        .overlap-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leaderboard {
+            margin-top: 20px;
+        }
+
+        .leaderboard-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .rank {
+            font-size: 24px;
+            font-weight: bold;
+            width: 40px;
+        }
+
+        .load-btn {
+            padding: 15px 30px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .load-btn:hover {
+            background: #218838;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 Bingo Overlap Tracker</h1>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showPage('players')">Players</button>
+            <button class="nav-btn" onclick="showPage('leaderboard')">Leaderboard</button>
+        </div>
+
+        <div id="players-page" class="page active">
+            <div id="players-content">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+
+        <div id="leaderboard-page" class="page">
+            <div id="leaderboard-content">
+                <div class="loading">Load player data first</div>
+            </div>
+        </div>
+
+        <div id="detail-page" class="page">
+            <button class="back-btn" onclick="showPage('players')">← Back to Players</button>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // HARDCODED PLAYERS WITH THEIR ITEMS
+        const PLAYERS = [
+            {
+                username: "Ew Its Mike",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1Gmv9liNAQZy4U5ULIHuP_jxaDXT5CJTBWHojyW1F07E/edit?usp=sharing",
+                items: [
+                    "Drake's tooth", "Hydra Leather", "Dharok's platelegs", "Dragon knives", "Bandos Tassets", "Treasonous ring",
+                    "Fangs of Venenatis", "Obsidian armour", "Amulet of Avarice", "Smouldering stone", "Abyssal dagger", "Araxxyte fang",
+                    "Staff of the Dead", "Ice quartz", "Granite gloves", "Obsidian cape", "Uncut onyx", "Zaryte vambraces",
+                    "Magus vestige", "Zamorak hilt", "Noxious point", "Blue moon spear", "CoX Shield", "Drake's claw",
+                    "Dragon axe", "Obsidian sword", "Granite boots", "Any piece of Inquisitor (armour or mace)", "Eclipse atlatl", "Primordial crystal",
+                    "Dragon thrownaxes", "Any Nightmare orb", "Granite longsword", "Magic fang", "Black Tourmeline core", "Ahrim's hood"
+                ]
+            },
+            {
+                username: "IM Chainszor",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1wtEtmoNT1eU8yDVvuplDZC6eXDARQt1tq67arJOvQk4/edit?usp=sharing",
+                items: [
+                    "Black mask (10)", "Eye of the Duke", "Any Corp sigil", "Voidwaker Gem", "Slayer battlestaff", "Voidwaker hilt",
+                    "Cockatrice head", "Shadow quartz", "Berserker ring", "Guthan's helm", "Chromium ingot", "Dharok's helm",
+                    "Black Tourmeline core", "Voidwaker Blade", "Jar 1-7", "Zenyte shard", "Any piece of Justiciar", "Blood quartz",
+                    "Hydra's Claw", "Any piece of Inquisitor (armour or mace)", "ToA Undesirables", "Karil's crossbow", "Skilling pet", "Noxious point",
+                    "Shaman mask", "Tanzanite fang", "Guthan's warspear", "Obsidian throwing rings", "Any piece of Masori", "Treasonous ring",
+                    "Noxious pommel", "Broken zombie helmet", "Smouldering stone", "Avernic defender hilt", "Armadyl helmet", "Saradomin sword"
+                ]
+            },
+            {
+                username: "W isp",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1GzzZeMPO9qB8gv47HBYQoan6iXK-wjnNpkdl-vdflQc/edit?usp=sharing",
+                items: [
+                    "Fire elemental staff crown", "Slayer battlestaff", "Dharok's platebody", "Ahrim's staff", "Higher Rev totem", "Bellator vestige",
+                    "Basilisk jaw", "Torag's hammers", "Granite ring", "Uncut onyx", "Ahrim's robetop", "Leviathan's lure",
+                    "ToB weapon", "Venator vestige", "Pegasian crystal", "Abyssal dagger", "Armadyl chainskirt", "Karil's crossbow",
+                    "Eclipse moon tassets", "CoX prayer scroll", "Drake's claw", "Dharok's greataxe", "Hydra Leather", "Ice elemental staff crown",
+                    "Primordial crystal", "Eclipse moon helm", "Blue moon tassets", "Any piece of Justiciar", "Granite longsword", "Dragon axe",
+                    "Karil's coif", "Blood shard", "Bandos hilt", "Torag's platelegs", "Nightmare staff", "Verac's plateskirt"
+                ]
+            },
+            {
+                username: "self circ",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1QRcsFZqvzHabTid_KYSJYvnNQXHBXpJkpZsQS1hhAW4/edit?usp=sharing",
+                items: [
+                    "Claws of Callisto", "Virtus mask", "Ancient Crystal", "Dragon chainbody", "CoX prayer scroll", "Ring of the Gods",
+                    "Magic fang", "Zenyte shard", "Dragon limbs", "ToB weapon", "Obsidian maul", "Blood moon helm",
+                    "Ultor vestige", "Glacial Temotli", "Dharok's greataxe", "Obsidian cape", "Magus vestige", "Saradomin sword",
+                    "Dragon warhammer", "Dragon knives", "Zaryte vambraces", "Amulet of Avarice", "Hydra Leather", "Cockatrice head",
+                    "Voidwaker Blade", "Karil's coif", "Smoke battlestaff", "Virtus robe bottom", "Obsidian shield", "Leaf-bladed sword",
+                    "CoX weapon", "Noxious pommel", "Siren's staff", "Blue moon tassets", "Ballista piece", "Bandos Chestplate"
+                ]
+            },
+            {
+                username: "GimToveLits",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1lcC8KNwAEPk8sbb_89KawpFWENr7-CeIEPFk7Nl4710/edit?usp=sharing",
+                items: [
+                    "Avernic defender hilt", "Eclipse moon chestplate", "Occult necklace", "Dragon warhammer", "Hydra tail", "Dual macuahuitl",
+                    "Dragon harpoon", "Hueycoatl hide", "Dragon axe", "Fangs of Venenatis", "Any piece of Torva", "Archers ring",
+                    "CoX prayer scroll", "Noxious blade", "Ancient hilt or Nihil horn", "Granite hammer", "Saradomin hilt", "Dharok's greataxe",
+                    "Granite boots", "Eclipse moon tassets", "Guthan's chainskirt", "Any piece of Justiciar", "Enhanced teleport seed", "Ahrim's hood",
+                    "Higher Rev totem", "Magic fang", "Glacial Temotli", "Dharok's helm", "Burning claw", "Tormented synapse",
+                    "Craw's Bow", "Obsidian cape", "Blue moon spear", "Dragon knives", "Bandos boots", "Fire elemental staff crown"
+                ]
+            },
+            {
+                username: "Kerdariel",
+                sheetUrl: "https://docs.google.com/spreadsheets/d/1WVbHyqrSjySuOeyrXcF3wdArhRITMXbRx2eU4Hy7rcE/edit?usp=sharing",
+                items: [
+                    "Ancient Crystal", "Blue moon helm", "Tormented synapse", "Hydra tail", "Granite ring", "Trident of the seas (full)",
+                    "Torag's platebody", "Any Corp sigil", "CoX weapon", "Granite gloves", "Amulet of Avarice", "Skilling pet",
+                    "Vigorra's Chainmace", "Dragon pickaxe", "Chromium ingot", "Guthan's chainskirt", "Hydra's Claw", "Saradomin sword",
+                    "Ahrim's staff", "Torag's hammers", "Dharok's greataxe", "Drake's claw", "Pegasian crystal", "Voidwaker hilt",
+                    "Dragonbone necklace", "Holy elixir", "Armadyl crossbow", "Eclipse moon chestplate", "Zenyte shard", "Blood moon chestplate",
+                    "Tanzanite fang", "Dragon sword", "Lower Rev totem", "Dragon chainbody", "Venator shard", "Basilisk jaw"
+                ]
+            },
+            {
+                username: "Auturs",
+                sheetUrl: "",
+                items: [
+                    "Obsidian throwing rings", "Noxious blade", "Dragon chainbody", "Glacial Temotli", "Karil's coif", "Any piece of Torva",
+                    "Blue moon spear", "Bandos Tassets", "Armadyl helmet", "Dharok's greataxe", "Dragon knives", "Treasonous ring",
+                    "Trident of the seas (full)", "Granite gloves", "Magus vestige", "Thamarron's Scepter", "Verac's flail", "Pegasian crystal",
+                    "Basilisk jaw", "Ice elemental staff crown", "Shadow quartz", "Smouldering stone", "Unsired", "Black mask (10)",
+                    "Ancient hilt or Nihil horn", "Hydra tail", "Saradomin hilt", "Verac's brassard", "Any piece of Masori", "Voidwaker hilt",
+                    "Berserker ring", "Voidwaker Gem", "Fangs of Venenatis", "Higher Rev totem", "Voidwaker Blade", "Araxxyte fang"
+                ]
+            },
+            {
+                username: "Birdy Skillz",
+                sheetUrl: "",
+                items: [
+                    "Ancient hilt or Nihil horn", "Dragon chainbody", "Karil's leathertop", "Zaryte vambraces", "Obsidian mace", "Berserker ring",
+                    "Pegasian crystal", "Chromium ingot", "Warped Sceptre", "Siren's staff", "Voidwaker hilt", "Burning claw",
+                    "Slayer battlestaff", "Tome of Earth", "Zenyte shard", "Unsired", "Verac's flail", "ToB weapon",
+                    "Black Tourmeline core", "Staff of the Dead", "Ring of the Gods", "Hydra tail", "Holy elixir", "Saradomin hilt",
+                    "Blood shard", "Serpentine visage", "ToA Undesirables", "Fangs of Venenatis", "Blood moon chestplate", "Drake's tooth",
+                    "Basilisk jaw", "Ice quartz", "Dragonhunter wand", "Dragon knives", "Any Ancestral piece", "Saradomin sword"
+                ]
+            },
+            {
+                username: "ImQWERTY",
+                sheetUrl: "",
+                items: [
+                    "Shadow quartz", "Ring of the Gods", "Armadyl chainskirt", "Torag's hammers", "Venator vestige", "Any sunfire piece or Tonalztics of Ralos",
+                    "Sarachnis cudgel", "Lower Rev totem", "Berserker ring", "Black Tourmeline core", "Unsired", "Skull of Vet'ion",
+                    "Bandos Tassets", "Abyssal dagger", "Hydra tail", "Ultor vestige", "Ahrim's staff", "Siren's staff",
+                    "CoX Shield", "Dharok's platebody", "Belle's Folly", "Dragon chainbody", "Obsidian cape", "Zaryte vambraces",
+                    "Kurask head", "Bossing pet", "Zamorakian spear", "Dragon harpoon", "Tyrannical ring", "Fire elemental staff crown",
+                    "Verac's brassard", "Eclipse moon tassets", "Verac's helm", "Magic fang", "Noxious blade", "Guthan's warspear"
+                ]
+            },
+            {
+                username: "Farmquanite",
+                sheetUrl: "",
+                items: [
+                    "Fire elemental staff crown", "Noxious point", "Zamorak hilt", "Executioner's axe head", "Skull of Vet'ion", "Aranea boots",
+                    "Verac's brassard", "Staff of the Dead", "Steam battlestaff", "Bottled Storm", "Shaman mask", "Blue moon tassets",
+                    "Ice quartz", "Armadyl helmet", "Seers ring", "CoX weapon", "Obsidian sword", "Granite longsword",
+                    "Dharok's platelegs", "Obsidian throwing rings", "Black mask (10)", "Any Corp sigil", "Unsired", "Burning claw",
+                    "Obsidian shield", "Venator shard", "Granite ring", "Torag's platebody", "Treasonous ring", "Jar 1-7",
+                    "Obsidian cape", "Saradomin hilt", "Bandos Chestplate", "Zaryte vambraces", "Tome of Earth", "Guthan's helm"
+                ]
+            },
+            {
+                username: "Cruel Camel",
+                sheetUrl: "",
+                items: [
+                    "Staff of the Dead", "Karil's leatherskirt", "Verac's helm", "Drake's tooth", "Armadyl crossbow", "Eclipse moon helm",
+                    "Virtus robe bottom", "Any Ancestral piece", "Ahrim's staff", "Burning claw", "Jar 1-7", "Blue moon chestplate",
+                    "Obsidian armour", "Lower Rev totem", "Karil's leathertop", "Saradomin's light", "Siren's staff", "Dragonbone necklace",
+                    "Smouldering stone", "Torag's platebody", "Hydra tail", "Any piece of Inquisitor (armour or mace)", "Drake's claw", "Granite boots",
+                    "Smoke quartz", "Ice elemental staff crown", "Fire elemental staff crown", "Armadyl chestplate", "Leaf-bladed battleaxe", "Archers ring",
+                    "Saradomin sword", "Eclipse atlatl", "Armadyl hilt", "Basilisk jaw", "Bandos Tassets", "Ahrim's hood"
+                ]
+            },
+            {
+                username: "BlancaLamb",
+                sheetUrl: "",
+                items: [
+                    "Cockatrice head", "Leviathan's lure", "Eternal crystal", "Granite gloves", "Warriors ring", "Torag's helm",
+                    "Sarachnis cudgel", "Fangs of Venenatis", "Bandos Chestplate", "Ahrim's robetop", "Eclipse moon chestplate", "Eye of the Duke",
+                    "Nightmare staff", "Zaryte vambraces", "Warped Sceptre", "Karil's crossbow", "Any Corp sigil", "Ancient hilt or Nihil horn",
+                    "Any sunfire piece or Tonalztics of Ralos", "Verac's plateskirt", "Jar 8-15", "Ultor vestige", "Broken zombie axe", "Blood quartz",
+                    "Black Tourmeline core", "Staff of the Dead", "Dragon knives", "Virtus robe bottom", "Armadyl helmet", "Blue moon helm",
+                    "Leaf-bladed battleaxe", "Dragon thrownaxes", "Burning claw", "Leaf-bladed sword", "Hydra tail", "Seers ring"
+                ]
+            },
+            {
+                username: "Diamond_STYG",
+                sheetUrl: "",
+                items: [
+                    "Hydra's Claw", "Dragon warhammer", "Noxious pommel", "Craw's Bow", "Amulet of Avarice", "ToB weapon",
+                    "Broken zombie helmet", "Granite hammer", "Chromium ingot", "Guthan's platebody", "Black Tourmeline core", "Bottled Storm",
+                    "Voidwaker hilt", "Fangs of Venenatis", "Torag's helm", "Warped Sceptre", "Obsidian shield", "Zaryte vambraces",
+                    "Armadyl helmet", "Eye of the Duke", "Guthan's chainskirt", "Drake's tooth", "Dragon chainbody", "Zamorakian spear",
+                    "Zamorak hilt", "Granite longsword", "Voidwaker Gem", "Belle's Folly", "Any piece of Masori", "Armadyl chestplate",
+                    "CoX weapon", "Hydra Leather", "Armadyl chainskirt", "Ice elemental staff crown", "Granite boots", "Guthan's warspear"
+                ]
+            },
+            {
+                username: "KosenRS",
+                sheetUrl: "",
+                items: [
+                    "Pegasian crystal", "Any Nightmare orb", "ToA Undesirables", "CoX Shield", "Armadyl crossbow", "Black Tourmeline core",
+                    "Dragonbone necklace", "Any piece of Inquisitor (armour or mace)", "Bossing pet", "Torag's platebody", "Staff of the Dead", "Blood moon tassets",
+                    "Voidwaker Gem", "Aranea boots", "Ice elemental staff crown", "Broken zombie axe", "Serpentine visage", "Guthan's warspear",
+                    "Executioner's axe head", "Seers ring", "Ultor vestige", "Unsired", "Armadyl helmet", "Eclipse atlatl",
+                    "Bellator vestige", "Eclipse moon chestplate", "Granite gloves", "Lower Rev totem", "Noxious blade", "Eternal crystal",
+                    "Sarachnis cudgel", "Virtus mask", "Ahrim's robetop", "Jar 8-15", "Bottled Storm", "Slayer battlestaff"
+                ]
+            },
+            {
+                username: "MothQueen",
+                sheetUrl: "",
+                items: [
+                    "Ahrim's hood", "Blood moon chestplate", "Virtus mask", "Enhanced teleport seed", "Noxious blade", "Dual macuahuitl",
+                    "Bandos hilt", "Aranea boots", "Voidwaker Gem", "Slayer battlestaff", "Primordial crystal", "Virtus robe bottom",
+                    "Seers ring", "Dharok's platelegs", "Eclipse atlatl", "Armadyl chestplate", "Obsidian cape", "Ahrim's robeskirt",
+                    "Leviathan's lure", "Light or Heavy frame", "Any Ancestral piece", "Obsidian armour", "Karil's coif", "Blue moon tassets",
+                    "Broken zombie axe", "Blood moon tassets", "Saradomin hilt", "Cockatrice head", "Any piece of Torva", "Saradomin's light",
+                    "Bandos Tassets", "Obsidian throwing rings", "Any piece of Masori", "Warped Sceptre", "Dragon 2H sword", "Ahrim's staff"
+                ]
+            },
+            {
+                "username": "Worg",
+                "sheetUrl": "",
+                "items": [
+                    "Dragon chainbody", "Armadyl hilt", "Eclipse atlatl", "Dragonbone necklace", "Zamorak hilt", "Dragon harpoon",
+                    "Armadyl crossbow", "Any Nightmare orb", "Zamorakian spear", "Kurask head", "Thamarron's Scepter", "Broken zombie axe",
+                    "Broken zombie helmet", "Jar 8-15", "Enhanced teleport seed", "Craw's Bow", "Eclipse moon chestplate", "Zaryte vambraces",
+                    "Ring of the Gods", "Blood moon chestplate", "CoX weapon", "Virtus mask", "Zenyte shard", "Smoke battlestaff",
+                    "CoX prayer scroll", "Ahrim's robeskirt", "Leaf-bladed battleaxe", "Draconic visage", "Dragon pickaxe", "Black mask (10)",
+                    "Fangs of Venenatis", "Smouldering stone", "Noxious pommel", "Vigorra's Chainmace", "Any piece of Masori", "Ballista piece"
+                ]
+            },
+            {
+                username: "Canifistme",
+                sheetUrl: "",
+                items: [
+                    "Smoke battlestaff", "Steam battlestaff", "Verac's helm", "Tyrannical ring", "Zamorak hilt", "Any piece of Torva",
+                    "Karil's leatherskirt", "Voidwaker Gem", "ToB weapon", "Blue moon helm", "Hueycoatl hide", "Occult necklace",
+                    "Berserker ring", "Aranea boots", "Blood moon helm", "Dharok's greataxe", "Verac's brassard", "Leaf-bladed battleaxe",
+                    "Ice quartz", "Belle's Folly", "Draconic visage", "Venator vestige", "Dragon knives", "Armadyl helmet",
+                    "Bandos Tassets", "Tanzanite fang", "Ancient hilt or Nihil horn", "CoX Shield", "Granite hammer", "Tormented synapse",
+                    "Ice elemental staff crown", "Virtus mask", "Blue moon tassets", "Basilisk jaw", "Any Ancestral piece", "Glacial Temotli"
+                ]
+            },
+            {
+                username: "HowHardd",
+                sheetUrl: "",
+                items: [
+                    "Executioner's axe head", "CoX prayer scroll", "Obsidian cape", "Dharok's helm", "Obsidian mace", "Warped Sceptre",
+                    "Dual macuahuitl", "Serpentine visage", "Blue moon spear", "Archers ring", "Any Ancestral piece", "Eternal crystal",
+                    "Torag's platelegs", "Warriors ring", "Obsidian sword", "Seers ring", "Draconic visage", "Hydra's Claw",
+                    "Belle's Folly", "Any piece of Torva", "Aranea boots", "Broken zombie axe", "Bandos hilt", "Craw's Bow",
+                    "Venator shard", "Jar 8-15", "Saradomin's light", "Fangs of Venenatis", "Skull of Vet'ion", "Blood shard",
+                    "Bottled Storm", "Smouldering stone", "Any piece of Masori", "Any piece of Inquisitor (armour or mace)", "Hueycoatl hide", "Claws of Callisto"
+                ]
+            },
+            {
+                "username": "Sivnoah",
+                "sheetUrl": "",
+                "items": [
+                    "Karil's crossbow", "Magic fang", "Echo crystal", "Eternal crystal", "Verac's helm", "Kraken tentacle",
+                    "Virtus robe bottom", "Tyrannical ring", "Armadyl helmet", "Blood moon helm", "Granite gloves", "Eclipse moon helm",
+                    "Blood moon tassets", "Noxious blade", "Leaf-bladed battleaxe", "Ahrim's staff", "Holy elixir", "Dragon 2H sword",
+                    "Black mask (10)", "Guthan's warspear", "Torag's hammers", "Voidwaker Blade", "Bandos hilt", "Amulet of Avarice",
+                    "Virtus robe top", "Dragon knives", "Glacial Temotli", "Warped Sceptre", "Guthan's platebody", "Cockatrice head",
+                    "Voidwaker Gem", "Dragon warhammer", "Any sunfire piece or Tonalztics of Ralos", "Any piece of Torva", "Sulphur blades", "Occult necklace"
+                ]
+            },
+            {
+                username: "Emilgood",
+                sheetUrl: "",
+                items: [
+                    "Granite longsword", "Dragon harpoon", "Broken zombie helmet", "Broken zombie axe", "Siren's staff", "Drake's claw",
+                    "Hueycoatl hide", "Black Tourmeline core", "Ahrim's hood", "Karil's crossbow", "Echo crystal", "Blood moon tassets",
+                    "Bandos hilt", "Eternal crystal", "Verac's helm", "Tome of Earth", "Verac's brassard", "Seers ring",
+                    "Guthan's platebody", "Venator shard", "Obsidian maul", "Hydra's Claw", "Amulet of Avarice", "Blue moon helm",
+                    "Guthan's helm", "Basilisk jaw", "Eye of the Duke", "Skilling pet", "Obsidian cape", "Bossing pet",
+                    "Torag's platebody", "Cockatrice head", "Blue moon spear", "Eclipse moon chestplate", "Obsidian sword", "Armadyl crossbow"
+                ]
+            },
+            {
+                username: "Ung",
+                sheetUrl: "",
+                items: [
+                    "Zamorak hilt", "Cockatrice head", "Staff of the Dead", "Obsidian sword", "Warped Sceptre", "Zamorakian spear",
+                    "Trident of the seas (full)", "Avernic defender hilt", "Kraken tentacle", "Any Ancestral piece", "Any piece of Masori", "CoX Shield",
+                    "Guthan's warspear", "Kurask head", "Dragon warhammer", "Slayer battlestaff", "Eclipse atlatl", "Dragon axe",
+                    "Dharok's platelegs", "Bottled Storm", "Blood moon helm", "Broken zombie axe", "Dragon sword", "Karil's leatherskirt",
+                    "Drake's tooth", "Dragon 2H sword", "Dragonbone necklace", "Verac's helm", "Ancient hilt or Nihil horn", "Armadyl helmet",
+                    "Unsired", "Bandos hilt", "Skull of Vet'ion", "Occult necklace", "Dharok's greataxe", "Drake's claw"
+                ]
+            },
+            {
+                username: "Yoyoguy79",
+                sheetUrl: "",
+                items: [
+                    "Araxxyte fang", "Dragon axe", "Burning claw", "Blue moon tassets", "Craw's Bow", "Sarachnis cudgel",
+                    "Obsidian cape", "Ahrim's staff", "Cockatrice head", "Saradomin sword", "Torag's hammers", "Dragonbone necklace",
+                    "Dragon sword", "Any piece of Masori", "Abyssal dagger", "Tyrannical ring", "Fangs of Venenatis", "Light or Heavy frame",
+                    "Noxious point", "ToB weapon", "Amulet of Avarice", "Avernic defender hilt", "Steam battlestaff", "Magic fang",
+                    "Occult necklace", "Dharok's platelegs", "Tome of Earth", "Obsidian throwing rings", "Any piece of Justiciar", "Draconic visage",
+                    "Ice elemental staff crown", "Granite ring", "Blood quartz", "Blue moon helm", "Drake's tooth", "Echo crystal"
+                ]
+            },
+            {
+                "username": "Aizawa Shota",
+                "sheetUrl": "",
+                "items": [
+                    "Siren's staff", "Amulet of Avarice", "Any piece of Inquisitor (armour or mace)", "Ancient Crystal", "Virtus mask", "Saradomin hilt",
+                    "Occult necklace", "Eclipse moon helm", "Obsidian armour", "Karil's leatherskirt", "Dual macuahuitl", "Vigorra's Chainmace",
+                    "Bossing pet", "Smoke quartz", "Smoke battlestaff", "Dragon axe", "Verac's brassard", "Drake's tooth",
+                    "Blue moon chestplate", "ToA Undesirables", "Any sunfire piece or Tonalztics of Ralos", "Voidwaker hilt", "Obsidian mace", "Black mask (10)",
+                    "Shadow quartz", "Obsidian dagger", "Magic fang", "Karil's leathertop", "Ice elemental staff crown", "Abyssal dagger",
+                    "Voidwaker Blade", "Granite gloves", "Basilisk jaw", "Noxious point", "Armadyl hilt", "Leaf-bladed battleaxe"
+                ]
+            },
+            {
+                username: "Tepeldraaier",
+                sheetUrl: "",
+                items: [
+                    "Torag's platelegs", "Dharok's platebody", "Karil's crossbow", "Holy elixir", "Blue moon chestplate", "Enhanced teleport seed",
+                    "Jar 8-15", "Siren's staff", "Virtus mask", "Noxious point", "Fire elemental staff crown", "Burning claw",
+                    "Archers ring", "Basilisk jaw", "CoX Shield", "Torag's helm", "Blue moon helm", "Obsidian armour",
+                    "Black mask (10)", "Executioner's axe head", "Bandos boots", "Armadyl chestplate", "Any piece of Torva", "Eternal crystal",
+                    "Draconic visage", "Leaf-bladed battleaxe", "Blood moon chestplate", "Bandos hilt", "Pegasian crystal", "Chromium ingot",
+                    "Warriors ring", "ToB weapon", "Saradomin sword", "Armadyl helmet", "Tome of Earth", "Torag's hammers"
+                ]
+            },
+            {
+                username: "Per il",
+                sheetUrl: "",
+                items: [
+                    "Dharok's helm", "Dual macuahuitl", "Obsidian sword", "Broken zombie axe", "Draconic visage", "Zaryte vambraces",
+                    "Zamorak hilt", "Ahrim's staff", "Hueycoatl hide", "Granite gloves", "Black Tourmeline core", "Torag's hammers",
+                    "Higher Rev totem", "Primordial crystal", "Blood quartz", "Dragon chainbody", "Black mask (10)", "Kraken tentacle",
+                    "Blue moon helm", "Virtus mask", "Cockatrice head", "Shaman mask", "Hydra Leather", "Nightmare staff",
+                    "Leaf-bladed battleaxe", "Armadyl chestplate", "Siren's staff", "Granite hammer", "Dharok's greataxe", "Voidwaker Blade",
+                    "Dragon pickaxe", "Tyrannical ring", "Obsidian throwing rings", "Enhanced teleport seed", "Ahrim's robetop", "Dragon axe"
+                ]
+            },
+            {
+                "username": "k3yz21",
+                "sheetUrl": "",
+                "items": [
+                    "Virtus robe bottom", "Torag's helm", "Nightmare staff", "Drake's tooth", "Amulet of Avarice", "Belle's Folly",
+                    "Obsidian cape", "Dragon pickaxe", "Araxxyte fang", "Glacial Temotli", "Guthan's platebody", "Dragon harpoon",
+                    "Unsired", "Uncut onyx", "Enhanced teleport seed", "Eclipse moon helm", "Any piece of Inquisitor (armour or mace)", "Ahrim's staff",
+                    "Noxious pommel", "Karil's coif", "Ancient hilt or Nihil horn", "Saradomin's light", "Pegasian crystal", "Shadow quartz",
+                    "Drake's claw", "Dharok's greataxe", "Voidwaker hilt", "Ring of the Gods", "Higher Rev totem", "Magic fang",
+                    "Ballista piece", "Skilling pet", "Echo crystal", "Ice elemental staff crown", "Blue moon chestplate", "Eternal crystal"
+                ]
+            },
+            {
+                username: "Kokmagik",
+                sheetUrl: "",
+                items: [
+                    "Eclipse atlatl", "Holy elixir", "Jar 1-7", "Armadyl hilt", "Kraken tentacle", "Bandos Tassets",
+                    "Armadyl chainskirt", "Obsidian sword", "Obsidian throwing rings", "Hydra Leather", "Leaf-bladed battleaxe", "Eternal crystal",
+                    "Venator vestige", "Amulet of Avarice", "Bandos hilt", "Bottled Storm", "Verac's plateskirt", "Obsidian armour",
+                    "Black mask (10)", "Lower Rev totem", "Virtus mask", "Unsired", "Leviathan's lure", "Dual macuahuitl",
+                    "Magus vestige", "Light or Heavy frame", "Sulphur blades", "Zamorak hilt", "Virtus robe top", "Dharok's helm",
+                    "Pegasian crystal", "Archers ring", "Zaryte vambraces", "Treasonous ring", "Nightmare staff", "Skull of Vet'ion"
+                ]
+            },
+            {
+                username: "Alken",
+                sheetUrl: "",
+                items: [
+                    "Blood moon chestplate", "Bandos hilt", "Eclipse moon chestplate", "CoX prayer scroll", "Blood shard", "Saradomin hilt",
+                    "Craw's Bow", "Jar 1-7", "Zamorak hilt", "Guthan's warspear", "Magic fang", "Trident of the seas (full)",
+                    "Burning claw", "Virtus robe bottom", "Blue moon helm", "Archers ring", "Armadyl hilt", "Tormented synapse",
+                    "Any piece of Justiciar", "Primordial crystal", "Unsired", "Ahrim's robeskirt", "Smoke quartz", "Dragon pickaxe",
+                    "Dragon knives", "Sulphur blades", "Guthan's helm", "ToA Undesirables", "Ultor vestige", "Skull of Vet'ion",
+                    "Dual macuahuitl", "Blue moon tassets", "Guthan's chainskirt", "Dragonbone necklace", "Ice elemental staff crown", "Lower Rev totem"
+                ]
+            },
+            {
+                username: "F9F",
+                sheetUrl: "",
+                items: [
+                    "Dragon axe", "Dragon warhammer", "Eclipse moon chestplate", "Magic fang", "Ballista piece", "Bandos Chestplate",
+                    "Granite ring", "Dragonbone necklace", "Ahrim's staff", "Hydra Leather", "Archers ring", "Dual macuahuitl",
+                    "Granite gloves", "Dragon limbs", "Venator vestige", "Blood quartz", "Drake's tooth", "Karil's coif",
+                    "Dragon knives", "Verac's helm", "Basilisk jaw", "Voidwaker Gem", "Granite boots", "Virtus robe bottom",
+                    "Jar 1-7", "Eclipse moon tassets", "Any piece of Justiciar", "Belle's Folly", "Berserker ring", "Karil's crossbow",
+                    "Guthan's helm", "Burning claw", "Dharok's platelegs", "Torag's hammers", "Any sunfire piece or Tonalztics of Ralos", "Leaf-bladed sword"
+                ]
+            },
+            {
+                username: "Still Skoal",
+                sheetUrl: "",
+                items: [
+                    "Enhanced teleport seed", "Eclipse atlatl", "Ice quartz", "Steam battlestaff", "Kurask head", "Obsidian mace",
+                    "Light or Heavy frame", "Bellator vestige", "CoX prayer scroll", "Skull of Vet'ion", "Dragon warhammer", "Guthan's helm",
+                    "Jar 8-15", "Obsidian shield", "Executioner's axe head", "Ultor vestige", "Guthan's platebody", "Warped Sceptre",
+                    "Hueycoatl hide", "Zamorak hilt", "Dragon thrownaxes", "Hydra tail", "Seers ring", "Any piece of Masori",
+                    "Echo crystal", "Eternal crystal", "Dragon knives", "Guthan's chainskirt", "Black mask (10)", "Blood moon chestplate",
+                    "Leaf-bladed sword", "Blood shard", "Dharok's platebody", "Voidwaker Gem", "Armadyl helmet", "Shadow quartz"
+                ]
+            },
+            {
+                username: "Uncr3at1ve",
+                sheetUrl: "",
+                items: [
+                    "Dragon knives", "Blood moon chestplate", "Obsidian dagger", "Armadyl crossbow", "Archers ring", "Kurask head",
+                    "Guthan's warspear", "Warped Sceptre", "Leviathan's lure", "Bandos boots", "Leaf-bladed battleaxe", "Hydra's Claw",
+                    "Bottled Storm", "Karil's coif", "Jar 1-7", "Verac's helm", "Obsidian sword", "Light or Heavy frame",
+                    "Any piece of Masori", "Hydra tail", "Dharok's platebody", "Any sunfire piece or Tonalztics of Ralos", "Holy elixir", "Zamorak hilt",
+                    "Guthan's chainskirt", "Vigorra's Chainmace", "Zaryte vambraces", "Karil's leathertop", "Sulphur blades", "Obsidian shield",
+                    "Smoke quartz", "Dragon pickaxe", "Noxious pommel", "Kraken tentacle", "Dragon axe", "Shadow quartz"
+                ]
+            },
+            {
+                username: "Miss Mongrel",
+                sheetUrl: "",
+                items: [
+                    "Draconic visage", "Fangs of Venenatis", "Kurask head", "Occult necklace", "Obsidian sword", "Leaf-bladed battleaxe",
+                    "Hydra tail", "Zenyte shard", "Obsidian maul", "Hydra Leather", "Virtus robe top", "Blue moon chestplate",
+                    "Noxious blade", "Granite ring", "Magus vestige", "Bellator vestige", "Dragon thrownaxes", "Ring of the Gods",
+                    "Saradomin hilt", "Tyrannical ring", "Eclipse moon helm", "Higher Rev totem", "Ice quartz", "Jar 8-15",
+                    "Craw's Bow", "Warped Sceptre", "Obsidian dagger", "Verac's flail", "Zaryte vambraces", "Obsidian shield",
+                    "ToB weapon", "Voidwaker Blade", "Virtus mask", "Eclipse moon chestplate", "Berserker ring", "Dragon warhammer"
+                ]
+            },
+            {
+                username: "Kwaddler",
+                sheetUrl: "",
+                items: [
+                    "Any sunfire piece or Tonalztics of Ralos", "Obsidian mace", "Saradomin sword", "Obsidian sword", "Hueycoatl hide", "Dragonbone necklace",
+                    "Smouldering stone", "Blood shard", "Enhanced teleport seed", "Nightmare staff", "Unsired", "Ahrim's robetop",
+                    "Dharok's platebody", "Karil's leathertop", "Guthan's chainskirt", "Eye of the Duke", "Noxious blade", "Skull of Vet'ion",
+                    "Smoke battlestaff", "Seers ring", "Any Corp sigil", "Noxious point", "Any Nightmare orb", "Virtus robe bottom",
+                    "Saradomin hilt", "Granite hammer", "CoX weapon", "Abyssal dagger", "Obsidian armour", "Holy elixir",
+                    "Tanzanite fang", "Blood moon chestplate", "Dual macuahuitl", "Ancient hilt or Nihil horn", "Dharok's helm", "Noxious pommel"
+                ]
+            },
+            {
+                username: "L ining",
+                sheetUrl: "",
+                items: [
+                    "Any piece of Masori", "Eye of the Duke", "Blood moon helm", "Ahrim's robeskirt", "Dharok's platebody", "Claws of Callisto",
+                    "Ring of the Gods", "Dragonbone necklace", "Ultor vestige", "Granite ring", "Blood moon tassets", "Bandos boots",
+                    "Armadyl chainskirt", "Ice elemental staff crown", "Drake's tooth", "Abyssal dagger", "Pegasian crystal", "Obsidian armour",
+                    "Zenyte shard", "Fire elemental staff crown", "Smoke quartz", "Occult necklace", "Armadyl helmet", "Any piece of Torva",
+                    "Bossing pet", "Ahrim's robetop", "Venator vestige", "Basilisk jaw", "Dragon axe", "Blue moon helm",
+                    "Dragon thrownaxes", "Armadyl chestplate", "Archers ring", "Guthan's chainskirt", "Broken zombie helmet", "Leviathan's lure"
+                ]
+            },
+            {
+                username: "Scapeshift",
+                sheetUrl: "",
+                items: [
+                    "Ahrim's robetop", "Armadyl chainskirt", "Virtus robe bottom", "Obsidian throwing rings", "Zaryte vambraces", "Ring of the Gods",
+                    "Steam battlestaff", "Jar 8-15", "Shadow quartz", "Magic fang", "Blood moon tassets", "Dragon thrownaxes",
+                    "Smoke quartz", "Draconic visage", "ToB weapon", "Virtus mask", "Any Nightmare orb", "Berserker ring",
+                    "Light or Heavy frame", "Pegasian crystal", "Leaf-bladed sword", "Obsidian mace", "CoX Shield", "Obsidian cape",
+                    "Blue moon spear", "Ice quartz", "Torag's helm", "Claws of Callisto", "Fangs of Venenatis", "Guthan's warspear",
+                    "Dual macuahuitl", "Noxious blade", "Virtus robe top", "Craw's Bow", "Serpentine visage", "Kraken tentacle"
+                ]
+            },
+            {
+                username: "Devinchi",
+                sheetUrl: "",
+                items: [
+                    "Skull of Vet'ion", "Karil's leathertop", "Kurask head", "Abyssal dagger", "Nightmare staff", "Ice elemental staff crown",
+                    "Higher Rev totem", "Amulet of Avarice", "Voidwaker Blade", "ToA Undesirables", "Uncut onyx", "Granite hammer",
+                    "Verac's flail", "CoX weapon", "Executioner's axe head", "Broken zombie axe", "Staff of the Dead", "Zenyte shard",
+                    "Smouldering stone", "Ballista piece", "Berserker ring", "Blood quartz", "Noxious point", "Shaman mask",
+                    "Any sunfire piece or Tonalztics of Ralos", "Warped Sceptre", "Dragon harpoon", "Araxxyte fang", "Chromium ingot", "Dharok's platebody",
+                    "Ahrim's robeskirt", "Vigorra's Chainmace", "Dragon pickaxe", "Magic fang", "Trident of the seas (full)", "Tome of Earth"
+                ]
+            },
+            {
+                "username": "Bramun",
+                "sheetUrl": "",
+                "items": [
+                    "Ahrim's robeskirt", "Hydra Leather", "Archers ring", "Slayer battlestaff", "Guthan's helm", "Lower Rev totem",
+                    "Verac's flail", "Any piece of Inquisitor (armour or mace)", "Voidwaker Blade", "Noxious blade", "Thamarron's Scepter", "Smouldering stone",
+                    "Sarachnis cudgel", "Blue moon helm", "Executioner's axe head", "Blue moon tassets", "Granite boots", "Dragon limbs",
+                    "Occult necklace", "Tanzanite fang", "CoX prayer scroll", "Ahrim's staff", "Burning claw", "Jar 8-15",
+                    "Magic fang", "Ice quartz", "Fire elemental staff crown", "Tome of Earth", "Armadyl chainskirt", "Draconic visage",
+                    "Broken zombie helmet", "Fangs of Venenatis", "Staff of the Dead", "Saradomin hilt", "Shaman mask", "Granite longsword"
+                ]
+            },
+            {
+                username: "Syxiate",
+                sheetUrl: "",
+                items: [
+                    "Verac's helm", "Obsidian throwing rings", "Claws of Callisto", "Guthan's helm", "Dragon thrownaxes", "Berserker ring",
+                    "Jar 1-7", "Leaf-bladed sword", "Karil's leathertop", "Magus vestige", "ToA Undesirables", "Any Ancestral piece",
+                    "Torag's helm", "Craw's Bow", "Tyrannical ring", "Saradomin sword", "Dragon chainbody", "Holy elixir",
+                    "Bandos boots", "Aranea boots", "Ahrim's hood", "Verac's flail", "Armadyl helmet", "Draconic visage",
+                    "Virtus mask", "Eclipse atlatl", "Dharok's platelegs", "Zamorak hilt", "Verac's plateskirt", "Eclipse moon tassets",
+                    "Dual macuahuitl", "Ancient hilt or Nihil horn", "Bandos Chestplate", "Hydra Leather", "Eclipse moon chestplate", "Verac's brassard"
+                ]
+            },
+            {
+                username: "Born2Smurf",
+                sheetUrl: "",
+                items: [
+                    "Blood moon helm", "Ice quartz", "Vigorra's Chainmace", "Dragon 2H sword", "Berserker ring", "Leaf-bladed sword",
+                    "Hydra tail", "Jar 1-7", "Bandos Chestplate", "Tanzanite fang", "Ahrim's staff", "Any Nightmare orb",
+                    "Dharok's helm", "Granite boots", "Dharok's platelegs", "Leviathan's lure", "Dragonbone necklace", "Virtus mask",
+                    "Steam battlestaff", "Saradomin hilt", "Siren's staff", "Pegasian crystal", "Smoke quartz", "Eclipse moon tassets",
+                    "Holy elixir", "Ahrim's hood", "Dragon thrownaxes", "Staff of the Dead", "Unsired", "Jar 8-15",
+                    "Dragon warhammer", "Any sunfire piece or Tonalztics of Ralos", "Ahrim's robetop", "Magus vestige", "Sulphur blades", "Uncut onyx"
+                ]
+            },
+            {
+                username: "Sillekums",
+                sheetUrl: "",
+                items: [
+                    "Zamorakian spear", "Bottled Storm", "Karil's leatherskirt", "Saradomin's light", "Armadyl chainskirt", "Any piece of Torva",
+                    "Warped Sceptre", "Nightmare staff", "Dragon axe", "Unsired", "Skilling pet", "Black mask (10)",
+                    "Jar 8-15", "Obsidian armour", "Any piece of Justiciar", "Ice elemental staff crown", "Dharok's platebody", "Avernic defender hilt",
+                    "Sarachnis cudgel", "Leaf-bladed battleaxe", "Steam battlestaff", "Verac's plateskirt", "Verac's flail", "Dragon sword",
+                    "Primordial crystal", "Torag's helm", "Ahrim's hood", "Voidwaker Blade", "Glacial Temotli", "ToA Undesirables",
+                    "Lower Rev totem", "Pegasian crystal", "Bossing pet", "Eye of the Duke", "Ballista piece", "Eclipse atlatl"
+                ]
+            },
+            {
+                username: "Taybz",
+                sheetUrl: "",
+                items: [
+                    "Araxxyte fang", "Dual macuahuitl", "Verac's brassard", "Chromium ingot", "Hydra Leather", "Avernic defender hilt",
+                    "Unsired", "Blood shard", "Voidwaker Blade", "Sarachnis cudgel", "ToB weapon", "Amulet of Avarice",
+                    "Executioner's axe head", "Torag's helm", "Verac's plateskirt", "Broken zombie helmet", "Voidwaker hilt", "Ahrim's robeskirt",
+                    "Zamorak hilt", "Bottled Storm", "Dragon chainbody", "Ancient hilt or Nihil horn", "Dragon axe", "Bandos boots",
+                    "Bandos hilt", "Ultor vestige", "Dragonbone necklace", "Eclipse moon helm", "Dragon harpoon", "Blue moon spear",
+                    "Blood moon chestplate", "Vigorra's Chainmace", "Noxious point", "Pegasian crystal", "Uncut onyx", "Dharok's platebody"
+                ]
+            },
+            {
+                username: "NikolajSMG",
+                sheetUrl: "",
+                items: [
+                    "CoX prayer scroll", "Nightmare staff", "Zaryte vambraces", "Amulet of Avarice", "Hydra's Claw", "Noxious point",
+                    "Ahrim's robetop", "Abyssal dagger", "Bandos hilt", "Zamorak hilt", "Granite gloves", "Archers ring",
+                    "Blue moon tassets", "Sulphur blades", "Skull of Vet'ion", "Higher Rev totem", "Granite hammer", "Basilisk jaw",
+                    "CoX Shield", "Unsired", "Pegasian crystal", "Holy elixir", "Any piece of Inquisitor (armour or mace)", "Bandos Tassets",
+                    "Fire elemental staff crown", "Leviathan's lure", "Granite longsword", "Vigorra's Chainmace", "Saradomin hilt", "Belle's Folly",
+                    "Torag's helm", "Steam battlestaff", "Ahrim's robeskirt", "Voidwaker Blade", "Smoke quartz", "Claws of Callisto"
+                ]
+            },
+            {
+                username: "Ligonma",
+                sheetUrl: "",
+                items: [
+                    "Dharok's greataxe", "Dragon limbs", "Dragon chainbody", "Shaman mask", "Shadow quartz", "Amulet of Avarice",
+                    "Magic fang", "Jar 8-15", "Fangs of Venenatis", "Dual macuahuitl", "Leaf-bladed battleaxe", "Ancient hilt or Nihil horn",
+                    "Eclipse moon tassets", "Tome of Earth", "Fire elemental staff crown", "Broken zombie axe", "Dragon sword", "Kurask head",
+                    "Voidwaker hilt", "Zamorakian spear", "Steam battlestaff", "Granite longsword", "Warped Sceptre", "Guthan's platebody",
+                    "Nightmare staff", "Aranea boots", "Eclipse atlatl", "Cockatrice head", "Kraken tentacle", "Obsidian sword",
+                    "Obsidian dagger", "Glacial Temotli", "Dharok's helm", "Venator shard", "Obsidian maul", "Obsidian armour"
+                ]
+            },
+            {
+                "username": "ForgetThePet",
+                "sheetUrl": "",
+                "items": [
+                    "Leaf-bladed battleaxe", "Eclipse moon chestplate", "Dharok's platebody", "Obsidian maul", "Any piece of Masori", "Granite boots",
+                    "Dragon 2H sword", "Granite ring", "Steam battlestaff", "Trident of the seas (full)", "Warped Sceptre", "Kurask head",
+                    "Bossing pet", "Bellator vestige", "Dragon harpoon", "Virtus robe bottom", "ToB weapon", "Archers ring",
+                    "Dragon knives", "Virtus robe top", "Blood moon tassets", "Unsired", "Jar 8-15", "Torag's helm",
+                    "Bandos Chestplate", "Ice quartz", "Leaf-bladed sword", "Aranea boots", "Obsidian shield", "Executioner's axe head",
+                    "Guthan's platebody", "Any piece of Justiciar", "Voidwaker hilt", "Dragon warhammer", "Ring of the Gods", "Smouldering stone"
+                ]
+            },
+            {
+                "username": "Blessedriga",
+                "sheetUrl": "",
+                "items": [
+                    "Black Tourmeline core", "Verac's helm", "Craw's Bow", "Glacial Temotli", "Guthan's platebody", "Virtus robe top",
+                    "Tome of Earth", "Dragon axe", "Claws of Callisto", "Nightmare staff", "Obsidian cape", "Dragon chainbody",
+                    "Eternal crystal", "Dragon sword", "Serpentine visage", "Granite hammer", "Leaf-bladed sword", "Unsired",
+                    "Dharok's greataxe", "Venator vestige", "Any piece of Masori", "Dual macuahuitl", "Noxious blade", "Sarachnis cudgel",
+                    "Smoke battlestaff", "Karil's leathertop", "Skull of Vet'ion", "Voidwaker Gem", "Ice elemental staff crown", "Holy elixir",
+                    "Ahrim's robetop", "Granite boots", "Dragon warhammer", "Executioner's axe head", "Jar 1-7", "Blood moon helm"
+                ]
+            },
+            {
+                "username": "CaptPleb",
+                "sheetUrl": "",
+                "items": [
+                    "Blood moon tassets", "Aranea boots", "Jar 8-15", "Obsidian armour", "Dharok's helm", "Dragon harpoon",
+                    "Any piece of Justiciar", "Voidwaker Blade", "Sulphur blades", "Dragon chainbody", "Uncut onyx", "ToB weapon",
+                    "Torag's platelegs", "Kurask head", "Guthan's chainskirt", "Eclipse moon helm", "Eye of the Duke", "Dual macuahuitl",
+                    "Granite longsword", "Leaf-bladed sword", "Belle's Folly", "CoX Shield", "Blue moon tassets", "Any piece of Masori",
+                    "Drake's claw", "Ice elemental staff crown", "Dragonhunter wand", "Voidwaker Gem", "Any piece of Torva", "Warped Sceptre",
+                    "Blood quartz", "Nightmare staff", "Verac's plateskirt", "Light or Heavy frame", "Amulet of Avarice", "Basilisk jaw"
+                ]
+            },
+            {
+                "username": "Angelodeedo",
+                "sheetUrl": "",
+                "items": [
+                    "Virtus robe top", "Ahrim's robetop", "Abyssal dagger", "Executioner's axe head", "Kraken tentacle", "Blue moon tassets",
+                    "Fire elemental staff crown", "Leaf-bladed sword", "Tanzanite fang", "Dragon axe", "Saradomin hilt", "Dharok's platelegs",
+                    "Blood shard", "Jar 1-7", "Black mask (10)", "Enhanced teleport seed", "Granite longsword", "Craw's Bow",
+                    "Obsidian mace", "Any Ancestral piece", "Ahrim's staff", "Shadow quartz", "Bossing pet", "Obsidian armour",
+                    "Any piece of Inquisitor (armour or mace)", "Lower Rev totem", "Dragon 2H sword", "Dual macuahuitl", "Obsidian sword", "Any piece of Masori",
+                    "Any Corp sigil", "Blue moon spear", "Bandos Chestplate", "Obsidian throwing rings", "Archers ring", "Dragon pickaxe"
+                ]
+            },
+            {
+                "username": "Moresail165",
+                "sheetUrl": "",
+                "items": [
+                    "Burning claw", "Tormented synpel", "Noxious pommel", "Shadow quartz", "Any Ancestral piece", "Armadyl helmet",
+                    "Belle's Folly", "Dragon knives", "Any piece of Inquisitor (armour or mace)", "Hydra Leather", "Sarachnis cudgel", "Guthan's platebody",
+                    "Sulphur blades", "Dual macuahuitl", "Obsidian throwing rings", "Dragon harpoon", "Hydra tail", "Dharok's helm",
+                    "Zenyte shard", "Verac's flail", "Blood quartz", "Abyssal dagger", "Ancient hilt or Nihil horn", "Obsidian dagger",
+                    "Siren's staff", "Dragon sword", "Virtus robe top", "Noxious point", "Ancient Crystal", "Executioner's axe head",
+                    "Dragon warhammer", "Serpentine visage", "Virtus mask", "Araxxyte fang", "Blue moon tassets", "Light or Heavy frame"
+                ]
+            },
+            {
+                "username": "iAtki",
+                "sheetUrl": "",
+                "items": [
+                    "Belle's Folly", "Saradomin's light", "Dharok's platebody", "Bottled Storm", "Eclipse moon helm", "Aranea boots",
+                    "Obsidian shield", "Echo crystal", "Armadyl helmet", "Noxious blade", "Zenyte shard", "Blood moon helm",
+                    "Toktz-ket-xil", "Dragon thrownaxes", "Amulet of Avarice", "Eclipse moon tassets", "Kraken tentacle", "Treasonous ring",
+                    "Warriors ring", "Guthan's warspear", "Trident of the seas (full)", "ToA Undesirables", "Hydra Leather", "Sarachnis cudgel",
+                    "Holy elixir", "Blue moon spear", "Abyssal dagger", "Avernic defender hilt", "Granite ring", "Ancient hilt or Nihil horn",
+                    "Leaf-bladed battleaxe", "Torag's helm", "Hueycoatl hide", "Any Ancestral piece", "Any Nightmare orb", "Dragon pickaxe", "Draconic visage"
+                ]
+            },
+            {
+                "username": "Chickensss",
+                "sheetUrl": "",
+                "items": [
+                    "CoX weapon", "Blue moon tassets", "Virtus robe bottom", "Bellator vestige", "Torag's hammers", "Any piece of Justiciar",
+                    "Shadow quartz", "Executioner's axe head", "Smoke quartz", "Dragon knives", "Warriors ring", "Virtus mask",
+                    "Blue moon chestplate", "Amulet of Avarice", "Ancient Crystal", "Verac's plateskirt", "Ahrim's robeskirt", "Jar 1-7",
+                    "Zamorak hilt", "Guthan's warspear", "Voidwaker hilt", "Blue moon helm", "Leviathan's lure", "Archers ring",
+                    "Siren's staff", "Ultor vestige", "Voidwaker Blade", "Avernic defender hilt", "Steam battlestaff", "Ice quartz",
+                    "Virtus robe top", "Pegasian crystal", "Eternal crystal", "Venator shard", "Armadyl helmet", "Hueycoatl hide"
+                ]
+            },
+            {
+                "username": "Space Yews",
+                "sheetUrl": "",
+                "items": [
+                    "CoX prayer scroll", "Eye of the Duke", "Eclipse moon helm", "Blood moon chestplate", "Ahrim's robeskirt", "Fangs of Venenatis",
+                    "Smoke quartz", "Magic fang", "Venator vestige", "Trident of the seas (full)", "Any Ancestral piece", "Karil's coif",
+                    "Shadow quartz", "Primordial crystal", "Occult necklace", "Dragonbone necklace", "Dual macuahuitl", "Armadyl chestplate",
+                    "Obsidian sword", "Bandos Tassets", "Dharok's helm", "Armadyl crossbow", "Dragon sword", "Dragon warhammer",
+                    "Granite ring", "Glacial Temotli", "Granite gloves", "Blue moon tassets", "Siren's staff", "Guthan's chainskirt",
+                    "Venator shard", "Blue moon helm", "Dharok's platebody", "Bandos hilt", "Drake's tooth", "Leaf-bladed battleaxe"
+                ]
+            },
+            {
+                "username": "Illegitly",
+                "sheetUrl": "",
+                "items": [
+                    "Dragonhunter wand", "Saradomin's light", "Zenyte shard", "Magus vestige", "Virtus robe top", "Archers ring",
+                    "Primordial crystal", "Berserker ring", "Granite boots", "CoX weapon", "Blood moon helm", "Ballista piece",
+                    "Smoke battlestaff", "Eclipse moon tassets", "Any Nightmare orb", "Treasonous ring", "CoX Shield", "Dragon harpoon",
+                    "Virtus robe bottom", "Trident of the seas (full)", "Leviathan's lure", "Magic fang", "Verac's plateskirt", "Granite ring",
+                    "Skull of Vet'ion", "Blue moon chestplate", "Obsidian maul", "Burning claw", "Bossing pet", "Dragon limbs",
+                    "Virtus mask", "Dharok's greataxe", "Hydra's Claw", "Slayer battlestaff", "Ultor vestige", "Obsidian cape"
+                ]
+            },
+            {
+                "username": "SnoeeXD",
+                "sheetUrl": "",
+                "items": [
+                    "Tyrannical ring", "Holy elixir", "Torag's platelegs", "Smoke battlestaff", "Ahrim's robeskirt", "Guthan's helm",
+                    "Black Tourmeline core", "Blood quartz", "Zamorakian spear", "ToB weapon", "Black mask (10)", "CoX prayer scroll",
+                    "Granite longsword", "Ultor vestige", "Echo crystal", "Skilling pet", "Drake's tooth", "Armadyl chainskirt",
+                    "Slayer battlestaff", "Guthan's chainskirt", "Venator vestige", "Blood moon chestplate", "Araxxyte fang", "Torag's hammers",
+                    "Sarachnis cudgel", "Guthan's platebody", "Venator shard", "Nightmare staff", "Obsidian shield", "Karil's crossbow",
+                    "Ancient hilt or Nihil horn", "Belle's Folly", "Guthan's warspear", "Torag's platebody", "Verac's brassard", "Zamorak hilt"
+                ]
+            },
+            {
+                "username": "Meeece",
+                "sheetUrl": "",
+                "items": [
+                    "Dragon thrownaxes", "Avernic defender hilt", "Eclipse moon helm", "Basilisk jaw", "Dragon chainbody", "Araxxyte fang",
+                    "Obsidian sword", "Any sunfire piece or Tonalztics of Ralos", "Dharok's platelegs", "Noxious point", "Saradomin's light", "Draconic visage",
+                    "Aranea boots", "Fangs of Venenatis", "Drake's claw", "Any piece of Justiciar", "Verac's helm", "Ahrim's staff",
+                    "CoX Shield", "Fire elemental staff crown", "Granite longsword", "Pegasian crystal", "Hydra Leather", "Blue moon chestplate",
+                    "Leaf-bladed battleaxe", "Dragonbone necklace", "Torag's platebody", "Guthan's warspear", "Noxious blade", "Berserker ring",
+                    "Armadyl chestplate", "Smoke battlestaff", "Nightmare staff", "Blue moon tassets", "Drake's tooth", "Sulphur blades"
+                ]
+            }
+        ];
+
+        let playersData = [];
+
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            if (pageName === 'detail') {
+                document.getElementById('detail-page').classList.add('active');
+            } else {
+                document.getElementById(pageName + '-page').classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    if (btn.textContent.toLowerCase().includes(pageName)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        async function loadAllData() {
+            playersData = [];
+
+            playersData = PLAYERS.map(player => ({
+                username: player.username,
+                sheetUrl: player.sheetUrl,
+                items: player.items
+            }));
+
+            calculateOverlaps();
+            renderPlayers();
+            renderLeaderboard();
+        }
+
+        function calculateOverlaps() {
+            playersData.forEach(player => {
+                let totalOverlap = 0;
+                let overlaps = {};
+
+                playersData.forEach(other => {
+                    if (player.username === other.username) return;
+
+                    const shared = player.items.filter(item =>
+                        other.items.includes(item)
+                    );
+
+                    if (shared.length > 0) {
+                        overlaps[other.username] = shared.length;
+                        totalOverlap += shared.length;
+                    }
+                });
+
+                player.overlapScore = totalOverlap;
+                player.overlaps = overlaps;
+            });
+        }
+
+        function renderPlayers() {
+            const content = document.getElementById('players-content');
+
+            if (playersData.length === 0) {
+                content.innerHTML = '<div class="loading">No players loaded yet</div>';
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="players-grid">
+                    ${playersData.map(player => `
+                        <button class="player-btn" onclick="showPlayerDetail('${player.username}')">
+                            <span class="player-name">${player.username}</span>
+                            <span class="player-score">${player.overlapScore || 0}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Auto-load data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAllData();
+        });
+
+        function showPlayerDetail(username) {
+            const player = playersData.find(p => p.username === username);
+            if (!player) return;
+
+            const allItems = new Set();
+            playersData.forEach(p => p.items.forEach(item => allItems.add(item)));
+            const sharedItemCounts = {};
+
+            player.items.forEach(item => {
+                const matches = playersData.filter(p =>
+                    p.username !== player.username && p.items.includes(item)
+                ).length;
+
+                if (matches > 0) {
+                    sharedItemCounts[item] = matches;
+                }
+            });
+
+            const content = document.getElementById('detail-content');
+            content.innerHTML = `
+                <h2>${player.username}'s Board</h2>
+                
+                <div class="score-card">
+                    <h3>Overlap Score</h3>
+                    <h2>${player.overlapScore}</h2>
+                </div>
+
+                <h3>Your Bingo Board</h3>
+                <div class="bingo-grid">
+                    ${player.items.map(item => {
+                const count = sharedItemCounts[item] || 0;
+                return `
+                            <div class="bingo-cell ${count > 0 ? 'shared' : ''}">
+                                ${item}${count > 0 ? ` (+${count})` : ''}
+                            </div>
+                        `;
+            }).join('')}
+                </div>
+
+            `;
+
+            showPage('detail');
+        }
+
+        function renderLeaderboard() {
+            const content = document.getElementById('leaderboard-content');
+
+            if (playersData.length === 0) {
+                content.innerHTML = '<div class="loading">No data loaded yet</div>';
+                return;
+            }
+
+            const sorted = [...playersData].sort((a, b) => b.overlapScore - a.overlapScore);
+            const top10 = sorted.slice(0, 10);
+
+            content.innerHTML = `
+                <h2>Top 10 Overlap Scores</h2>
+                <div class="leaderboard">
+                    ${top10.map((player, idx) => `
+                        <div class="leaderboard-item">
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <span class="rank">#${idx + 1}</span>
+                                <span style="font-size: 20px;">${player.username}</span>
+                            </div>
+                            <span style="font-size: 24px; font-weight: bold;">${player.overlapScore}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>
