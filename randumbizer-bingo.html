@@ -272,6 +272,7 @@
         <div class="nav-buttons">
             <button class="nav-btn active" onclick="showPage('players')">Players</button>
             <button class="nav-btn" onclick="showPage('leaderboard')">Leaderboard</button>
+            <button class="nav-btn" onclick="showPage('loserboard')">Loserboard</button>
         </div>
 
         <div id="players-page" class="page active">
@@ -282,6 +283,12 @@
 
         <div id="leaderboard-page" class="page">
             <div id="leaderboard-content">
+                <div class="loading">Load player data first</div>
+            </div>
+        </div>
+
+        <div id="loserboard-page" class="page">
+            <div id="loserboard-content">
                 <div class="loading">Load player data first</div>
             </div>
         </div>
@@ -975,6 +982,7 @@
             calculateOverlaps();
             renderPlayers();
             renderLeaderboard();
+            renderLoserboard();
         }
 
         function calculateOverlaps() {
@@ -1082,6 +1090,33 @@
 
             content.innerHTML = `
                 <h2>Top 10 Overlap Scores</h2>
+                <div class="leaderboard">
+                    ${top10.map((player, idx) => `
+                        <div class="leaderboard-item">
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <span class="rank">#${idx + 1}</span>
+                                <span style="font-size: 20px;">${player.username}</span>
+                            </div>
+                            <span style="font-size: 24px; font-weight: bold;">${player.overlapScore}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderLoserboard() {
+            const content = document.getElementById('loserboard-content');
+
+            if (playersData.length === 0) {
+                content.innerHTML = '<div class="loading">No data loaded yet</div>';
+                return;
+            }
+
+            const sorted = [...playersData].sort((a, b) => b.overlapScore - a.overlapScore).reverse();
+            const top10 = sorted.slice(0, 10);
+
+            content.innerHTML = `
+                <h2>Bottom 10 Overlap Scores</h2>
                 <div class="leaderboard">
                     ${top10.map((player, idx) => `
                         <div class="leaderboard-item">
