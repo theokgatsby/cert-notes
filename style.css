@@ -8,6 +8,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   box-sizing: border-box;
+  gap: 15px;
 }
 
 .section {
@@ -26,7 +27,6 @@ body {
   font-weight: 700;
   font-size: 20px;
   color: #667eea;
-  margin-bottom: 10px;
 }
 
 .card {
@@ -51,7 +51,7 @@ body {
   padding: 0 0 0 20px;
   color: #d8d8d8;
   list-style: disc;
-  margin: 8px 0;
+  margin: 0px;
   line-height: 1.6;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 hr {
-  margin: 8px 0;
+  margin: 0px;
   border: none;
   border-top: 1px solid #3a3a3a;
 }
