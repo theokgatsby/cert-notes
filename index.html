@@ -1,96 +1,88 @@
 <!doctype html>
 <html lang="en">
- <head>
+
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Portfolio and project hub." />
   <meta name="author" content="Preston" />
   <title>Preston — Projects & Notes</title>
   <link rel="stylesheet" href="/style.css" />
-  <meta
-   property="og:description"
-   content="Unified homepage linking to front-end projects and notes."
-  />
- </head>
+  <meta property="og:description" content="Unified homepage linking to front-end projects and notes." />
+</head>
 
- <body>
+<body>
   <header class="site-header">
-   <div class="container header-inner">
-    <div class="brand">
-     <h1>Preston Osborne</h1>
-     <p class="tagline">Projects, certifications, and notes</p>
+    <div class="container header-inner">
+      <div class="brand">
+        <h1>Preston Osborne</h1>
+        <p class="tagline">Projects, certifications, and notes</p>
+      </div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#projects">Projects</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
-    <nav class="site-nav" aria-label="Main navigation">
-     <a href="#projects">Projects</a>
-     <a href="#certifications">Certifications</a>
-     <a href="#contact">Contact</a>
-    </nav>
-   </div>
   </header>
 
   <main>
-   <section id="projects" class="container section-grid">
-    <h3 class="section-title">Front-end Projects</h3>
-    <div class="grid">
-     <a class="card" href="/tindog/tindog.html">
-      <h4>Tindog</h4>
-      <p>Responsive landing page demo.</p>
-     </a>
-    </div>
-   </section>
+    <section id="projects" class="container section-grid">
+      <h3 class="section-title">Front-end Projects</h3>
+      <div class="grid">
+        <a class="card" href="/tindog/index.html">
+          <h4>Tindog</h4>
+          <p>Responsive landing page demo.</p>
+        </a>
+      </div>
+    </section>
 
-   <section id="certifications" class="container section-grid">
-    <h3 class="section-title">Certification Notes</h3>
-    <div class="grid">
-     <a class="card" href="/certs/aplus-core-one.html">
-      <h4>A+ Core 1</h4>
-      <p>220-1201 notes</p>
-     </a>
-     <a class="card" href="/certs/aplus-core-two.html">
-      <h4>A+ Core 2</h4>
-      <p>220-1202 notes</p>
-     </a>
-     <a class="card" href="/certs/cloud-practitioner.html">
-      <h4>AWS Cloud Practitioner</h4>
-      <p>Essentials and exam notes</p>
-     </a>
-     <a class="card" href="/certs/linux-training.html">
-      <h4>Linux Training</h4>
-      <p>Commands and concepts</p>
-     </a>
-    </div>
-   </section>
+    <section id="certifications" class="container section-grid">
+      <h3 class="section-title">Certification Notes</h3>
+      <div class="grid">
+        <a class="card" href="/certs/aplus-core-one.html">
+          <h4>A+ Core 1</h4>
+          <p>220-1201 notes</p>
+        </a>
+        <a class="card" href="/certs/aplus-core-two.html">
+          <h4>A+ Core 2</h4>
+          <p>220-1202 notes</p>
+        </a>
+        <a class="card" href="/certs/cloud-practitioner.html">
+          <h4>AWS Cloud Practitioner</h4>
+          <p>Essentials and exam notes</p>
+        </a>
+        <a class="card" href="/certs/linux-training.html">
+          <h4>Linux Training</h4>
+          <p>Commands and concepts</p>
+        </a>
+      </div>
+    </section>
 
-   <section id="contact" class="container contact">
-    <h3 class="section-title">Contact</h3>
-    <p>Email: preston@prestonm.cc</p>
-    <p>
-     LinkedIn:
-     <a
-      href="https://www.linkedin.com/in/preston-o-8b362417a/"
-      target="_blank"
-      rel="noopener"
-      >Preston Osborne</a
-     >
-    </p>
-    <p>
-     GitHub:
-     <a href="https://github.com/theokgatsby" target="_blank" rel="noopener"
-      >theokgatsby</a
-     >
-    </p>
-   </section>
+    <section id="contact" class="container contact">
+      <h3 class="section-title">Contact</h3>
+      <p>Email: preston@prestonm.cc</p>
+      <p>
+        LinkedIn:
+        <a href="https://www.linkedin.com/in/preston-o-8b362417a/" target="_blank" rel="noopener">Preston Osborne</a>
+      </p>
+      <p>
+        GitHub:
+        <a href="https://github.com/theokgatsby" target="_blank" rel="noopener">theokgatsby</a>
+      </p>
+    </section>
   </main>
 
   <footer class="site-footer">
-   <div class="container">
-    <p>© <span id="year"></span> Preston</p>
-   </div>
+    <div class="container">
+      <p>© <span id="year"></span> Preston</p>
+    </div>
   </footer>
 
   <script>
-   // small enhancement: current year
-   document.getElementById("year").textContent = new Date().getFullYear();
+    // small enhancement: current year
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
- </body>
+</body>
+
 </html>
