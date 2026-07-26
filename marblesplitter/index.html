@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marble Raid Split Calculator</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 20px 0;
+      background-color: #f8f9fa;
+    }
+
+    .container-main {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background-color: #fff;
+      border-bottom: 1px solid #e9ecef;
+      font-weight: 600;
+      padding: 15px;
+    }
+
+    .person-section {
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .person-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .marble-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .marble-row input[type="number"] {
+      font-size: 13px;
+    }
+
+    .marble-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .result-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .result-points {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .result-gp {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0d6efd;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-main">
+    <div class="card">
+      <div class="card-header">
+        Marble Raid Split Calculator
+      </div>
+      <div class="card-body">
+        <div class="row mb-3 g-2">
+          <div class="col-6">
+            <label for="groupSize" class="form-label">Group size</label>
+            <select class="form-select" id="groupSize">
+              <option value="2">2 people</option>
+              <option value="3" selected>3 people</option>
+              <option value="4">4 people</option>
+              <option value="5">5 people</option>
+              <option value="6">6 people</option>
+              <option value="7">7 people</option>
+              <option value="8">8 people</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label for="dropValue" class="form-label">Drop value (millions GP)</label>
+            <input type="number" class="form-control" id="dropValue" value="90" min="0" step="0.1">
+          </div>
+        </div>
+
+        <h6 class="mt-4 mb-3">Marble positions</h6>
+        <div id="marbleInputs"></div>
+
+        <div class="mt-4">
+          <button class="btn btn-primary w-100" onclick="calculate()">Calculate split</button>
+        </div>
+
+        <div id="errorContainer" class="error-message"></div>
+
+        <div id="resultsContainer" style="display: none;">
+          <div class="card mt-4">
+            <div class="card-header">
+              Payouts
+            </div>
+            <div class="card-body">
+              <div id="resultsList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let groupSize = 3;
+
+    function getPersonName(personNum) {
+      const input = document.getElementById(`pname${personNum}`);
+      return input ? input.value || `Person ${personNum}` : `Person ${personNum}`;
+    }
+
+    function updateMarbleInputs() {
+      groupSize = parseInt(document.getElementById('groupSize').value);
+      const container = document.getElementById('marbleInputs');
+      container.innerHTML = '';
+
+      for (let person = 1; person <= groupSize; person++) {
+        const section = document.createElement('div');
+        section.className = 'person-section';
+        section.innerHTML = `<input type="text" class="form-control form-control-sm" id="pname${person}" placeholder="Person ${person}" style="margin-bottom: 12px;">`;
+
+        for (let marble = 1; marble <= 3; marble++) {
+          const id = `p${person}m${marble}`;
+          const felId = `p${person}m${marble}fel`;
+          const row = document.createElement('div');
+          row.className = 'marble-row';
+          row.innerHTML = `
+                        <input type="number" id="${id}" class="form-control" placeholder="Position" min="1">
+                        <span></span>
+                        <label class="marble-check">
+                            <input type="checkbox" id="${felId}">
+                            Fell off
+                        </label>
+                    `;
+          section.appendChild(row);
+        }
+        container.appendChild(section);
+      }
+    }
+
+    function calculate() {
+      const dropValue = parseFloat(document.getElementById('dropValue').value);
+      const totalMarbles = groupSize * 3;
+      const bottomN = groupSize;
+
+      if (!dropValue || dropValue <= 0) {
+        showError('Drop value must be greater than 0');
+        return;
+      }
+
+      let marbles = [];
+
+      for (let person = 1; person <= groupSize; person++) {
+        for (let marble = 1; marble <= 3; marble++) {
+          const id = `p${person}m${marble}`;
+          const felId = `p${person}m${marble}fel`;
+          const position = document.getElementById(id).value;
+          const fellOff = document.getElementById(felId).checked;
+
+          if (position === '' && !fellOff) {
+            showError(`${getPersonName(person)}, Marble ${marble}: enter a position or mark as fell off`);
+            return;
+          }
+
+          if (position !== '') {
+            const pos = parseInt(position);
+            if (pos < 1) {
+              showError('Positions must be 1 or higher');
+              return;
+            }
+            marbles.push({ position: pos, person, fellOff: false });
+          } else if (fellOff) {
+            marbles.push({ position: totalMarbles + 1, person, fellOff: true });
+          }
+        }
+      }
+
+      marbles.sort((a, b) => a.position - b.position);
+
+      const personPoints = {};
+      for (let i = 1; i <= groupSize; i++) {
+        personPoints[i] = 0;
+      }
+
+      marbles.forEach((marble, index) => {
+        const rank = index + 1;
+        let points = 0;
+
+        if (rank <= totalMarbles - bottomN) {
+          points = Math.pow(totalMarbles - rank, 3);
+        }
+
+        personPoints[marble.person] += points;
+      });
+
+      const totalPoints = Object.values(personPoints).reduce((a, b) => a + b, 0);
+
+      if (totalPoints === 0) {
+        showError('No points earned (all marbles in bottom positions)');
+        return;
+      }
+
+      const results = [];
+      for (let person = 1; person <= groupSize; person++) {
+        const points = personPoints[person];
+        const gp = (points / totalPoints) * dropValue * 1_000_000;
+        results.push({ person, points, gp });
+      }
+
+      displayResults(results, totalPoints);
+      clearError();
+    }
+
+    function displayResults(results, totalPoints) {
+      const resultsList = document.getElementById('resultsList');
+      resultsList.innerHTML = '';
+
+      results.forEach(r => {
+        const percentage = ((r.points / totalPoints) * 100).toFixed(1);
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+                    <div>
+                        <div class="result-label">${getPersonName(r.person)}</div>
+                        <div class="result-points">${r.points} points (${percentage}%)</div>
+                    </div>
+                    <div></div>
+                    <div class="result-gp">${(r.gp / 1_000_000).toFixed(2)}M</div>
+                `;
+        resultsList.appendChild(item);
+      });
+
+      document.getElementById('resultsContainer').style.display = 'block';
+    }
+
+    function showError(msg) {
+      document.getElementById('errorContainer').textContent = msg;
+      document.getElementById('resultsContainer').style.display = 'none';
+    }
+
+    function clearError() {
+      document.getElementById('errorContainer').textContent = '';
+    }
+
+    document.getElementById('groupSize').addEventListener('change', updateMarbleInputs);
+    updateMarbleInputs();
+  </script>
+</body>
+
+</html>
