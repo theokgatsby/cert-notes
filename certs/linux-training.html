@@ -1,342 +1,352 @@
 <!doctype html>
 <html lang="en">
- <head>
+
+<head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Linux Training Notes</title>
   <link rel="stylesheet" href="../style.css" />
-  Started Study on June 8, 2026
- </head>
+</head>
 
- <body>
-  <a href="../index.html" id="back-button">←</a>
-  <div class="section"></div>
-  <div class="card">
-   <ul></ul>
-  </div>
+<body class="cert-page">
+  <a href="../index.html" id="back-button" aria-label="Back to home">←</a>
+  <main class="cert-shell">
+    <header class="page-header">
+      <p class="eyebrow">Study notes</p>
+      <h1>Linux Training</h1>
+      <p class="study-date">Started study on June 8, 2026</p>
+    </header>
+    <div class="section"></div>
+    <div class="card">
+      <ul></ul>
+    </div>
 
-  <div class="section">Section 3: System Access and Filesystems</div>
-  <div class="card">
-   <div class="subsection">Linux Root Directories</div>
-   <ul class="notes">
-    <hr />
-    <li>/ - The root directory</li>
-    <li>/boot - Boot loader files, contains grub.cfg</li>
-    <li>/dev - System device files</li>
-    <li>/bin - Everyday user commands</li>
-    <li>/sbin - System/filesystem commands</li>
-    <li>/etc - System configuration files</li>
-    <li>/home - User home directories</li>
-    <li>/lib - Essential shared libraries and kernel modules</li>
-    <li>/media - Mount points for removable media</li>
-    <li>/mnt - Temporarily mounted filesystems</li>
-    <li>/opt - Optional application software packages</li>
-    <li>/proc - Virtual filesystem providing process and system information</li>
-    <li>/root - Home directory for the root user</li>
-    <li>/run - Runtime data for running processes</li>
-    <li>/srv - Service data</li>
-    <li>
-     /sys - Virtual filesystem providing an interface to kernel data structures
-    </li>
-    <li>/tmp - Temporary files</li>
-    <li>/usr - User binaries, libraries, and documentation</li>
-    <li>/var - Variable data such as logs and spool files</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Important Filesystem Commands</div>
-   <ul class="notes">
-    <hr />
-    <li>cd - Change directory</li>
-    <li>ls - List directory contents</li>
-    <li>pwd - Print working directory</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">File Management</div>
-   <ul class="notes">
-    <hr />
-    <li>touch - Create an empty file</li>
-    <li>cp - Copy files and directories</li>
-    <li>mv - Move or rename files and directories</li>
-    <li>vi - Edit files</li>
-    <li>mkdir - Create a directory</li>
-    <li>rmdir - Remove an directory</li>
-    <li>chgrp - Change group ownership</li>
-    <li>chmod - Change file permissions</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Find Files and Diectories</div>
-   <ul class="notes">
-    <hr />
-    <li>find</li>
-    <li>locate</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">File Types</div>
-   <ul class="notes">
-    <hr />
-    <li>- - Regular file</li>
-    <li>d - Directory</li>
-    <li>l - Symbolic link</li>
-    <li>c - Special file or device file</li>
-    <li>s - Socket file</li>
-    <li>p - Named pipe (FIFO)</li>
-    <li>b - Block device file</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Soft and Hard Links</div>
-   <ul class="notes">
-    <hr />
-    <li>
-     inode: A number that uniquely identifies a file or directory in the
-     filesystem
-    </li>
-    <li>
-     Soft link (symbolic link): A file that points to another file or directory
-     by its path
-    </li>
-    <li>Hard link: A directory entry that points to an inode</li>
-   </ul>
-  </div>
-  <div class="section">Section 4:</div>
-  <div class="card">
-   <div class="subsection">Filters / Text Procesors Commands</div>
-   <ul class="notes">
-    <hr />
-    <li>cut - Extract columns from a file</li>
-    <li>cut -d "," -f1 merged.txt > items.txt</li>
-    <li>-d: Delimiter</li>
-    <li>-f1: Extract from the first field</li>
-    <li>
-     awk - Designed for data extraction, mostly used to extract fields from
-     output
-    </li>
-    <li>cat seinfeld-characters | awk '{$2="Osborne" ; print $0}'</li>
-    <li>awk 'length($0) > 15' seinfeld-characters</li>
-    <li>ls -l | awk '{if($9 == "seinfeld") print $0;}'</li>
-    <li>ls -l | awk '{print NF}'</li>
-    <hr />
-    <li>grep - Search for keyword in files/output</li>
-    <li>grep Seinfeld seinfeld-characters</li>
-    <li>grep -c Seinfeld seinfeld-characters (count entries)</li>
-    <li>grep -n Seinfeld seinfeld-characters (show line numbers)</li>
-    <li>grep -i Seinfeld seinfeld-characters (ignore case)</li>
-    <li>grep -v Seinfeld seinfeld-characters (show those without a match)</li>
-    <li>grep -v Seinfeld seinfeld-characters | awk '{print $1}' | cut -c1-3</li>
-    <li></li>
-    <hr />
-    <li>egrep - Search for multiple keywords</li>
-    <li>egrep -i "Seinfeld|Kramer" seinfeld-characters</li>
-    <hr />
-    <li>sort - Sort lines of text files</li>
-    <li>uniq - Report or filter out duplicate lines</li>
-    <li>wc - Word count</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Text Processing Commands</div>
-   <ul class="notes">
-    <hr />
-    <li>sort - Sort lines of text files</li>
-    <li>sort seinfeld-characters</li>
-    <li>sort -r file (reversed)</li>
-    <li>sort -k2 file (sorts by second column value)</li>
-    <li>ls -l | sort -k9</li>
-    <hr />
-    <li>uniq - Hides duplicate sequential entries</li>
-    <li>Always use with sort first!</li>
-    <li>sort seinfeld-characters | uniq</li>
-    <li>sort file | uniq -c (Shows count of each unique)</li>
-    <li>sort file | uniq -d (Only show duplicates)</li>
-    <li>ls -l | sort | uniq</li>
-    <hr />
-    <li>wc - Word count</li>
-    <li>wc file - Shows line count, words, and bytes</li>
-    <li>wc -l file - Shows line count</li>
-    <li>wc -w file - Shows word count</li>
-    <li>wc -c file - Shows byte count</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Compare Files</div>
-   <ul class="notes">
-    <hr />
-    <li>diff - Compare files line by line</li>
-    <li>diff file1 file2</li>
-    <li>cmp - Compare files byte by byte</li>
-    <li>cmp file1 file2</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">sed Command</div>
-   <ul class="notes">
-    <hr />
-    <li>Replace a string in a file</li>
-    <li>sed 's/old_string/new_string/g' file</li>
-    <li>sed -i : Actually changes the file</li>
-    <li>new_string can be blank to remove content</li>
-    <hr />
-    <li>Find and delete a line</li>
-    <li>sed '/Seinfeld/d' seinfeld-characters</li>
-    <hr />
-    <li>Remove empty lines</li>
-    <li>sed '/^$/d' file</li>
-    <hr />
-    <li>Remove first or n lines in a file</li>
-    <li>sed '1d' file (removes first line)</li>
-    <li>sed '1,3d' file (removes first 3 lines)</li>
-    <hr />
-    <li>Replace tabs with spaces</li>
-    <li>sed 's/\t/ /g' file</li>
-    <hr />
-    <li>Show defined lines from a file</li>
-    <li>sed -n 12,18p file (shows lines 12-18)</li>
-    <li>sed 12,18d file (removes lines 12-18)</li>
-    <li>sed G file (inserts blank line after each line)</li>
-    <li>sed '8!s/Seinfeld/S/g' file (replaces all but line 8)</li>
-    <li>:%s/Seinfeld/Peter/ (replace all in vim)</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">User Account Mgmt</div>
-   <ul class="notes">
-    <hr />
-    <li>useradd {}</li>
-    <li>groupadd {}</li>
-    <li>userdel {}</li>
-    <li>groupdel {}</li>
-    <li>usermod -G superheroes spiderman</li>
-    <li>chgrp -R superheroes spiderman</li>
-    <li>
-     useradd -g superheroes -s /bin/bash -c "Ironman Character" -m -d
-     /home/ironman ironman
-    </li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">systemtctl</div>
-   <ul class="notes">
-    <hr />
-    <li>systemctl start|stop|status servicename.service</li>
-    <li>systemctl enable|disable servicename.service</li>
-    <li>systemctl restart|reload servicename.service</li>
-    <li>systemctl list-units --all</li>
-    <hr />
-    <li>
-     To add service: Create unit file in /etc/systemd/system/servicename.service
-    </li>
-    <li>systemctl poweroff|halt|reboot</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Kill Process Signals</div>
-   <ul class="notes">
-    <hr />
-    <li>kill -{} PID</li>
-    <li>SIGTERM - Graceful termination</li>
-    <li>SIGKILL - Forceful termination</li>
-    <li>SIGSTOP - Pause process</li>
-    <li>SIGCONT - Resume process</li>
-    <li>SIGSEGV - Segmentation fault, invalid memory location</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Kill Real-Time Signals</div>
-   <ul class="notes">
-    <hr />
-    <li>Send extra information</li>
-    <li>SIGRTMIN - Marks beginning of signal range</li></li>
-    <li>SIGRTMAX - Marks end of signal range</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">System Health Lab Task 1: </div>
-   <ul class="notes">
-    <hr />
-    <li>Check system usage and resources</li>
-    <li>Manage and monitor processes</li>
-    <li>Check disk usage: df -h</li>
-    <li>Check memory usage: free -h</li>
-    <li>Check running processes: top</li>
-    <hr />
-    <li>Review system log files</li>
-    <li>List Log directory: ls /var/log</li>
-    <li>Check the contents of a log file</li>
-    <li>head -n 10 /var/log/auth.log</li>
-    <li>tail -n 10 /var/log/auth.log</li>
-    <li>less /var/log/auth.log</li>
-    <hr />
-    <li>Manage and monitor processes</li>
-    <li>Start a process in the background: sleep 100 &</li>
-    <li>View background jobs: jobs</li>
-    <li>Move job to background: bg %1</li>
-    <li>Move job to foreground: fg %1</li>
-    <li>Check user processes: ps -u labsuser</li>
-    <li>Run process with modified priority: nice -n 5 sleep 200 &</li>
-    <hr />
-    <li>Summarize system health information</li>
-    <li>View active sessions and activity: w</li>
-    <li>Check logged-in users: who</li>
-    <li>Check login history: last | head -n 10</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">System Maintenance Commands</div>
-   <ul class="notes">
-    <hr />
-    <li>shutdown</li>
-    <li>init</li>
-    <li>reboot</li>
-    <li>halt - Forces a shutdown as if holding the power button</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Changing the Hostname</div>
-   <ul class="notes">
-    <hr />
-    <li>hostnamectl set-hostname newhostname</li>
-    <li>Must reboot for changes to take effect</li>
-   </ul>
-  </div>
-
-  <div class="card">
-   <div class="subsection">Finding System Information</div>
-   <ul class="notes">
-    <hr />
-    <li>General Info: uname -a</li>
-    <li>lsb_release -a</li>
-    <li>cat /etc/os-release</li>
-    <li>dmidecode</li>
-   </ul>
-  </div>
+    <div class="section">Section 3: System Access and Filesystems</div>
+    <div class="card">
+      <div class="subsection">Linux Root Directories</div>
+      <ul class="notes">
+        <hr />
+        <li>/ - The root directory</li>
+        <li>/boot - Boot loader files, contains grub.cfg</li>
+        <li>/dev - System device files</li>
+        <li>/bin - Everyday user commands</li>
+        <li>/sbin - System/filesystem commands</li>
+        <li>/etc - System configuration files</li>
+        <li>/home - User home directories</li>
+        <li>/lib - Essential shared libraries and kernel modules</li>
+        <li>/media - Mount points for removable media</li>
+        <li>/mnt - Temporarily mounted filesystems</li>
+        <li>/opt - Optional application software packages</li>
+        <li>/proc - Virtual filesystem providing process and system information</li>
+        <li>/root - Home directory for the root user</li>
+        <li>/run - Runtime data for running processes</li>
+        <li>/srv - Service data</li>
+        <li>
+          /sys - Virtual filesystem providing an interface to kernel data structures
+        </li>
+        <li>/tmp - Temporary files</li>
+        <li>/usr - User binaries, libraries, and documentation</li>
+        <li>/var - Variable data such as logs and spool files</li>
+      </ul>
+    </div>
 
     <div class="card">
-   <div class="subsection">Terminal Control Keys</div>
-   <ul class="notes">
-    <hr />
-    <li>CTRL-u: Erase everything you've typed on current line</li>
-    <li>CTRL-c: Stop/kill a command</li>
-    <li>CTRL-z: Suspend a command</li>
-    <li>CTRL-d: Exit from interactive program</li>
-   </ul>
-  </div>
- </body>
+      <div class="subsection">Important Filesystem Commands</div>
+      <ul class="notes">
+        <hr />
+        <li>cd - Change directory</li>
+        <li>ls - List directory contents</li>
+        <li>pwd - Print working directory</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">File Management</div>
+      <ul class="notes">
+        <hr />
+        <li>touch - Create an empty file</li>
+        <li>cp - Copy files and directories</li>
+        <li>mv - Move or rename files and directories</li>
+        <li>vi - Edit files</li>
+        <li>mkdir - Create a directory</li>
+        <li>rmdir - Remove an directory</li>
+        <li>chgrp - Change group ownership</li>
+        <li>chmod - Change file permissions</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Find Files and Diectories</div>
+      <ul class="notes">
+        <hr />
+        <li>find</li>
+        <li>locate</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">File Types</div>
+      <ul class="notes">
+        <hr />
+        <li>- - Regular file</li>
+        <li>d - Directory</li>
+        <li>l - Symbolic link</li>
+        <li>c - Special file or device file</li>
+        <li>s - Socket file</li>
+        <li>p - Named pipe (FIFO)</li>
+        <li>b - Block device file</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Soft and Hard Links</div>
+      <ul class="notes">
+        <hr />
+        <li>
+          inode: A number that uniquely identifies a file or directory in the
+          filesystem
+        </li>
+        <li>
+          Soft link (symbolic link): A file that points to another file or directory
+          by its path
+        </li>
+        <li>Hard link: A directory entry that points to an inode</li>
+      </ul>
+    </div>
+    <div class="section">Section 4:</div>
+    <div class="card">
+      <div class="subsection">Filters / Text Procesors Commands</div>
+      <ul class="notes">
+        <hr />
+        <li>cut - Extract columns from a file</li>
+        <li>cut -d "," -f1 merged.txt > items.txt</li>
+        <li>-d: Delimiter</li>
+        <li>-f1: Extract from the first field</li>
+        <li>
+          awk - Designed for data extraction, mostly used to extract fields from
+          output
+        </li>
+        <li>cat seinfeld-characters | awk '{$2="Osborne" ; print $0}'</li>
+        <li>awk 'length($0) > 15' seinfeld-characters</li>
+        <li>ls -l | awk '{if($9 == "seinfeld") print $0;}'</li>
+        <li>ls -l | awk '{print NF}'</li>
+        <hr />
+        <li>grep - Search for keyword in files/output</li>
+        <li>grep Seinfeld seinfeld-characters</li>
+        <li>grep -c Seinfeld seinfeld-characters (count entries)</li>
+        <li>grep -n Seinfeld seinfeld-characters (show line numbers)</li>
+        <li>grep -i Seinfeld seinfeld-characters (ignore case)</li>
+        <li>grep -v Seinfeld seinfeld-characters (show those without a match)</li>
+        <li>grep -v Seinfeld seinfeld-characters | awk '{print $1}' | cut -c1-3</li>
+        <li></li>
+        <hr />
+        <li>egrep - Search for multiple keywords</li>
+        <li>egrep -i "Seinfeld|Kramer" seinfeld-characters</li>
+        <hr />
+        <li>sort - Sort lines of text files</li>
+        <li>uniq - Report or filter out duplicate lines</li>
+        <li>wc - Word count</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Text Processing Commands</div>
+      <ul class="notes">
+        <hr />
+        <li>sort - Sort lines of text files</li>
+        <li>sort seinfeld-characters</li>
+        <li>sort -r file (reversed)</li>
+        <li>sort -k2 file (sorts by second column value)</li>
+        <li>ls -l | sort -k9</li>
+        <hr />
+        <li>uniq - Hides duplicate sequential entries</li>
+        <li>Always use with sort first!</li>
+        <li>sort seinfeld-characters | uniq</li>
+        <li>sort file | uniq -c (Shows count of each unique)</li>
+        <li>sort file | uniq -d (Only show duplicates)</li>
+        <li>ls -l | sort | uniq</li>
+        <hr />
+        <li>wc - Word count</li>
+        <li>wc file - Shows line count, words, and bytes</li>
+        <li>wc -l file - Shows line count</li>
+        <li>wc -w file - Shows word count</li>
+        <li>wc -c file - Shows byte count</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Compare Files</div>
+      <ul class="notes">
+        <hr />
+        <li>diff - Compare files line by line</li>
+        <li>diff file1 file2</li>
+        <li>cmp - Compare files byte by byte</li>
+        <li>cmp file1 file2</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">sed Command</div>
+      <ul class="notes">
+        <hr />
+        <li>Replace a string in a file</li>
+        <li>sed 's/old_string/new_string/g' file</li>
+        <li>sed -i : Actually changes the file</li>
+        <li>new_string can be blank to remove content</li>
+        <hr />
+        <li>Find and delete a line</li>
+        <li>sed '/Seinfeld/d' seinfeld-characters</li>
+        <hr />
+        <li>Remove empty lines</li>
+        <li>sed '/^$/d' file</li>
+        <hr />
+        <li>Remove first or n lines in a file</li>
+        <li>sed '1d' file (removes first line)</li>
+        <li>sed '1,3d' file (removes first 3 lines)</li>
+        <hr />
+        <li>Replace tabs with spaces</li>
+        <li>sed 's/\t/ /g' file</li>
+        <hr />
+        <li>Show defined lines from a file</li>
+        <li>sed -n 12,18p file (shows lines 12-18)</li>
+        <li>sed 12,18d file (removes lines 12-18)</li>
+        <li>sed G file (inserts blank line after each line)</li>
+        <li>sed '8!s/Seinfeld/S/g' file (replaces all but line 8)</li>
+        <li>:%s/Seinfeld/Peter/ (replace all in vim)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">User Account Mgmt</div>
+      <ul class="notes">
+        <hr />
+        <li>useradd {}</li>
+        <li>groupadd {}</li>
+        <li>userdel {}</li>
+        <li>groupdel {}</li>
+        <li>usermod -G superheroes spiderman</li>
+        <li>chgrp -R superheroes spiderman</li>
+        <li>
+          useradd -g superheroes -s /bin/bash -c "Ironman Character" -m -d
+          /home/ironman ironman
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">systemtctl</div>
+      <ul class="notes">
+        <hr />
+        <li>systemctl start|stop|status servicename.service</li>
+        <li>systemctl enable|disable servicename.service</li>
+        <li>systemctl restart|reload servicename.service</li>
+        <li>systemctl list-units --all</li>
+        <hr />
+        <li>
+          To add service: Create unit file in /etc/systemd/system/servicename.service
+        </li>
+        <li>systemctl poweroff|halt|reboot</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Kill Process Signals</div>
+      <ul class="notes">
+        <hr />
+        <li>kill -{} PID</li>
+        <li>SIGTERM - Graceful termination</li>
+        <li>SIGKILL - Forceful termination</li>
+        <li>SIGSTOP - Pause process</li>
+        <li>SIGCONT - Resume process</li>
+        <li>SIGSEGV - Segmentation fault, invalid memory location</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Kill Real-Time Signals</div>
+      <ul class="notes">
+        <hr />
+        <li>Send extra information</li>
+        <li>SIGRTMIN - Marks beginning of signal range</li>
+        </li>
+        <li>SIGRTMAX - Marks end of signal range</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">System Health Lab Task 1: </div>
+      <ul class="notes">
+        <hr />
+        <li>Check system usage and resources</li>
+        <li>Manage and monitor processes</li>
+        <li>Check disk usage: df -h</li>
+        <li>Check memory usage: free -h</li>
+        <li>Check running processes: top</li>
+        <hr />
+        <li>Review system log files</li>
+        <li>List Log directory: ls /var/log</li>
+        <li>Check the contents of a log file</li>
+        <li>head -n 10 /var/log/auth.log</li>
+        <li>tail -n 10 /var/log/auth.log</li>
+        <li>less /var/log/auth.log</li>
+        <hr />
+        <li>Manage and monitor processes</li>
+        <li>Start a process in the background: sleep 100 &</li>
+        <li>View background jobs: jobs</li>
+        <li>Move job to background: bg %1</li>
+        <li>Move job to foreground: fg %1</li>
+        <li>Check user processes: ps -u labsuser</li>
+        <li>Run process with modified priority: nice -n 5 sleep 200 &</li>
+        <hr />
+        <li>Summarize system health information</li>
+        <li>View active sessions and activity: w</li>
+        <li>Check logged-in users: who</li>
+        <li>Check login history: last | head -n 10</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">System Maintenance Commands</div>
+      <ul class="notes">
+        <hr />
+        <li>shutdown</li>
+        <li>init</li>
+        <li>reboot</li>
+        <li>halt - Forces a shutdown as if holding the power button</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Changing the Hostname</div>
+      <ul class="notes">
+        <hr />
+        <li>hostnamectl set-hostname newhostname</li>
+        <li>Must reboot for changes to take effect</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Finding System Information</div>
+      <ul class="notes">
+        <hr />
+        <li>General Info: uname -a</li>
+        <li>lsb_release -a</li>
+        <li>cat /etc/os-release</li>
+        <li>dmidecode</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="subsection">Terminal Control Keys</div>
+      <ul class="notes">
+        <hr />
+        <li>CTRL-u: Erase everything you've typed on current line</li>
+        <li>CTRL-c: Stop/kill a command</li>
+        <li>CTRL-z: Suspend a command</li>
+        <li>CTRL-d: Exit from interactive program</li>
+      </ul>
+    </div>
+  </main>
+</body>
+
 </html>
