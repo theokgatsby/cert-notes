@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness & Nutrition Tracker</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #e0e0e0;
+      background: white;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-button.active {
+      color: #1a1a1a;
+      border-bottom-color: #1a1a1a;
+    }
+
+    .tab-button:hover {
+      background: #fafafa;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+      background: #fafafa;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus {
+      outline: none;
+      border-color: #0066cc;
+      box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+    }
+
+    button {
+      padding: 10px 16px;
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #fafafa;
+      border-color: #d0d0d0;
+    }
+
+    button.primary {
+      background: #0066cc;
+      color: white;
+      border-color: #0066cc;
+    }
+
+    button.primary:hover {
+      background: #0052a3;
+      border-color: #0052a3;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .meal-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .meal-card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .meal-meta {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .ingredients-list {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+
+    .ingredients-list li {
+      font-size: 13px;
+      color: #666;
+      padding: 2px 0;
+    }
+
+    .ingredients-list li:before {
+      content: "• ";
+      margin-right: 4px;
+    }
+
+    .instructions {
+      font-size: 13px;
+      color: #666;
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 4px;
+      border-left: 2px solid #0066cc;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 2rem;
+    }
+
+    .calendar-header {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #666;
+      padding: 4px;
+      text-transform: uppercase;
+    }
+
+    .calendar-day {
+      padding: 8px;
+      font-size: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .calendar-day:hover:not(:disabled) {
+      background: #fafafa;
+    }
+
+    .calendar-day:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .calendar-day.selected {
+      background: #e3f2fd;
+      color: #0066cc;
+      border-color: #0066cc;
+      font-weight: 600;
+    }
+
+    .calendar-day.has-workout {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-color: #2e7d32;
+    }
+
+    .exercise-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 12px;
+    }
+
+    .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .exercise-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .exercise-details {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .exercise-reps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .exercise-input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exercise-input-group label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .exercise-input-group input {
+      margin-bottom: 0;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .info-box {
+      background: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+      color: #0d47a1;
+    }
+
+    .quick-buttons {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quick-button {
+      text-align: left;
+      padding: 12px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .quick-button:hover {
+      background: #f0f0f0;
+    }
+
+    .nutrition-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .nutrition-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .nutrition-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nutrition-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .nutrition-note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .stat-box .input-row {
+      margin-bottom: 0;
+      margin-top: 8px;
+    }
+
+    .stat-box input[type="number"] {
+      margin-bottom: 0;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .input-row input {
+      flex: 1;
+    }
+
+    .divider {
+      border-top: 1px solid #e0e0e0;
+      margin: 1.5rem 0;
+      padding-top: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1rem 0.75rem;
+      }
+
+      .stat-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 8px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .calendar {
+        gap: 2px;
+      }
+
+      .calendar-day {
+        padding: 6px 2px;
+        font-size: 11px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .input-row button {
+        width: 100%;
+      }
+
+      button {
+        padding: 10px 12px;
+      }
+
+      .tab-button {
+        padding: 12px 6px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>Fitness & Nutrition Tracker</h1>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab-button" onclick="switchTab('meals')">Meals</button>
+    <button class="tab-button" onclick="switchTab('workout')">Workouts</button>
+  </div>
+
+  <div class="container">
+    <!-- DASHBOARD TAB -->
+    <div id="dashboard" class="tab-content active">
+      <h2>Your Stats</h2>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">Height</div>
+          <div class="stat-value" id="displayHeight">78</div>
+          <div class="stat-label">inches</div>
+          <div class="input-row">
+            <!-- <input type="number" id="heightInput" placeholder="Update height (in)"> -->
+            <!-- <button onclick="saveHeight()">Save</button> -->
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Current Weight</div>
+          <div class="stat-value" id="displayWeight">278</div>
+          <div class="stat-label">lbs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">BMI</div>
+          <div class="stat-value" id="displayBMI">35.6</div>
+          <div class="stat-label">kg/m²</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 14px; font-weight: 600;">Daily Nutrition Targets</h3>
+      <div class="nutrition-grid">
+        <div class="nutrition-card">
+          <div class="nutrition-label">Calories</div>
+          <div class="nutrition-value" id="targetCalories">2000 - 2400</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Protein</div>
+          <div class="nutrition-value" id="targetProtein">220 - 280g</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Carbs</div>
+          <div class="nutrition-value" id="targetCarbs">200 - 300g</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Fat</div>
+          <div class="nutrition-value" id="targetFat">50 - 75g</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Fiber</div>
+          <div class="nutrition-value" id="targetFiber">28 - 34g</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Water</div>
+          <div class="nutrition-value" id="targetWater">139 - 195 oz</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Added Sugar</div>
+          <div class="nutrition-value">0g</div>
+          <div class="nutrition-note">Avoid sugar-sweetened drinks, candy, and desserts.</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Refined Carbs</div>
+          <div class="nutrition-value">Minimize</div>
+          <div class="nutrition-note">White bread, pastries, and sugary cereals spike hunger.</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Fried Foods</div>
+          <div class="nutrition-value">Limit</div>
+          <div class="nutrition-note">High calorie density without much satiety.</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Alcohol</div>
+          <div class="nutrition-value">0 - 2 drinks/wk</div>
+          <div class="nutrition-note">Empty calories that slow fat burning.</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Sodium</div>
+          <div class="nutrition-value">&lt;2300mg</div>
+          <div class="nutrition-note">Excess sodium causes water retention and bloating.</div>
+        </div>
+        <div class="nutrition-card">
+          <div class="nutrition-label">Trans Fats</div>
+          <div class="nutrition-value">0g</div>
+          <div class="nutrition-note">Check labels for "partially hydrogenated" oils.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEALS TAB -->
+    <div id="meals" class="tab-content">
+      <h2>Meals & Shopping List</h2>
+      <div id="mealsContainer"></div>
+    </div>
+
+    <!-- WORKOUT TAB -->
+    <div id="workout" class="tab-content">
+      <h2>Workout Tracker</h2>
+
+      <div class="info-box">
+        Beginner program — 3x per week (e.g., Mon/Wed/Fri)<br>
+        5 min warm-up + 40 min workouts + 5 min stretch
+      </div>
+
+      <div class="card">
+        <h3 id="monthDisplay">Calendar</h3>
+        <div class="calendar" id="calendar"></div>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 id="dateDisplay" style="margin: 0;">Exercises</h3>
+        </div>
+        <div class="input-row">
+          <input type="number" id="workoutDayWeight" placeholder="Log weight for this day (lbs)">
+          <button class="primary" onclick="saveWorkoutDayWeight()">Save</button>
+        </div>
+      </div>
+      <div id="exercisesContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    // Data Management
+    const STORAGE_KEY = 'fitnessPal';
+    let appState = {
+      weight: 278,
+      height: 78,
+      meals: {},
+      workouts: {},
+      weightLogs: {},
+      selectedDate: new Date().toISOString().split('T')[0]
+    };
+
+    const mealDatabase = [
+      {
+        name: 'Scrambled eggs with toast',
+        ingredients: ['3 eggs', '2 slices whole grain bread', 'butter', 'salt & pepper'],
+        calories: 360,
+        protein: 18,
+        instructions: '1. Heat butter in pan over medium heat\n2. Whisk eggs with salt and pepper\n3. Pour into pan, stir every 20 seconds until fluffy (2-3 min)\n4. Toast bread and assemble'
+      },
+      {
+        name: 'Oatmeal with banana',
+        ingredients: ['1/2 cup oats', '1 banana', '1 tbsp peanut butter', '1 cup milk'],
+        calories: 380,
+        protein: 14,
+        instructions: '1. Heat milk in pot\n2. Add oats, stir until cooked (5 min)\n3. Pour into bowl\n4. Top with sliced banana and peanut butter'
+      },
+      {
+        name: 'Chicken and rice bowl',
+        ingredients: ['200g chicken breast', '1 cup cooked rice', 'broccoli', 'olive oil'],
+        calories: 520,
+        protein: 40,
+        instructions: '1. Bake chicken at 400°F for 20 min\n2. Cook rice according to package\n3. Steam broccoli 5 min\n4. Combine with olive oil drizzle'
+      },
+      {
+        name: 'Turkey sandwich',
+        ingredients: ['100g turkey', '2 slices bread', 'lettuce', 'tomato', 'mustard'],
+        calories: 380,
+        protein: 32,
+        instructions: '1. Toast bread if desired\n2. Layer turkey, lettuce, tomato\n3. Add mustard\n4. Cut diagonally and serve'
+      },
+      {
+        name: 'Ground turkey pasta',
+        ingredients: ['300g ground turkey', '1.5 cups pasta', 'canned tomato sauce', 'garlic'],
+        calories: 550,
+        protein: 38,
+        instructions: '1. Cook pasta according to package\n2. Brown turkey in pan with garlic (8 min)\n3. Add tomato sauce, simmer 5 min\n4. Combine pasta and sauce'
+      },
+      {
+        name: 'Baked chicken and potatoes',
+        ingredients: ['200g chicken', '2 potatoes', 'green beans', 'olive oil', 'salt'],
+        calories: 580,
+        protein: 35,
+        instructions: '1. Preheat oven to 400°F\n2. Cube potatoes, toss with oil and salt\n3. Place chicken and potatoes on tray\n4. Bake 25 min, add green beans last 5 min'
+      }
+    ];
+
+    const exercises = [
+      { name: 'Push-ups', sets: 3, reps: '5-8', notes: 'Do on knees if needed, slow and controlled' },
+      { name: 'Squats', sets: 3, reps: '10-15', notes: 'Keep chest up, knees over toes' },
+      { name: 'Dumbbell rows', sets: 3, reps: '8-10', notes: 'Squeeze shoulder blade at top' },
+      { name: 'Lunges', sets: 3, reps: '6-8 per leg', notes: 'Alternate legs, keep torso upright' },
+      { name: 'Plank', sets: 3, time: '15-25 seconds', notes: 'Keep body straight, no hip sag' },
+      { name: 'Glute bridges', sets: 3, reps: '12-15', notes: 'Squeeze at top, lower controlled' },
+      { name: 'Tricep dips', sets: 3, reps: '5-8', notes: 'Use chair, elbows close to body' }
+    ];
+
+    // Load from storage
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          appState = {
+            weight: appState.weight,
+            height: appState.height,
+            meals: {},
+            workouts: {},
+            weightLogs: {},
+            selectedDate: appState.selectedDate,
+            ...data
+          };
+        } catch (e) {
+          console.log('Error loading data');
+        }
+      }
+      document.getElementById('displayHeight').textContent = appState.height;
+      updateDisplayWeight();
+    }
+
+    function updateDisplayWeight() {
+      let currentWeight = appState.weight;
+
+      if (appState.weightLogs && Object.keys(appState.weightLogs).length > 0) {
+        const sortedDates = Object.keys(appState.weightLogs).sort().reverse();
+        currentWeight = appState.weightLogs[sortedDates[0]];
+      }
+
+      appState.weight = currentWeight;
+      document.getElementById('displayWeight').textContent = currentWeight;
+      updateBMI(currentWeight);
+      updateNutritionTargets(currentWeight);
+    }
+
+    function updateBMI(weight) {
+      const heightInches = appState.height;
+      const bmi = (weight / (heightInches * heightInches)) * 703;
+      document.getElementById('displayBMI').textContent = bmi.toFixed(1);
+    }
+
+    function saveHeight() {
+      const input = document.getElementById('heightInput');
+      const height = parseFloat(input.value);
+      if (height && height > 0) {
+        appState.height = height;
+        input.value = '';
+        document.getElementById('displayHeight').textContent = height;
+        saveData();
+        updateBMI(appState.weight);
+      } else {
+        alert('Please enter a valid height in inches');
+      }
+    }
+
+    // Nutrition targets are derived from current body weight so they update as the user logs new weigh-ins
+    function updateNutritionTargets(weight) {
+      const calLow = Math.round(weight * 7.2);
+      const calHigh = Math.round(weight * 8.6);
+      const proteinLow = Math.round(weight * 0.79);
+      const proteinHigh = Math.round(weight * 1.0);
+      const carbLow = Math.round(weight * 0.72);
+      const carbHigh = Math.round(weight * 1.08);
+      const fatLow = Math.round(weight * 0.18);
+      const fatHigh = Math.round(weight * 0.27);
+      const fiberLow = Math.round((calLow / 1000) * 14);
+      const fiberHigh = Math.round((calHigh / 1000) * 14);
+      const waterLow = Math.round(weight * 0.5);
+      const waterHigh = Math.round(weight * 0.7);
+
+      document.getElementById('targetCalories').textContent = `${calLow} - ${calHigh}`;
+      document.getElementById('targetProtein').textContent = `${proteinLow} - ${proteinHigh}g`;
+      document.getElementById('targetCarbs').textContent = `${carbLow} - ${carbHigh}g`;
+      document.getElementById('targetFat').textContent = `${fatLow} - ${fatHigh}g`;
+      document.getElementById('targetFiber').textContent = `${fiberLow} - ${fiberHigh}g`;
+      document.getElementById('targetWater').textContent = `${waterLow} - ${waterHigh} oz`;
+    }
+
+    // Save to storage
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    // Tab switching
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+
+      if (tabName === 'dashboard') {
+        updateDisplayWeight();
+      } else if (tabName === 'workout') {
+        renderCalendar();
+        renderExercises();
+      } else if (tabName === 'meals') {
+        renderMeals();
+      }
+    }
+
+    // Weight management
+    function saveWorkoutDayWeight() {
+      const input = document.getElementById('workoutDayWeight');
+      const weight = parseFloat(input.value);
+      if (weight && weight > 0) {
+        if (!appState.weightLogs) appState.weightLogs = {};
+        appState.weightLogs[appState.selectedDate] = weight;
+        input.value = '';
+        saveData();
+        updateDisplayWeight();
+      } else {
+        alert('Please enter a valid weight');
+      }
+    }
+
+    // Meals rendering
+    function renderMeals() {
+      const container = document.getElementById('mealsContainer');
+      container.innerHTML = '';
+      mealDatabase.forEach((meal, idx) => {
+        const html = `
+                    <div class="meal-card">
+                        <h4>${meal.name}</h4>
+                        <div class="meal-meta">${meal.calories} cal | ${meal.protein}g protein</div>
+                        
+                        <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">Ingredients</h4>
+                        <ul class="ingredients-list">
+                            ${meal.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                        </ul>
+
+                        <h4 style="margin-bottom: 0.5rem;">Instructions</h4>
+                        <div class="instructions">${meal.instructions}</div>
+
+                        <button onclick="copyToClipboard(${idx})">Copy ingredients</button>
+                    </div>
+                `;
+        container.innerHTML += html;
+      });
+    }
+
+    function copyToClipboard(idx) {
+      const meal = mealDatabase[idx];
+      const text = meal.ingredients.join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Ingredients copied to clipboard!');
+      });
+    }
+
+    // Calendar rendering
+    function getCalendarDays() {
+      const [year, month, day] = appState.selectedDate.split('-');
+      const firstDay = new Date(year, month - 1, 1);
+      const lastDay = new Date(year, month, 0);
+      const daysInMonth = lastDay.getDate();
+      const startingDayOfWeek = firstDay.getDay();
+
+      const days = [];
+      for (let i = 0; i < startingDayOfWeek; i++) days.push(null);
+      for (let i = 1; i <= daysInMonth; i++) {
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        days.push(dateStr);
+      }
+      return days;
+    }
+
+    function hasWorkoutOnDate(date) {
+      if (!appState.workouts[date]) return false;
+      return Object.values(appState.workouts[date]).some(logs =>
+        logs && logs.some(log => log.completed)
+      );
+    }
+
+    function renderCalendar() {
+      const days = getCalendarDays();
+      const [year, month] = appState.selectedDate.split('-');
+      const monthName = new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      document.getElementById('monthDisplay').textContent = monthName;
+
+      const calendar = document.getElementById('calendar');
+      calendar.innerHTML = '';
+
+      ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'calendar-header';
+        header.textContent = day;
+        calendar.appendChild(header);
+      });
+
+      days.forEach(day => {
+        const button = document.createElement('button');
+        button.className = 'calendar-day';
+
+        if (!day) {
+          button.disabled = true;
+          button.style.opacity = '0.3';
+        } else {
+          button.textContent = day.split('-')[2];
+          if (day === appState.selectedDate) {
+            button.classList.add('selected');
+          }
+          if (hasWorkoutOnDate(day)) {
+            button.classList.add('has-workout');
+          }
+          button.onclick = () => {
+            appState.selectedDate = day;
+            renderCalendar();
+            renderExercises();
+          };
+        }
+        calendar.appendChild(button);
+      });
+    }
+
+    // Exercise rendering
+    function renderExercises() {
+      document.getElementById('dateDisplay').textContent = `Exercises for ${appState.selectedDate}`;
+
+      const weightInput = document.getElementById('workoutDayWeight');
+      if (!appState.weightLogs) appState.weightLogs = {};
+      weightInput.value = appState.weightLogs[appState.selectedDate] || '';
+
+      const container = document.getElementById('exercisesContainer');
+      container.innerHTML = '';
+
+      exercises.forEach((ex, idx) => {
+        const logs = appState.workouts[appState.selectedDate]?.[ex.name] || [];
+        const completed = logs.some(log => log.completed);
+
+        const html = `
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-title">${ex.name}</div>
+                                <div class="exercise-details">
+                                    ${ex.sets} sets × ${ex.reps || ex.time} • ${ex.notes}
+                                </div>
+                            </div>
+                            <input type="checkbox" ${completed ? 'checked' : ''} onchange="toggleExercise('${appState.selectedDate}', '${ex.name}')">
+                        </div>
+
+                        ${logs.length > 0 ? `
+                            <div class="exercise-reps">
+                                <div class="exercise-input-group">
+                                    <label>Reps</label>
+                                    <input type="number" value="${logs[0].reps || 0}" onchange="updateExerciseLog('${appState.selectedDate}', '${ex.name}', 0, 'reps', this.value)">
+                                </div>
+                                <div class="exercise-input-group">
+                                    <label>Weight (lbs)</label>
+                                    <input type="number" value="${logs[0].weight || 0}" onchange="updateExerciseLog('${appState.selectedDate}', '${ex.name}', 0, 'weight', this.value)">
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+        container.innerHTML += html;
+      });
+    }
+
+    function toggleExercise(date, exerciseName) {
+      if (!appState.workouts[date]) appState.workouts[date] = {};
+      if (!appState.workouts[date][exerciseName]) appState.workouts[date][exerciseName] = [];
+
+      const logs = appState.workouts[date][exerciseName];
+      if (logs.length === 0) {
+        logs.push({ reps: 0, weight: 0, completed: true });
+      } else {
+        logs[0].completed = !logs[0].completed;
+      }
+
+      saveData();
+      renderExercises();
+      renderCalendar();
+    }
+
+    function updateExerciseLog(date, exerciseName, index, field, value) {
+      if (!appState.workouts[date]) appState.workouts[date] = {};
+      if (!appState.workouts[date][exerciseName]) appState.workouts[date][exerciseName] = [];
+      if (!appState.workouts[date][exerciseName][index]) {
+        appState.workouts[date][exerciseName][index] = { reps: 0, weight: 0, completed: false };
+      }
+
+      appState.workouts[date][exerciseName][index][field] = parseInt(value) || 0;
+      saveData();
+    }
+
+
+
+    // Initialize
+    loadData();
+    renderMeals();
+  </script>
+</body>
+
+</html>
