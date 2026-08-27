@@ -301,7 +301,7 @@
 
     .exercise-reps {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 8px;
       margin-top: 8px;
       padding-top: 8px;
@@ -509,21 +509,21 @@
       <div class="stat-grid">
         <div class="stat-box">
           <div class="stat-label">Height</div>
-          <div class="stat-value" id="displayHeight">78</div>
+          <div class="stat-value" id="displayHeight">--</div>
           <div class="stat-label">inches</div>
           <div class="input-row">
-            <input type="number" id="heightInput" placeholder="Update height (in)">
+            <input type="number" id="heightInput" placeholder="Enter your height (in)">
             <button onclick="saveHeight()">Save</button>
           </div>
         </div>
         <div class="stat-box">
           <div class="stat-label">Current Weight</div>
-          <div class="stat-value" id="displayWeight">278</div>
+          <div class="stat-value" id="displayWeight">--</div>
           <div class="stat-label">lbs</div>
         </div>
         <div class="stat-box">
           <div class="stat-label">BMI</div>
-          <div class="stat-value" id="displayBMI">35.6</div>
+          <div class="stat-value" id="displayBMI">--</div>
           <div class="stat-label">kg/m²</div>
         </div>
       </div>
@@ -532,32 +532,32 @@
       <div class="nutrition-grid">
         <div class="nutrition-card">
           <div class="nutrition-label">Calories</div>
-          <div class="nutrition-value" id="targetCalories">2000 - 2400</div>
+          <div class="nutrition-value" id="targetCalories">--</div>
           <div class="nutrition-note">Lean meats, fish, vegetables, whole grains.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Protein</div>
-          <div class="nutrition-value" id="targetProtein">220 - 280g</div>
+          <div class="nutrition-value" id="targetProtein">--</div>
           <div class="nutrition-note">Chicken, turkey, eggs, fish, Greek yogurt, tofu.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Carbs</div>
-          <div class="nutrition-value" id="targetCarbs">200 - 300g</div>
+          <div class="nutrition-value" id="targetCarbs">--</div>
           <div class="nutrition-note">Oats, rice, potatoes, quinoa, fruit, whole grain bread.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Fat</div>
-          <div class="nutrition-value" id="targetFat">50 - 75g</div>
+          <div class="nutrition-value" id="targetFat">--</div>
           <div class="nutrition-note">Olive oil, avocado, nuts, seeds, salmon.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Fiber</div>
-          <div class="nutrition-value" id="targetFiber">28 - 34g</div>
+          <div class="nutrition-value" id="targetFiber">--</div>
           <div class="nutrition-note">Beans, vegetables, oats, berries, whole grains.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Water</div>
-          <div class="nutrition-value" id="targetWater">139 - 195 oz</div>
+          <div class="nutrition-value" id="targetWater">--</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Added Sugar</div>
@@ -629,8 +629,8 @@
     // Data Management
     const STORAGE_KEY = 'fitnessPal';
     let appState = {
-      weight: 278,
-      height: 78,
+      weight: null,
+      height: null,
       meals: {},
       workouts: {},
       weightLogs: {},
@@ -711,7 +711,7 @@
           console.log('Error loading data');
         }
       }
-      document.getElementById('displayHeight').textContent = appState.height;
+      document.getElementById('displayHeight').textContent = appState.height || '--';
       updateDisplayWeight();
     }
 
@@ -724,7 +724,7 @@
       }
 
       appState.weight = currentWeight;
-      document.getElementById('displayWeight').textContent = currentWeight;
+      document.getElementById('displayWeight').textContent = currentWeight || '--';
       updateBMI(currentWeight);
       updateNutritionTargets();
     }
@@ -734,6 +734,10 @@
     }
 
     function updateBMI(weight) {
+      if (!weight || !appState.height) {
+        document.getElementById('displayBMI').textContent = '--';
+        return;
+      }
       const bmi = calculateBMI(weight, appState.height);
       document.getElementById('displayBMI').textContent = bmi.toFixed(1);
     }
@@ -764,6 +768,12 @@
     // Nutrition targets are derived from the current weight, height, and BMI so they update whenever those inputs change
     function updateNutritionTargets() {
       const weight = appState.weight;
+      const targetIds = ['targetCalories', 'targetProtein', 'targetCarbs', 'targetFat', 'targetFiber', 'targetWater'];
+      if (!weight || !appState.height) {
+        targetIds.forEach(id => document.getElementById(id).textContent = '--');
+        return;
+      }
+
       const bmi = calculateBMI(weight, appState.height);
       const calFactors = getCalorieFactors(bmi);
       const calLow = Math.round(weight * calFactors.low);
@@ -950,15 +960,11 @@
                             <input type="checkbox" ${completed ? 'checked' : ''} onchange="toggleExercise('${appState.selectedDate}', '${ex.name}')">
                         </div>
 
-                        ${logs.length > 0 ? `
+                        ${completed ? `
                             <div class="exercise-reps">
                                 <div class="exercise-input-group">
-                                    <label>Reps</label>
+                                    <label>Reps completed</label>
                                     <input type="number" value="${logs[0].reps || 0}" onchange="updateExerciseLog('${appState.selectedDate}', '${ex.name}', 0, 'reps', this.value)">
-                                </div>
-                                <div class="exercise-input-group">
-                                    <label>Weight (lbs)</label>
-                                    <input type="number" value="${logs[0].weight || 0}" onchange="updateExerciseLog('${appState.selectedDate}', '${ex.name}', 0, 'weight', this.value)">
                                 </div>
                             </div>
                         ` : ''}
@@ -974,7 +980,7 @@
 
       const logs = appState.workouts[date][exerciseName];
       if (logs.length === 0) {
-        logs.push({ reps: 0, weight: 0, completed: true });
+        logs.push({ reps: 0, completed: true });
       } else {
         logs[0].completed = !logs[0].completed;
       }
@@ -988,7 +994,7 @@
       if (!appState.workouts[date]) appState.workouts[date] = {};
       if (!appState.workouts[date][exerciseName]) appState.workouts[date][exerciseName] = [];
       if (!appState.workouts[date][exerciseName][index]) {
-        appState.workouts[date][exerciseName][index] = { reps: 0, weight: 0, completed: false };
+        appState.workouts[date][exerciseName][index] = { reps: 0, completed: false };
       }
 
       appState.workouts[date][exerciseName][index][field] = parseInt(value) || 0;
