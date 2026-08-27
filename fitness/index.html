@@ -512,8 +512,8 @@
           <div class="stat-value" id="displayHeight">78</div>
           <div class="stat-label">inches</div>
           <div class="input-row">
-            <!-- <input type="number" id="heightInput" placeholder="Update height (in)"> -->
-            <!-- <button onclick="saveHeight()">Save</button> -->
+            <input type="number" id="heightInput" placeholder="Update height (in)">
+            <button onclick="saveHeight()">Save</button>
           </div>
         </div>
         <div class="stat-box">
@@ -533,22 +533,27 @@
         <div class="nutrition-card">
           <div class="nutrition-label">Calories</div>
           <div class="nutrition-value" id="targetCalories">2000 - 2400</div>
+          <div class="nutrition-note">Lean meats, fish, vegetables, whole grains.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Protein</div>
           <div class="nutrition-value" id="targetProtein">220 - 280g</div>
+          <div class="nutrition-note">Chicken, turkey, eggs, fish, Greek yogurt, tofu.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Carbs</div>
           <div class="nutrition-value" id="targetCarbs">200 - 300g</div>
+          <div class="nutrition-note">Oats, rice, potatoes, quinoa, fruit, whole grain bread.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Fat</div>
           <div class="nutrition-value" id="targetFat">50 - 75g</div>
+          <div class="nutrition-note">Olive oil, avocado, nuts, seeds, salmon.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Fiber</div>
           <div class="nutrition-value" id="targetFiber">28 - 34g</div>
+          <div class="nutrition-note">Beans, vegetables, oats, berries, whole grains.</div>
         </div>
         <div class="nutrition-card">
           <div class="nutrition-label">Water</div>
@@ -721,12 +726,15 @@
       appState.weight = currentWeight;
       document.getElementById('displayWeight').textContent = currentWeight;
       updateBMI(currentWeight);
-      updateNutritionTargets(currentWeight);
+      updateNutritionTargets();
+    }
+
+    function calculateBMI(weight, height) {
+      return (weight / (height * height)) * 703;
     }
 
     function updateBMI(weight) {
-      const heightInches = appState.height;
-      const bmi = (weight / (heightInches * heightInches)) * 703;
+      const bmi = calculateBMI(weight, appState.height);
       document.getElementById('displayBMI').textContent = bmi.toFixed(1);
     }
 
@@ -739,15 +747,27 @@
         document.getElementById('displayHeight').textContent = height;
         saveData();
         updateBMI(appState.weight);
+        updateNutritionTargets();
       } else {
         alert('Please enter a valid height in inches');
       }
     }
 
-    // Nutrition targets are derived from current body weight so they update as the user logs new weigh-ins
-    function updateNutritionTargets(weight) {
-      const calLow = Math.round(weight * 7.2);
-      const calHigh = Math.round(weight * 8.6);
+    // Calorie needs per pound of bodyweight shrink as BMI rises, since a bigger frame safely sustains a larger absolute deficit
+    function getCalorieFactors(bmi) {
+      if (bmi >= 35) return { low: 7.0, high: 8.5 };
+      if (bmi >= 30) return { low: 8.0, high: 9.5 };
+      if (bmi >= 25) return { low: 10.0, high: 12.0 };
+      return { low: 12.0, high: 14.0 };
+    }
+
+    // Nutrition targets are derived from the current weight, height, and BMI so they update whenever those inputs change
+    function updateNutritionTargets() {
+      const weight = appState.weight;
+      const bmi = calculateBMI(weight, appState.height);
+      const calFactors = getCalorieFactors(bmi);
+      const calLow = Math.round(weight * calFactors.low);
+      const calHigh = Math.round(weight * calFactors.high);
       const proteinLow = Math.round(weight * 0.79);
       const proteinHigh = Math.round(weight * 1.0);
       const carbLow = Math.round(weight * 0.72);
