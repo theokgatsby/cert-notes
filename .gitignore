@@ -1,0 +1,14 @@
+# macOS and editor metadata
+.DS_Store
+.idea/
+
+# Local environments and dependencies
+venv/
+node_modules/
+
+# Wrangler files and local secrets
+.wrangler/
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
