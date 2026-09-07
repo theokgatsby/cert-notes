@@ -1,0 +1,32 @@
+.gradient-background {
+  background: linear-gradient(300deg, #00bfff, #cac2ff, #ef8172);
+  background-size: 180% 180%;
+  animation: gradient-animation 18s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+h1 {
+  font-family: "Rouge Script", cursive;
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+}
+
+div {
+  font-family: "Montserrat", sans-serif;
+}
