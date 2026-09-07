@@ -13,14 +13,11 @@
 <body>
   <main class="container-main">
     <header>
-      <div class="eyebrow">Raid loot, split fairly</div>
       <h1>Marble Split Calculator</h1>
-      <p class="intro">Enter each marble's official finish position. Every finish counts, a DNF still hurts, and
-        completing all three marbles earns a consistency bonus.</p>
     </header>
 
     <form id="splitForm" class="card" novalidate>
-      <div class="card-header">Race details</div>
+      <div class="card-header">Race Details</div>
       <div class="card-body">
         <div class="row g-3">
           <div class="col-sm-6">
@@ -66,11 +63,11 @@
       <summary class="card-header">How the fair score works</summary>
       <div class="card-body">
         <ol>
-          <li>Every marble that finishes earns 30 points.</li>
-          <li>Faster finishes earn a placement bonus. First place gets the full 70-point bonus for 100
-            points total. The bonus decreases evenly until the final finisher receives 30 points total.</li>
-          <li>A DNF earns 0 points. Finishing all three marbles adds 15% to that person's score.</li>
-          <li>The drop is divided in proportion to everyone's final scores.</li>
+          <li>Each finisher earns 30 base points.</li>
+          <li>Placement adds 0–70 bonus points: first gets 70, last gets 0.</li>
+          <li>A DNF earns 0 points.</li>
+          <li>Finishing all three marbles adds 15% bonus.</li>
+          <li>Drop is divided in proportion to final scores.</li>
         </ol>
       </div>
     </details>
