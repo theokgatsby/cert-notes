@@ -1,6 +1,8 @@
 'use strict';
 
 const MARBLES_PER_PERSON = 3;
+const MAX_MARBLES_PER_PERSON = 4;
+const BEST_MARBLE_COUNT = 3;
 const FINISH_POINTS = 30;
 const PLACEMENT_POINTS = 70;
 const COMPLETION_MULTIPLIER = 1.15;
@@ -8,7 +10,8 @@ const COMPLETION_MULTIPLIER = 1.15;
 let groupSize = 3;
 const draft = Array.from({ length: 8 }, () => ({
   name: '',
-  marbles: Array.from({ length: MARBLES_PER_PERSON }, () => ({ position: '', dnf: false }))
+  receivedPurple: false,
+  marbles: Array.from({ length: MAX_MARBLES_PER_PERSON }, () => ({ position: '', dnf: false }))
 }));
 
 const groupSizeInput = document.getElementById('groupSize');
@@ -31,6 +34,12 @@ function updateDraft(event) {
     return;
   }
 
+  if (target.dataset.field === 'purple') {
+    draft[personIndex].receivedPurple = target.checked;
+    updateMarbleInputs();
+    return;
+  }
+
   const marbleIndex = Number(target.dataset.marble);
   if (!Number.isInteger(marbleIndex)) return;
 
@@ -44,15 +53,30 @@ function updateDraft(event) {
   }
 }
 
+function getMarbleCount(personIndex) {
+  return draft[personIndex].receivedPurple ? MAX_MARBLES_PER_PERSON : MARBLES_PER_PERSON;
+}
+
+function getTotalMarbles() {
+  let total = 0;
+  for (let personIndex = 0; personIndex < groupSize; personIndex += 1) {
+    total += getMarbleCount(personIndex);
+  }
+  return total;
+}
+
 function updateMarbleInputs() {
   groupSize = Number(groupSizeInput.value);
-  const totalMarbles = groupSize * MARBLES_PER_PERSON;
+  const totalMarbles = getTotalMarbles();
   marbleInputs.replaceChildren();
 
   for (let personIndex = 0; personIndex < groupSize; personIndex += 1) {
     const section = document.createElement('section');
     section.className = 'person-section';
     section.setAttribute('aria-label', `Person ${personIndex + 1}`);
+
+    const nameRow = document.createElement('div');
+    nameRow.className = 'person-name-row';
 
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
@@ -62,14 +86,34 @@ function updateMarbleInputs() {
     nameInput.dataset.person = personIndex;
     nameInput.dataset.field = 'name';
     nameInput.setAttribute('aria-label', `Person ${personIndex + 1} name`);
-    section.appendChild(nameInput);
 
-    for (let marbleIndex = 0; marbleIndex < MARBLES_PER_PERSON; marbleIndex += 1) {
+    const purpleId = `p${personIndex}purple`;
+    const purpleLabel = document.createElement('label');
+    purpleLabel.className = 'purple-check';
+    purpleLabel.htmlFor = purpleId;
+
+    const purpleInput = document.createElement('input');
+    purpleInput.type = 'checkbox';
+    purpleInput.id = purpleId;
+    purpleInput.className = 'form-check-input mt-0';
+    purpleInput.checked = draft[personIndex].receivedPurple;
+    purpleInput.dataset.person = personIndex;
+    purpleInput.dataset.field = 'purple';
+
+    purpleLabel.append(purpleInput, document.createTextNode(' Received purple'));
+    nameRow.append(nameInput, purpleLabel);
+    section.appendChild(nameRow);
+
+    const marbleCount = getMarbleCount(personIndex);
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'marble-cards';
+
+    for (let marbleIndex = 0; marbleIndex < marbleCount; marbleIndex += 1) {
       const marble = draft[personIndex].marbles[marbleIndex];
       const positionId = `p${personIndex}m${marbleIndex}`;
       const dnfId = `${positionId}dnf`;
-      const row = document.createElement('div');
-      row.className = 'marble-row';
+      const card = document.createElement('div');
+      card.className = 'marble-card';
 
       const label = document.createElement('label');
       label.className = 'marble-label';
@@ -79,8 +123,8 @@ function updateMarbleInputs() {
       const positionInput = document.createElement('input');
       positionInput.type = 'number';
       positionInput.id = positionId;
-      positionInput.className = 'form-control form-control-sm';
-      positionInput.placeholder = 'Position';
+      positionInput.className = 'form-control form-control-sm marble-position';
+      positionInput.placeholder = 'Pos';
       positionInput.min = '1';
       positionInput.max = String(totalMarbles);
       positionInput.step = '1';
@@ -106,10 +150,11 @@ function updateMarbleInputs() {
       dnfInput.dataset.field = 'dnf';
 
       checkLabel.append(dnfInput, document.createTextNode(' DNF'));
-      row.append(label, positionInput, checkLabel);
-      section.appendChild(row);
+      card.append(label, positionInput, checkLabel);
+      cardsWrap.appendChild(card);
     }
 
+    section.appendChild(cardsWrap);
     marbleInputs.appendChild(section);
   }
 
@@ -124,21 +169,26 @@ function placementScore(position, totalMarbles) {
 }
 
 function collectRaceResults() {
-  const totalMarbles = groupSize * MARBLES_PER_PERSON;
+  const totalMarbles = getTotalMarbles();
   const usedPositions = new Map();
   const people = [];
 
   for (let personIndex = 0; personIndex < groupSize; personIndex += 1) {
+    const marbleCount = getMarbleCount(personIndex);
     const person = {
       personIndex,
       name: getPersonName(personIndex),
+      receivedPurple: draft[personIndex].receivedPurple,
+      marbleCount,
       finishes: 0,
       rawPoints: 0,
       points: 0,
       completionBonus: false
     };
 
-    for (let marbleIndex = 0; marbleIndex < MARBLES_PER_PERSON; marbleIndex += 1) {
+    const scores = [];
+
+    for (let marbleIndex = 0; marbleIndex < marbleCount; marbleIndex += 1) {
       const marble = draft[personIndex].marbles[marbleIndex];
       if (marble.dnf) continue;
 
@@ -157,10 +207,14 @@ function collectRaceResults() {
 
       usedPositions.set(position, `${person.name}, Marble ${marbleIndex + 1}`);
       person.finishes += 1;
-      person.rawPoints += placementScore(position, totalMarbles);
+      scores.push(placementScore(position, totalMarbles));
     }
 
-    person.completionBonus = person.finishes === MARBLES_PER_PERSON;
+    // Only the best BEST_MARBLE_COUNT marbles count; the worst is dropped for anyone with extras (e.g. purple bonus marble).
+    scores.sort((a, b) => b - a);
+    person.rawPoints = scores.slice(0, BEST_MARBLE_COUNT).reduce((sum, score) => sum + score, 0);
+
+    person.completionBonus = person.finishes >= BEST_MARBLE_COUNT;
     person.points = person.rawPoints * (person.completionBonus ? COMPLETION_MULTIPLIER : 1);
     people.push(person);
   }
@@ -228,16 +282,23 @@ function displayResults(results, totalGp) {
     if (person.completionBonus) {
       const bonus = document.createElement('span');
       bonus.className = 'bonus-pill';
-      bonus.textContent = 'ALL 3 +15%';
+      bonus.textContent = 'BEST 3 +15%';
       name.appendChild(bonus);
+    }
+
+    if (person.receivedPurple) {
+      const purpleBonus = document.createElement('span');
+      purpleBonus.className = 'bonus-pill purple-pill';
+      purpleBonus.textContent = 'PURPLE';
+      name.appendChild(purpleBonus);
     }
 
     const detail = document.createElement('div');
     detail.className = 'result-detail';
     const percentage = totalPoints > 0 ? (person.points / totalPoints) * 100 : 100 / groupSize;
     detail.textContent = totalPoints > 0
-      ? `${person.finishes}/3 finished · ${person.points.toFixed(1)} pts · ${percentage.toFixed(1)}%`
-      : `0/3 finished · all-DNF tie · ${percentage.toFixed(1)}%`;
+      ? `${person.finishes}/${person.marbleCount} finished · ${person.points.toFixed(1)} pts · ${percentage.toFixed(1)}%`
+      : `0/${person.marbleCount} finished · all-DNF tie · ${percentage.toFixed(1)}%`;
     info.append(name, detail);
 
     const payout = document.createElement('div');

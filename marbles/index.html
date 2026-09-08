@@ -40,7 +40,8 @@
 
         <h2 class="section-heading">Marble results</h2>
         <p class="section-help">Positions must be unique whole numbers within the race field. Mark a marble DNF if
-          it did not finish.</p>
+          it did not finish. Check "Received purple" to give a player a 4th bonus marble — only their best 3
+          marbles count toward their score.</p>
         <div id="marbleInputs"></div>
 
         <button class="btn btn-primary w-100 mt-3" type="submit">Calculate fair split</button>
@@ -66,13 +67,15 @@
           <li>Each finisher earns 30 base points.</li>
           <li>Placement adds 0–70 bonus points: first gets 70, last gets 0.</li>
           <li>A DNF earns 0 points.</li>
-          <li>Finishing all three marbles adds 15% bonus.</li>
+          <li>Only a player's best 3 marbles count — a "Received purple" bonus marble replaces their worst one if it scores higher.</li>
+          <li>Finishing (and scoring) 3 marbles adds a 15% bonus.</li>
           <li>Drop is divided in proportion to final scores.</li>
         </ol>
       </div>
     </details>
 
     <div class="testimonial">
+      <h2 class="testimonial-heading"><span>Testimonials</span></h2>
       <p class="mb-1"><em>“Oh that's kinda neat”</em></p>
       <p>— CtrlShiftDel</p>
     </div>
