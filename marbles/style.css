@@ -263,6 +263,11 @@ h1 {
   background: #f0e6fa;
 }
 
+.sweep-pill {
+  color: #92400e;
+  background: #fef3c7;
+}
+
 .payout-total {
   display: flex;
   justify-content: space-between;

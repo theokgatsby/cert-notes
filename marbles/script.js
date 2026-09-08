@@ -183,7 +183,8 @@ function collectRaceResults() {
       finishes: 0,
       rawPoints: 0,
       points: 0,
-      completionBonus: false
+      completionBonus: false,
+      positions: []
     };
 
     const scores = [];
@@ -207,6 +208,7 @@ function collectRaceResults() {
 
       usedPositions.set(position, `${person.name}, Marble ${marbleIndex + 1}`);
       person.finishes += 1;
+      person.positions.push(position);
       scores.push(placementScore(position, totalMarbles));
     }
 
@@ -222,7 +224,25 @@ function collectRaceResults() {
   return people;
 }
 
+function findSweepWinner(people) {
+  return people.find(person =>
+    person.receivedPurple &&
+    person.marbleCount === MAX_MARBLES_PER_PERSON &&
+    person.finishes === MAX_MARBLES_PER_PERSON &&
+    person.positions.slice().sort((a, b) => a - b).every((position, index) => position === index + 1)
+  );
+}
+
 function allocatePayouts(people, totalGp) {
+  const sweepWinner = findSweepWinner(people);
+  if (sweepWinner) {
+    return people.map(person => ({
+      ...person,
+      gp: person.personIndex === sweepWinner.personIndex ? totalGp : 0,
+      sweep: person.personIndex === sweepWinner.personIndex
+    }));
+  }
+
   const totalPoints = people.reduce((sum, person) => sum + person.points, 0);
   if (totalPoints === 0) {
     return allocateByWeight(
@@ -293,10 +313,19 @@ function displayResults(results, totalGp) {
       name.appendChild(purpleBonus);
     }
 
+    if (person.sweep) {
+      const sweepBonus = document.createElement('span');
+      sweepBonus.className = 'bonus-pill sweep-pill';
+      sweepBonus.textContent = 'SWEEP — TAKES ALL';
+      name.appendChild(sweepBonus);
+    }
+
     const detail = document.createElement('div');
     detail.className = 'result-detail';
-    const percentage = totalPoints > 0 ? (person.points / totalPoints) * 100 : 100 / groupSize;
-    detail.textContent = totalPoints > 0
+    const percentage = totalGp > 0 ? (person.gp / totalGp) * 100 : 100 / groupSize;
+    detail.textContent = person.sweep
+      ? `${person.finishes}/${person.marbleCount} finished · swept places 1-4 · ${percentage.toFixed(1)}%`
+      : totalPoints > 0
       ? `${person.finishes}/${person.marbleCount} finished · ${person.points.toFixed(1)} pts · ${percentage.toFixed(1)}%`
       : `0/${person.marbleCount} finished · all-DNF tie · ${percentage.toFixed(1)}%`;
     info.append(name, detail);
